@@ -1,0 +1,31 @@
+{
+ "coverage": {
+  " BracketModelFEA": 2,
+  " ReinforcementDesign": 2,
+  " BracketModelRender": 2,
+  " StabilityCheckScript": 2
+ },
+ "asked": {
+  " BracketModelFEA": [
+   "为什么非得使用 OpenSCAD 进行模型生成？",
+   "去掉或换掉 FEA_input.json 行不行？",
+   "check.py 能不能真的机器检查所有的结构稳定性问题？"
+  ],
+  " ReinforcementDesign": [
+   "为什么非得根据FEA结果调整设计参数？",
+   "去掉强化设计方法可以吗？",
+   "check.py如何确保真的机器检查了bbox和volume？"
+  ],
+  " BracketModelRender": [
+   "为什么非得使用 OpenSCAD 进行渲染？",
+   "去掉或换掉 render.sh 可行吗？",
+   "check.py 能不能真的机器检查所有必要的验证项？"
+  ],
+  " StabilityCheckScript": [
+   "为什么非得使用 STL 格式？",
+   "去掉或换掉 check.py 行不行？",
+   "check.py 能不能真的机器检查？"
+  ]
+ },
+ "versions": 1
+}

@@ -1,0 +1,50 @@
+{
+ "plan_q": [
+  "[补全岗决策点] 模型尺寸变化范围待核实",
+  "[补全岗决策点] FEA软件可用性待核实",
+  "[补全岗决策点] 设计调整依据待核实",
+  "[补全岗决策点] 模型尺寸变化范围待核实",
+  "[补全岗决策点] FEA软件可用性待核实",
+  "[补全岗决策点] 设计调整依据待核实",
+  "[补全岗决策点] 模型尺寸变化范围待核实",
+  "[补全岗决策点] FEA软件可用性待核实",
+  "[补全岗决策点] 设计调整依据待核实",
+  "[补全岗决策点] 模型尺寸变化范围待核实",
+  "[补全岗决策点] FEA软件可用性待核实",
+  "[补全岗决策点] 设计调整依据待核实",
+  "[ BracketModelFEA] 为什么非得使用 OpenSCAD 进行模型生成？",
+  "[ BracketModelFEA] 去掉或换掉 FEA_input.json 行不行？",
+  "[ BracketModelFEA] check.py 能不能真的机器检查所有的结构稳定性问题？",
+  "[ ReinforcementDesign] 为什么非得根据FEA结果调整设计参数？",
+  "[ ReinforcementDesign] 去掉强化设计方法可以吗？",
+  "[ ReinforcementDesign] check.py如何确保真的机器检查了bbox和volume？",
+  "[ BracketModelRender] 为什么非得使用 OpenSCAD 进行渲染？",
+  "[ BracketModelRender] 去掉或换掉 render.sh 可行吗？",
+  "[ BracketModelRender] check.py 能不能真的机器检查所有必要的验证项？",
+  "[ StabilityCheckScript] 为什么非得使用 STL 格式？",
+  "[ StabilityCheckScript] 去掉或换掉 check.py 行不行？",
+  "[ StabilityCheckScript] check.py 能不能真的机器检查？"
+ ],
+ "info_q": [
+  {
+   "find": "L, W, T, H1, H2, D, N, R的具体数值",
+   "why": "这些参数的具体数值将直接影响有限元分析的结果，如果不核实，分析结果可能不准确。"
+  },
+  {
+   "find": "FEA结果的具体内容",
+   "why": "不核实会影响设计参数调整的准确性。"
+  },
+  {
+   "find": "L, W, T, H1, H2, D, N, R 的具体数值",
+   "why": "这些数值将直接影响模型的尺寸和形状，如果数值不准确，将导致渲染的模型不符合实际需求"
+  },
+  {
+   "find": "OpenSCAD 的渲染参数设置",
+   "why": "不同的参数设置可能影响渲染效果，如果设置不正确，渲染的图片可能无法清晰展示模型细节"
+  },
+  {
+   "find": "L, W, T, H1, H2, D, N, R 的具体数值",
+   "why": "这些数值影响模型的体积和边界框，不准确可能导致错误的结果。"
+  }
+ ]
+}

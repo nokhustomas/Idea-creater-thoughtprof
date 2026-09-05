@@ -1,0 +1,29 @@
+{
+  "N": 2,
+  "triangles": 24,
+  "bbox_min": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "bbox_max": [
+    60.0,
+    30.0,
+    44.0
+  ],
+  "bbox_size": [
+    60.0,
+    30.0,
+    44.0
+  ],
+  "expected_bbox_size": [
+    60.0,
+    30.0,
+    44.0
+  ],
+  "volume": 12000.0,
+  "expected_volume": 11842.92036732051,
+  "volume_rel_diff": 0.01326358936879599,
+  "bbox_ok": true,
+  "volume_ok": true
+}

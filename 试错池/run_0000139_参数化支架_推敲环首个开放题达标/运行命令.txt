@@ -1,0 +1,1 @@
+bash render.sh && python3 check.py

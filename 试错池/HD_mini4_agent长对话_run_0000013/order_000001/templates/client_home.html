@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}HDIBS - 首页{% endblock %}
+{% block nav_links %}
+    <li><a href="{{ url_for('about_page') }}">关于我们</a></li>
+    <li><a href="{{ url_for('members_page') }}">社团成员</a></li>
+    <li class="nav-dropdown">
+        <a href="#" id="resource-trigger">路径资源 ▾</a>
+        <ul class="dropdown-menu" id="level1-menu">
+            <li class="has-submenu" data-sub="physics">
+                <a href="#">物理学 ▸</a>
+                <ul class="dropdown-menu submenu" id="menu-physics">
+                    <li><a href="{{ url_for('resource_page', key='guangxue') }}">光学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='lixue') }}">力学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='dianxue') }}">电学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='liangzi') }}">量子力学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='rexue') }}">热学</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu" data-sub="chemistry">
+                <a href="#">化学 ▸</a>
+                <ul class="dropdown-menu submenu" id="menu-chemistry">
+                    <li><a href="{{ url_for('resource_page', key='wuji') }}">无机化学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='youji') }}">有机化学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='huanjing') }}">环境化学</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu" data-sub="biology">
+                <a href="#">生物学 ▸</a>
+                <ul class="dropdown-menu submenu" id="menu-biology">
+                    <li><a href="{{ url_for('resource_page', key='shenjing') }}">神经生物学</a></li>
+                    <li><a href="{{ url_for('resource_page', key='qita') }}">其他生物学</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+{% block content %}
+    <section class="hero">
+        <div class="hero-welcome">欢迎，</div>
+        <div class="hero-subtitle">希望你可以在这里燃起你对科学的兴趣。</div>
+    </section>
+
+    <section class="cards">
+        <a class="card" href="{{ url_for('about_page') }}">
+            <h3>关于我们</h3>
+            <p>了解 HDIBS 的故事与历任社长。</p>
+        </a>
+        <a class="card" href="{{ url_for('members_page') }}">
+            <h3>社团成员</h3>
+            <p>认识我们的十位社团成员。</p>
+        </a>
+        <a class="card" href="#resource-trigger" onclick="document.getElementById('resource-trigger').click();return false;">
+            <h3>路径资源</h3>
+            <p>探索物理学、化学、生物学的科普路径。</p>
+        </a>
+    </section>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+{% endblock %}

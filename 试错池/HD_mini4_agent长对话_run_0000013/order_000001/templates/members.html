@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}HDIBS - 社团成员{% endblock %}
+{% block nav_links %}
+    <li><a href="{{ url_for('client_home') }}">首页</a></li>
+    <li><a href="{{ url_for('about_page') }}">关于我们</a></li>
+    <li><a href="{{ url_for('members_page') }}" class="active">社团成员</a></li>
+    <li><a href="{{ url_for('client_home') }}#resource-trigger">路径资源</a></li>
+{% endblock %}
+{% block content %}
+    <article class="members-page">
+        <h2 class="page-title">社团成员</h2>
+        <div class="members-grid">
+            {% for m in content.members %}
+            <div class="member-card">
+                <div class="member-photo">
+                    <span class="photo-placeholder">照片</span>
+                </div>
+                <div class="member-text">
+                    <h4>{{ m.name }}</h4>
+                    <p>{{ m.intro }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="back-home">
+            <a href="{{ url_for('client_home') }}" class="back-link">← 返回主页</a>
+        </div>
+    </article>
+{% endblock %}

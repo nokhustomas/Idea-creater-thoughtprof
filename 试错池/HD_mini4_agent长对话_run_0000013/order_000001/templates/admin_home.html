@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}HDIBS - 控制端{% endblock %}
+{% block nav_links %}
+    <li><a href="{{ url_for('admin_edit') }}" class="admin-edit-link">进入修改</a></li>
+{% endblock %}
+{% block content %}
+    <section class="admin-hero">
+        <div class="hero-welcome">欢迎，感谢你对HDIBS作出的贡献。</div>
+        <div class="hero-subtitle">点击导航栏的「进入修改」开始编辑客户端内容。</div>
+        <div class="admin-cta">
+            <a href="{{ url_for('admin_edit') }}" class="btn-primary">进入修改</a>
+        </div>
+    </section>
+{% endblock %}

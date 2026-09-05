@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDIBS - 登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h1 class="login-title">HDIBS</h1>
+        <p class="login-subtitle">科学之光 · 为贫困地区学生科普</p>
+        <form method="POST" action="/login" class="login-form">
+            <label for="password">请输入密码</label>
+            <input type="password" id="password" name="password" placeholder="请输入密码" required autocomplete="off">
+            <button type="submit">进入</button>
+            {% if error %}
+            <div class="login-error">{{ error }}</div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}HDIBS - 进入修改{% endblock %}
+{% block nav_links %}
+    <li><a href="{{ url_for('admin_home') }}">控制端首页</a></li>
+    <li><a href="{{ url_for('admin_edit') }}" class="admin-edit-link active">进入修改</a></li>
+{% endblock %}
+{% block content %}
+    <article class="admin-edit">
+        <h2 class="page-title">编辑客户端内容</h2>
+
+        {% if msg %}
+        <div class="alert alert-success">{{ msg }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('admin_edit') }}" class="edit-form">
+            <fieldset>
+                <legend>关于HDIBS 正文</legend>
+                <label for="about_hdibs_body">正文内容：</label>
+                <textarea id="about_hdibs_body" name="about_hdibs_body" rows="6">{{ data.about.about_hdibs_body }}</textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>历任社长 正文（可选）</legend>
+                <label for="presidents_body">正文内容：</label>
+                <textarea id="presidents_body" name="presidents_body" rows="5">{{ data.about.presidents_body }}</textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>社团成员 第 1 栏</legend>
+                <label for="member_1_name">姓名：</label>
+                <input type="text" id="member_1_name" name="member_1_name" value="{{ data.members[0].name }}">
+                <label for="member_1_intro">介绍：</label>
+                <textarea id="member_1_intro" name="member_1_intro" rows="3">{{ data.members[0].intro }}</textarea>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">保存修改</button>
+                <a href="{{ url_for('admin_home') }}" class="btn-secondary">返回</a>
+            </div>
+        </form>
+    </article>
+{% endblock %}

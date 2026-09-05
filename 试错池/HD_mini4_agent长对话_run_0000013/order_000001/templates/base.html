@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HDIBS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">HDIBS</div>
+        <ul class="nav-links">
+            {% block nav_links %}{% endblock %}
+            {% if session.role %}
+            <li><a href="{{ url_for('logout') }}">退出</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

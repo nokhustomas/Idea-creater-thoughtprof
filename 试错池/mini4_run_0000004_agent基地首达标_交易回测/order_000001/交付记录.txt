@@ -1,0 +1,6 @@
+out/交易明细.csv	4d3bc89409f06f73
+out/回测报告.md	c78b031899a52ace
+out/资金曲线.csv	f3f849429c71ed23
+rules.json	cff9726371b53652
+rules_example.json	cff9726371b53652
+order_000001_成品.zip	zip 5成员

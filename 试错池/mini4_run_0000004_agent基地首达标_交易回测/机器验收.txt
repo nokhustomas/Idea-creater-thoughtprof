@@ -1,0 +1,1 @@
+结果 达标：19 条交易（agent 基地 v0.3 + MiniMax-M3；同题 Aider+M3 只出 test.txt）

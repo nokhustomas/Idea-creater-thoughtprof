@@ -1,0 +1,26 @@
+{
+  "buy_conditions": [
+    {
+      "type": "ma_cross",
+      "short": 5,
+      "long": 20,
+      "direction": "golden"
+    },
+    {
+      "type": "breakout",
+      "period": 20,
+      "direction": "high"
+    },
+    {
+      "type": "price_change",
+      "min_pct": 0.02,
+      "max_pct": 0.09
+    }
+  ],
+  "buy_logic": "any",
+  "stop_loss_pct": 0.05,
+  "take_profit_pct": 0.10,
+  "max_holding_days": 10,
+  "position_size": 1,
+  "initial_cash": 1000000.0
+}

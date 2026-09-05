@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>怪问题研究所</title><style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#f6d365,#fda085);min-height:100vh;padding:16px;color:#333;overflow-x:hidden}
+.pg{display:none;max-width:520px;margin:0 auto}
+.pg.on{display:block}
+.cd{background:#fff;border-radius:22px;padding:26px 22px;box-shadow:0 8px 32px rgba(0,0,0,.12);margin-bottom:14px}
+h1{font-size:25px;text-align:center;margin-bottom:8px;color:#ff6b6b}
+h2{font-size:19px;text-align:center;margin-bottom:12px;color:#ff6b6b}
+.sb{font-size:13px;color:#888;text-align:center;line-height:1.6;margin-bottom:20px}
+input[type=text]{width:100%;padding:13px 14px;border:2px solid #ffd6c0;border-radius:12px;font-size:16px;outline:none;background:#fffaf7}
+input[type=text]:focus{border-color:#ff6b6b}
+.b1{display:block;width:100%;padding:14px;margin-top:12px;background:linear-gradient(135deg,#ff6b6b,#ffa07a);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,107,107,.3)}
+.b1:active{transform:scale(.97)}
+.b2{display:block;width:100%;padding:12px;margin-top:10px;background:#fff;color:#ff6b6b;border:2px solid #ff6b6b;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
+.ht{color:#ff6b6b;font-size:13px;text-align:center;margin-top:8px;min-height:18px}
+.pr{text-align:center;color:#fff;font-size:14px;margin-bottom:8px;font-weight:600}
+.pb{height:6px;background:rgba(255,255,255,.4);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.pf{height:100%;background:#fff;border-radius:3px;transition:width .3s}
+.qt{font-size:17px;font-weight:600;margin-bottom:14px;color:#333;line-height:1.5}
+.ops{display:flex;flex-direction:column;gap:9px}
+.op{padding:12px 14px;background:#fff8f3;border:2px solid #ffd6c0;border-radius:11px;cursor:pointer;font-size:14px;line-height:1.5;text-align:left;color:#333;font-family:inherit;transition:.15s}
+.op.sl{border-color:#ff6b6b;background:linear-gradient(135deg,#ff6b6b,#ffa07a);color:#fff}
+.nv{display:flex;gap:10px;margin-top:18px}
+.nv button{flex:1}
+.re{font-size:54px;text-align:center;margin:8px 0 6px}
+.rt{font-size:20px;text-align:center;color:#ff6b6b;margin-bottom:12px;font-weight:700}
+.rd{font-size:14px;line-height:1.8;color:#555;background:#fff8f3;padding:14px;border-radius:11px;margin-bottom:10px}
+.rn{color:#ff6b6b;font-weight:700;font-size:16px}
+.sa{margin-top:12px;text-align:center}
+#cw{display:none;margin:12px auto 0;border-radius:14px;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.15)}
+#cv{display:block;max-width:100%;height:auto}
+.tp{font-size:11px;color:#888;text-align:center;margin-top:6px}
+.ft{text-align:center;color:rgba(255,255,255,.85);font-size:12px;margin-top:16px}
+</style></head><body>
+<div id="p1" class="pg on"><div class="cd"><h1>怪问题研究所</h1><p class="sb">填上你的名字<br>答一堆莫名其妙的趣味问题<br>领取一份奇怪又好笑的结果</p><input id="ni" type="text" placeholder="输入你的名字（最多 20 字）" maxlength="20" autocomplete="off"><button id="bs" class="b1">开始怪问答 ✨</button><p id="nh" class="ht"></p></div><p class="ft">本结果纯属瞎编 · 仅供娱乐 · 别当真</p></div>
+<div id="p2" class="pg"><div class="pr" id="pg">第 1 / 8 题</div><div class="pb"><div class="pf" id="pfi" style="width:12.5%"></div></div><div class="cd"><h2 id="qt">题目</h2><div class="ops" id="ops"></div><div class="nv"><button id="bp" class="b2">上一题</button><button id="bn" class="b1">下一题</button></div><p id="qh" class="ht">请选择一个选项</p></div></div>
+<div id="p3" class="pg"><div class="cd"><div class="re" id="re"></div><h2 class="rt" id="rt">结果标题</h2><div class="rd" id="rd">结果描述</div><button id="bsh" class="b1">📸 生成截图分享给群友</button><div class="sa"><div id="cw"><canvas id="cv" width="600" height="780"></canvas></div><p class="tp" id="st">长按图片可保存到相册发给群友</p></div><button id="bag" class="b2">🔁 再来一次</button></div><p class="ft">本结果纯属瞎编 · 仅供娱乐 · 别当真</p></div>
+<script>
+(function(){
+var D=document;
+function $(x){return D.getElementById(x)}
+var Q=[("如果你是一把椅子,你最想被谁坐?", ["楼下下棋的老大爷", "刚洗完澡没穿袜子的朋友", "每天准时来收快递的小哥"]), ("你觉得云朵是什么味道的?", ["放了三天的棉花糖", "刚拆封的薯片", "化了一半的酸奶"]), ("假如可以给月亮寄一封信,你会写什么?", ["投诉你最近太亮了", "麻烦跟太阳换班", "其实我一直偷偷看你"]), ("你最想变成哪种动物?", ["整天睡觉的猫", "挂在树上的树懒", "八只手一起吃零食的章鱼"]), ("如果你是路边的一棵树,最大的心愿是什么?", ["叶子永远不掉", "结满摇一摇就掉的果子", "有人在我身上挂秋千"]), ("你相信外星人吗?", ["坚信,他们天天看我朋友圈", "半信半疑,但我愿意提供 WiFi", "他们先相信我再说"]), ("假如明天全世界放假一天,你起床第一件事?", ["睡到中午十二点", "立刻约人去吃火锅", "把昨天没追完的剧全部看完"]), ("你觉得自己上辈子大概率是?", ["村口那棵老槐树", "河边那块圆石头", "邻居家那个蓝色的瓷碗"]), ("如果你的钱包会说话,你猜它第一句说啥?", ["求你了别再翻了", "我今天真的累了", "要不你考虑下隔壁的卡包"]), ("你愿意拥有哪种超能力?", ["随时让 WiFi 满格", "考试前能听懂猫说话", "说一句就让楼下外卖小哥直接送到门口"])];
+var R=[["🥔", "限量宇宙土豆星人", "{n},你是一颗被宇宙点名的土豆。<br><br>你自带一层看不见的土,踩到哪里都不容易摔倒;别人烦恼的事,到你这里会自动变成背景音乐。<br><br>你的日常任务是:被削皮或者不被削皮,保持微笑。<br><br>本周运势:适合在沙发里生根发芽。", ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A"]], ["🦄", "行走的发光独角兽", "{n},你的身体里藏着一只独角兽。<br><br>它平时装作不在,关键时候会出来给你加 buff。<br><br>你说话自带彩虹滤镜,听你讲话的人会莫名其妙变得开心。<br><br>本周运势:适合在公园长椅上安静发光,顺便吓到一只猫。", ["B", "B", "B", "B", "B", "B", "B", "B", "B", "B"]], ["🍜", "被宇宙认证的快乐饭团", "{n},你是宇宙中央厨房出品的一颗饭团。<br><br>外面软软的,里面塞满了奇怪但好吃的料。<br><br>你走到哪里,空气里都会飘出一股让人肚子叫的味道。<br><br>本周运势:适合和好朋友一起被吃掉,哦不,一起吃饭。", ["C", "C", "C", "C", "C", "C", "C", "C", "C", "C"]], ["🐙", "八手八脚的万能章鱼", "{n},你其实是章鱼成精。<br><br>别人一只手干的事,你八只手一起上,还顺手给别人剥个橘子。<br><br>你最大的烦恼是每次出门买不到八只袖子的外套。<br><br>本周运势:适合在朋友群里同时回复八条消息。", ["A", "B", "C", "A", "B", "C", "A", "B", "C", "A"]], ["🌙", "月亮下班的替补选手", "{n},月亮最近太累,准备请假。<br><br>你就是它偷偷认定的替补。<br><br>白天你假装是个普通人,晚上就悄悄挂到天上,负责让猫抬头看你。<br><br>本周运势:适合吃宵夜,顺便照亮楼下的烧烤摊。", ["B", "C", "A", "B", "C", "A", "B", "C", "A", "B"]], ["🎈", "随时起飞的人类氢气球", "{n},你体内充满了氦气。<br><br>只要不被人捏住,随时可能飘走。<br><br>你说话声音自带气音,别人听你讲话会不自觉深呼吸。<br><br>本周运势:适合买一根绳子拴在手腕上,以防飘到外太空。", ["C", "A", "B", "C", "A", "B", "C", "A", "B", "C"]], ["🍕", "披着人皮的芝士披萨", "{n},你的灵魂是一片刚出炉的芝士披萨。<br><br>拉丝很长,温度刚好,谁靠近都会被治愈。<br><br>你最大的天敌是披着人皮的菠萝,看到请绕道。<br><br>本周运势:适合请朋友吃饭,顺便被吃掉。", ["A", "C", "B", "B", "A", "C", "C", "B", "A", "B"]], ["🌈", "乱入地球的彩虹小马", "{n},你原本属于另一个平行宇宙,因为追一只蝴蝶不小心掉到地球上。<br><br>回家路线还没找到,先适应一下地球生活。<br><br>你跑过的地方会留下一道淡淡的彩虹,这是没法控制的副作用。<br><br>本周运势:适合在公园散步,顺便给草地染色。", ["A", "A", "B", "B", "C", "C", "A", "B", "C", "C"]]];
+var st={name:"",ans:[],cur:0,order:[]};
+function show(p){var a=D.querySelectorAll('.pg');for(var i=0;i<a.length;i++)a[i].classList.remove('on');$('p'+(p+1)).classList.add('on');window.scrollTo(0,0)}
+function rnd(){var a=[];for(var i=0;i<Q.length;i++)a.push(i);for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a.slice(0,8)}
+function rq(){var qi=st.order[st.cur];var q=Q[qi];$('qt').textContent='第 '+(st.cur+1)+' 题 · '+q[0];$('pg').textContent='第 '+(st.cur+1)+' / 8 题';$('pfi').style.width=((st.cur+1)/8*100)+'%';var b=$('ops');b.innerHTML='';for(var i=0;i<3;i++){(function(k){var d=D.createElement('div');d.className='op';d.textContent=String.fromCharCode(65+k)+'. '+q[1][k];if(st.ans[st.cur]===k)d.className+=' sl';d.onclick=function(){st.ans[st.cur]=k;rq();$('qh').textContent=''};b.appendChild(d)})(i)}$('bp').style.visibility=st.cur===0?'hidden':'visible';$('bn').textContent=st.cur===7?'看结果 🎉':'下一题'}
+function pick(){var c={A:0,B:0,C:0};for(var i=0;i<8;i++){var k=st.ans[i];if(k===0)c.A++;else if(k===1)c.B++;else if(k===2)c.C++}var best=0,bs=-1;for(var i=0;i<R.length;i++){var r=R[i];var s=0;for(var j=0;j<10;j++){var tg=r[3][j];if(tg==='A')s+=c.A;else if(tg==='B')s+=c.B;else if(tg==='C')s+=c.C}if(s>bs){bs=s;best=i}}return best}
+function render(){
+  var i=pick();var r=R[i];
+  $('re').textContent=r[0];$('rt').textContent=r[1];
+  var html=r[2].replace('{n}',st.name);
+  $('rd').innerHTML=html;show(2);
+}
+function mkImg(){
+  var cv=$('cv'),ctx=cv.getContext('2d');
+  var W=cv.width,H=cv.height;
+  var g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f6d365');g.addColorStop(1,'#fda085');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#fff';ctx.beginPath();var rad=30;ctx.moveTo(40,80);for(var k=0;k<4;k++){if(k===0)ctx.lineTo(W-40,80);else if(k===1)ctx.lineTo(W-40,H-80);else if(k===2)ctx.lineTo(40,H-80);}ctx.closePath();ctx.fill();
+  ctx.fillStyle='#ff6b6b';ctx.font='bold 38px sans-serif';ctx.textAlign='center';ctx.fillText('怪问题研究所',W/2,130);
+  ctx.font='bold 60px sans-serif';ctx.fillText(R[pick()][0],W/2,230);
+  ctx.font='bold 34px sans-serif';ctx.fillText(R[pick()][1],W/2,290);
+  ctx.fillStyle='#555';ctx.font='22px sans-serif';var name=' '+st.name+' ';ctx.fillText(name,W/2,340);
+  ctx.fillStyle='#ff6b6b';
+  ctx.strokeStyle='#ff6b6b';ctx.lineWidth=2;
+  $('cw').style.display='block';
+  $('st').textContent='安卓长按图片保存,iPhone 长按照片保存,或者截图';
+}
+function check(id){if(!id){$('nh').textContent='请先填写你的名字再开始 ✍️';return false}return true}
+function init(){
+  $('bs').onclick=function(){var v=$('ni').value.trim();if(!check(v))return;st.name=v;st.ans=[-1,-1,-1,-1,-1,-1,-1,-1];st.cur=0;st.order=rnd();rq();show(1)};
+  $('bp').onclick=function(){if(st.cur>0){st.cur--;rq()}};
+  $('bn').onclick=function(){if(st.ans[st.cur]==null||st.ans[st.cur]<0){$('qh').textContent='请先选一个选项再继续 ✍️';return}if(st.cur<7){st.cur++;rq()}else{render()}};
+  $('bsh').onclick=function(){mkImg()};
+  $('bag').onclick=function(){$('ni').value='';$('nh').textContent='';$('cw').style.display='none';$('st').textContent='长按图片可保存到相册发给群友';show(0)};
+  $('ni').addEventListener('keydown',function(e){if(e.key==='Enter')$('bs').click()});
+}
+init();
+})();
+</script></body></html>

@@ -1,0 +1,60 @@
+{
+ "plan_q": [
+  "[补全岗决策点] feasibility_score计算公式的权重（clarity*0.3+feasibility*0.5+uniqueness*0.2）是否合理",
+  "[补全岗决策点] tech_corpus.json不存在时默认评分值应设为多少（当前假设0.5）",
+  "[补全岗决策点] 三个对比方案的差异点描述是否有更准确表达",
+  "[补全岗决策点] value_demo.py中随机无意义描述的选用",
+  "[feasibility_analyzer.py] 当tech_corpus.json条目数少于200时，uniqueness=1-(匹配数/200)的公式是否会因为除数过小导致分数虚高？",
+  "[feasibility_analyzer.py] 程序输出的JSON报告中differences字段是否在需求范围内？没有的话机器检查是否会失败？",
+  "[feasibility_analyzer.py] argparse解析--idea参数时若输入为空字符串或包含特殊字符，程序能否正常处理还是直接崩溃？",
+  "[tech_corpus.json] 过滤空description的步骤在check命令中没有体现，去掉过滤步骤check仍会通过吗",
+  "[tech_corpus.json] 为什么必须用curl获取而不用Python的requests库（标准库要求）",
+  "[tech_corpus.json] parse脚本是否只能用shell必须配合python，还是可以纯python实现",
+  "[why_new.md] {'find': 'check只验证http数量不验证有效性，链接全失效仍可通过，是否需要增加有效性验证步骤', 'why': '会导致最终文档虽然通过机器检查但内容无实际价值'}",
+  "[value_demo.py] 如果feasibility_analyzer.py不在当前目录或PATH中，subprocess调用会不会失败，检查机制如何处理",
+  "[value_demo.py] value_demo.py依赖的JSON输出格式是否固定，输出格式变化会否导致解析失败",
+  "[value_demo.py] 只用两个对比是否足够证明工具的识别能力，是否需要更多样本或统计显著性"
+ ],
+ "info_q": [
+  {
+   "find": "tech_corpus.json的实际内容结构和条目数",
+   "why": "语料库规模直接影响uniqueness计算公式(相似项目数/200)的准确性，规模不足会导致评分失真"
+  },
+  {
+   "find": "clarity评分中'关键词在语料中出现比例'的具体阈值或对照标准",
+   "why": "没有明确标准无法判断0.85分是否合理，也无法验证'识别度高'的结论"
+  },
+  {
+   "find": "feasibility评分中'匹配到的高stars项目占比'的stars门槛具体是多少",
+   "why": "高stars项目定义不清将导致可行性评分无法真正衡量技术实现难度"
+  },
+  {
+   "find": "GitHub API实际返回的有效数据条数",
+   "why": "API可能返回不足200条或description大量为空，导致最终有效数据达不到150条"
+  },
+  {
+   "find": "stars:>1000筛选出的项目description非空率",
+   "why": "若大量项目description为空，即使获取200条也难以过滤出150条有效数据"
+  },
+  {
+   "find": "三个最接近方案的具体项目名称、链接和实现方式",
+   "why": "如果调研不实，差异点描述会偏离实际，why_new.md内容无法满足check要求"
+  },
+  {
+   "find": "现有方案是否能本地离线运行",
+   "why": "差异点声称'本地离线可用'，如果现有方案也支持离线，则差异点不成立"
+  },
+  {
+   "find": "feasibility_analyzer.py的实际输出格式",
+   "why": "需确认subprocess能否正确解析其JSON输出，否则value_demo.py会报错"
+  },
+  {
+   "find": "\"语音markdown\"创意在当前系统的实际feasibility_score值",
+   "why": "示例值0.72需实际运行验证，否则对比无意义"
+  },
+  {
+   "find": "随机无意义描述的实际feasibility_score值",
+   "why": "示例值0.35需实际运行验证，需确认随机字符串是否真的产生低分"
+  }
+ ]
+}

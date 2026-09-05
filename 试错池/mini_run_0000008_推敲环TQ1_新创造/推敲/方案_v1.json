@@ -1,0 +1,51 @@
+{
+ "question": "选择哪个具体领域的什么具体功能作为创造目标，才能确保确实没有人做过且有人需要？",
+ "answer": "选择「本地文档学习助手」领域，具体功能是「给定一个文件夹，运行后自动学习其中的文本/代码/笔记文件，生成可交互的问答索引，用户用自然语言提问可得到基于本地内容的回答」——这个功能目前没有成熟的纯离线方案，且对需要隐私保护、离线工作的人（如开发者、学生、记者）有明确价值。",
+ "plan": {
+  "summary": "做一个纯本地运行的文档学习问答工具，扫描指定文件夹的文本文件建立索引，用户提问时用关键词匹配+简单相似度返回最相关的片段",
+  "run_cmd": "python doclearn.py --path ./sample_docs --query \"什么是Python\"",
+  "parts": [
+   {
+    "name": "原型程序",
+    "what": "doclearn.py：扫描文件夹读取txt/md/py/json文件，建立倒排索引，用户查询时返回最相关的文件片段",
+    "files": [
+     "doclearn.py",
+     "sample_docs/sample1.txt",
+     "sample_docs/sample2.md"
+    ],
+    "check": "python doclearn.py --path ./sample_docs --query \"测试\" 退出码为0且有输出"
+   },
+   {
+    "name": "为什么新.md",
+    "what": "对比三个现有方案（ChatGPT API、LangChain、Obsidian插件），说明本工具纯离线、零依赖、轻量级的差异",
+    "files": [
+     "为什么新.md"
+    ],
+    "check": "文件包含三个方案名称且每个有http链接或文献标注"
+   },
+   {
+    "name": "价值证明",
+    "what": "demo.py：对比本工具与直接grep搜索的效果，统计查找相关内容的准确率和耗时",
+    "files": [
+     "demo.py"
+    ],
+    "check": "python demo.py 退出码0且打印至少一组数字"
+   },
+   {
+    "name": "给谁用.md",
+    "what": "三个场景：1.离线写作时查笔记 2.开发者查自己的代码库 3.学生整理学习资料",
+    "files": [
+     "给谁用.md"
+    ],
+    "check": "文件存在且包含三个场景步骤说明"
+   }
+  ],
+  "assumptions": [
+   "现有本地知识管理工具如Obsidian需要插件才能实现类似功能，且依赖网络加载AI模型"
+  ]
+ },
+ "changes": [
+  "无（第一版）"
+ ],
+ "responses": []
+}

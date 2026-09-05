@@ -1,0 +1,44 @@
+{
+ "answer": "技术工具",
+ "plan": {
+  "summary": "发明一个本地Markdown图片自动压缩与路径转换工具（mdimg-optimizer），解决Markdown文档中图片体积大、路径依赖强的痛点",
+  "run_cmd": "python mdimg_optimizer.py --help",
+  "parts": [
+   {
+    "name": "mdimg_optimizer.py",
+    "what": "原型：本地Markdown图片自动压缩与路径转换工具",
+    "files": [
+     "mdimg_optimizer.py"
+    ],
+    "check": "python mdimg_optimizer.py --help 退出码0并打印帮助信息"
+   },
+   {
+    "name": "为什么新.md",
+    "what": "对比三个已有方案，阐述本创造差异",
+    "files": [
+     "为什么新.md"
+    ],
+    "check": "grep -c 'http' 为什么新.md >= 3"
+   },
+   {
+    "name": "demo.py",
+    "value": "价值证明：运行后打印压缩率、转换成功率等数字",
+    "files": [
+     "demo.py"
+    ],
+    "check": "python demo.py 退出码0并打印数字"
+   },
+   {
+    "name": "给谁用.md",
+    "what": "三个具体使用场景及步骤",
+    "files": [
+     "给谁用.md"
+    ],
+    "check": "wc -l 给谁用.md"
+   }
+  ],
+  "assumptions": []
+ },
+ "changes": [],
+ "responses": []
+}

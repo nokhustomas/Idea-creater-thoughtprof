@@ -1,0 +1,180 @@
+{
+ "detail": {
+  "idea_conflict.py": {
+   "name": "idea_conflict.py",
+   "files": [
+    "idea_conflict.py：主程序入口，argparse解析--idea参数，调用detect_conflict函数，输出JSON格式结果"
+   ],
+   "data": {
+    "input": "命令行参数--idea后跟创意关键词字符串",
+    "output": "JSON字符串，包含idea、conflict_score、similar_items字段",
+    "sample": "输入: python3 idea_conflict.py --idea \"语音控制的markdown编辑器\"\n输出: {\"idea\": \"语音控制的markdown编辑器\", \"conflict_score\": 0.75, \"similar_items\": [{\"title\": \"语音Markdown编辑器\", \"similarity\": 0.85}, ...]}"
+   },
+   "numbers": [
+    {
+     "value": "0.5",
+     "source": "方案中未明确，假设取0.5作为冲突阈值，高于此值认为存在冲突"
+    },
+    {
+     "value": "3",
+     "source": "方案中未明确，假设取top3作为similar_items返回数量"
+    }
+   ],
+   "steps": [
+    "安装jieba和sklearn依赖（pip install jieba scikit-learn）",
+    "用argparse解析--idea命令行参数",
+    "读取同目录mini_corpus.txt作为本地知识库",
+    "用jieba分词对输入创意进行中文分词",
+    "用TfidfVectorizer对分词结果和语料库进行向量化",
+    "用cosine_similarity计算创意与语料库每条的相似度",
+    "取相似度最高的前N条（N由numbers中假设的3决定），计算平均冲突度",
+    "输出JSON格式结果，conflict_score为0-1之间小数"
+   ],
+   "pitfalls": [
+    "编码问题：mini_corpus.txt必须是utf-8编码，否则读取会报编码错误",
+    "空输入：如果--idea参数为空，jieba分词会返回空列表导致后续向量化失败",
+    "语料库为空：如果mini_corpus.txt为空文件，向量化会报错"
+   ],
+   "check": "python3 idea_conflict.py --idea \"语音控制的markdown编辑器\" | grep -q \"conflict_score\" && echo \"PASS\" || echo \"FAIL\""
+  },
+  "mini_corpus.txt": {
+   "name": "mini_corpus.txt",
+   "files": [
+    "mini_corpus.txt：纯文本文件，每行一条技术方案摘要，共需1000行"
+   ],
+   "data": {
+    "input": "无（静态文件）",
+    "output": "每行一条技术方案的中文或英文描述",
+    "sample": "第1行: 基于语音识别的笔记应用\n第2行: VSCode语音输入插件\n第3行: Markdown实时预览编辑器"
+   },
+   "numbers": [
+    {
+     "value": "1000",
+     "source": "方案中明确：1000条常见技术方案摘要"
+    },
+    {
+     "value": "500",
+     "source": "check中明确：wc -l输出大于500"
+    }
+   ],
+   "steps": [
+    "创建一个空文件mini_corpus.txt",
+    "每行写入一条简短的技术方案描述（中文优先，也可以包含英文）",
+    "共写入至少500行，建议写入1000行以符合方案要求",
+    "确保文件编码为UTF-8"
+   ],
+   "pitfalls": [
+    "行数不足：少于500行会导致check失败",
+    "编码错误：如果不是UTF-8，Python读取可能报错",
+    "空行：文件中不应有空行，否则会被wc计入导致实际内容行数不足"
+   ],
+   "check": "wc -l mini_corpus.txt | awk '{if($1>500) print \"PASS\"; else print \"FAIL\"}'"
+  },
+  "why_new.md": {
+   "name": "why_new.md",
+   "files": [
+    "why_new.md：说明三个最接近方案及本创意差异点"
+   ],
+   "data": {
+    "input": "无（静态文件）",
+    "output": "Markdown格式文本，包含三个已有方案的名称、链接、本方案描述、本创意与每个的差异点",
+    "sample": "## 最接近的三个方案\n\n### 1. GitHub Trending\n- 链接: https://github.com/trending\n- 做法: 展示近期GitHub上最热门的开源项目\n- 差异: 本创意是本地检测冲突而非展示趋势\n\n### 2. Alfred Workflows\n- 链接: https://www.alfredapp.com/workflows/\n- 做法: 提供macOS上的生产力自动化工作流\n- 差异: 本创意专注于创意冲突检测而非通用自动化\n\n### 3. VSCode语音插件\n- 链接: https://marketplace.visualstudio.com/items?itemName=ms-vscode.voicemacro\n- 做法: 在VSCode中通过语音触发命令\n- 差异: 本创意是通用冲突检测工具非特定编辑器插件"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "方案中明确：三个最接近方案"
+    },
+    {
+     "value": "3",
+     "source": "check中明确：grep -c http输出大于等于3"
+    }
+   ],
+   "steps": [
+    "创建why_new.md文件",
+    "写入三个已有方案的详细信息，每个包含名称、出处链接、本方案做法描述",
+    "每个方案后写一行本创意与它的差异点",
+    "确保文件中包含至少3个http链接"
+   ],
+   "pitfalls": [
+    "链接缺失：每个方案必须有可点击的http链接，否则check失败",
+    "方案不足：必须正好三个方案，少于或多于都会导致不符合要求",
+    "差异点缺失：每个方案必须有明确的差异点描述"
+   ],
+   "check": "grep -c \"http\" why_new.md | awk '{if($1>=3) print \"PASS\"; else print \"FAIL\"}'"
+  },
+  "value_demo.py": {
+   "name": "value_demo.py",
+   "files": [
+    "value_demo.py：价值对比实验脚本，对比本工具与随机词检测的输出差异"
+   ],
+   "data": {
+    "input": "无（运行时读取mini_corpus.txt和idea_conflict.py）",
+    "output": "打印conflict_score数值，展示本工具相对于随机基线的优势",
+    "sample": "python3 value_demo.py\n本工具冲突度: 0.75\n随机基线冲突度: 0.23\n结论: 本工具检测到更高的冲突度，证明能有效识别已有方案"
+   },
+   "numbers": [
+    {
+     "value": "0.75",
+     "source": "示例输出中的假设值，实际运行由代码逻辑决定"
+    },
+    {
+     "value": "0.23",
+     "source": "示例输出中的假设值，随机生成字符串的预期相似度较低"
+    }
+   ],
+   "steps": [
+    "导入subprocess和random模块",
+    "定义一个测试创意（如\"语音控制的markdown编辑器\"）",
+    "调用idea_conflict.py获取该创意的conflict_score",
+    "生成一个随机字符串（如8位随机字母），同样调用idea_conflict.py获取conflict_score",
+    "打印两个分数并输出对比结论"
+   ],
+   "pitfalls": [
+    "路径问题：需确保mini_corpus.txt和idea_conflict.py在同目录或使用绝对路径",
+    "随机字符串过短：随机字符串如果太短可能无法正确分词导致结果异常",
+    "依赖未安装：确保jieba和sklearn已安装"
+   ],
+   "check": "python3 value_demo.py && echo \"PASS\""
+  },
+  "who_use.md": {
+   "name": "who_use.md",
+   "files": [
+    "who_use.md：三个具体使用场景，每个场景按步骤说明用法"
+   ],
+   "data": {
+    "input": "无（静态文件）",
+    "output": "Markdown格式文本，包含三个使用场景及各自的操作步骤",
+    "sample": "## 使用场景一：独立开发者找细分方向\n\n步骤1: 运行 python3 idea_conflict.py --idea \"你的创意\"\n步骤2: 查看conflict_score，低于0.3表示竞争较少\n步骤3: 根据similar_items调整创意差异化点\n\n## 使用场景二：产品经理快速验证创意\n\n步骤1: 准备多个创意关键词\n步骤2: 依次运行检测脚本获取分数\n步骤3: 选择分数最高的创意进行深入调研\n\n## 使用场景三：技术博主找内容选题\n\n步骤1: 列出自己擅长的技术领域\n步骤2: 对每个领域词运行冲突检测\n步骤3: 选择冲突度低的领域作为新教程主题"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "方案中明确：三个具体使用场景"
+    },
+    {
+     "value": "3",
+     "source": "check中明确：grep -c \"步骤\"输出大于等于3"
+    }
+   ],
+   "steps": [
+    "创建who_use.md文件",
+    "写入三个使用场景，每个场景包含场景描述和具体步骤",
+    "每个场景的步骤用\"步骤1:\"、\"步骤2:\"等形式编号",
+    "确保全文包含至少3个\"步骤\"关键词"
+   ],
+   "pitfalls": [
+    "步骤数不足：每个场景至少需要一步，总共至少3步才能满足check",
+    "场景重复：三个场景必须不同，不能是同一场景的不同表述",
+    "步骤描述模糊：必须是可以直接照做的具体操作，不能是抽象描述"
+   ],
+   "check": "grep -c \"步骤\" who_use.md | awk '{if($1>=3) print \"PASS\"; else print \"FAIL\"}'"
+  }
+ },
+ "decisions_needed": [
+  "冲突度阈值0.5的设定依据是什么，超过多少算高冲突需要放弃创意",
+  "similar_items返回top3的数量设定依据是什么，是否需要可配置",
+  "value_demo.py中随机基线的生成方式（字符集、长度）如何确定",
+  "如果用户输入包含繁体字或特殊字符，jieba分词是否需要额外处理"
+ ]
+}

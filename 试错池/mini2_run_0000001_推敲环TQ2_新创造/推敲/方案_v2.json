@@ -1,0 +1,88 @@
+{
+ "answer": "使用「关键词冲突检测法」：将创意拆解为核心概念词，在本地知识库（维基百科摘要 dump、GitHub trending 摘要）中检索这些词的共现频率。冲突度=概念数/共现数，冲突度越高说明组合越罕见。该方法无需联网，用本地已知的公开数据作为「已知方案」代理，判断创意的独特程度。",
+ "plan": {
+  "summary": "做一个本地创意冲突检测器 idea_conflict.py，输入创意关键词后检索本地知识库并输出冲突度分数",
+  "run_cmd": "python3 idea_conflict.py --idea \"语音控制的markdown编辑器\"",
+  "parts": [
+   {
+    "name": "idea_conflict.py",
+    "what": "主程序：接收创意关键词，用jieba分词+本地文本检索计算冲突度，输出JSON报告",
+    "files": [
+     "idea_conflict.py",
+     "mini_corpus.txt",
+     "why_new.md",
+     "value_demo.py",
+     "who_use.md"
+    ],
+    "check": "python3 idea_conflict.py --idea \"语音控制的markdown编辑器\" 退出码为0且输出包含conflict_score字段"
+   },
+   {
+    "name": "mini_corpus.txt",
+    "what": "本地知识库：1000条常见技术方案摘要（从公开数据集采样），每行一条",
+    "files": [
+     "mini_corpus.txt"
+    ],
+    "check": "wc -l mini_corpus.txt 输出大于500"
+   },
+   {
+    "name": "why_new.md",
+    "what": "说明三个最接近方案：GitHub trending、Alfred workflows、VSCode语音插件，给出本创意的差异点",
+    "files": [
+     "why_new.md"
+    ],
+    "check": "grep -c http why_new.md 输出大于等于3"
+   },
+   {
+    "name": "value_demo.py",
+    "what": "价值对比实验：分别用本工具和随机词检测同一创意，对比输出分数差异",
+    "files": [
+     "value_demo.py"
+    ],
+    "check": "python3 value_demo.py 退出码为0且打印conflict_score数值"
+   },
+   {
+    "name": "who_use.md",
+    "what": "三个使用场景：独立开发者找细分方向、产品经理快速验证创意、技术博主找内容选题",
+    "files": [
+     "who_use.md"
+    ],
+    "check": "grep -c \"步骤\" who_use.md 输出大于等于3"
+   }
+  ],
+  "assumptions": [
+   "mini_corpus.txt内容来自公开技术描述，可作为已知方案的合理代理"
+  ]
+ },
+ "changes": [
+  "将搜索模块从'本地模拟'改为'本地知识库检索'，用mini_corpus.txt作为已知方案的代理数据源",
+  "将分析模块从'语义相似度'改为'关键词冲突度算法'，用可解释的公式替代黑盒评分",
+  "增加mini_corpus.txt作为真实数据支撑，解决info_q中'demo是否调用真实方案'的质疑",
+  "check命令增加JSON字段验证，确保输出格式可被机器检查"
+ ],
+ "responses": [
+  {
+   "q": "[补全岗决策点] 搜索模块是使用本地模拟数据还是真实文件系统中的已有方案文本",
+   "r": "采用本地知识库mini_corpus.txt，包含1000条真实技术方案摘要，非纯模拟"
+  },
+  {
+   "q": "[补全岗决策点] 分析模块的新颖性判断阈值是基于关键词匹配还是语义相似度",
+   "r": "使用关键词冲突度算法：conflict_score = len(keywords) / 共现次数，共现次数用jieba分词后精确匹配统计，阈值设为>2分则判定为新颖"
+  },
+  {
+   "q": "[补全岗决策点] 是否需要额外文件存放预设的三个已有方案数据供why_new_demo.py调用",
+   "r": "不需要预设调用，why_new.md作为人工撰写的参考文档存在，value_demo.py做对比实验时不调用它"
+  },
+  {
+   "q": "[idea_validator.py] 搜索模块用本地模拟而非真实联网搜索，是否能满足'系统自己判断什么东西现在还没有'的需求",
+   "r": "用本地知识库替代联网搜索：用已知技术方案的摘要集合作为「已有」的代理，检索不到=可能是新的"
+  },
+  {
+   "q": "[idea_validator.py] 去掉本地模拟直接要求用户输入已有方案是否更可行",
+   "r": "该方案会回到「用户自己判断」而非系统判断，违背'系统自己判断'的核心需求"
+  },
+  {
+   "q": "[idea_validator.py] check命令只验证退出码为0，未验证JSON输出格式是否符合标准，机器检查是否能真正验证输出正确性",
+   "r": "修改check命令为：退出码为0且输出包含conflict_score字段，确保JSON格式可验证"
+  }
+ ]
+}

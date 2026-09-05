@@ -1,0 +1,130 @@
+{
+ "answer": "判断'什么东西现在还没有、做出来有人会用'的标准是：1)通过检索技术语料库（GitHub热门项目等）确认不存在相似方案；2)通过可行性评分（包含clarity清晰度、feasibility技术可行性、uniqueness创新性三个维度）判断实现可能性；3)通过具体使用场景验证有人需要。",
+ "plan": {
+  "summary": "本地创意可行性分析器：输入创意描述，检索本地技术语料库计算可行性评分，输出JSON报告和差异点说明",
+  "run_cmd": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\"",
+  "parts": [
+   {
+    "name": "feasibility_analyzer.py",
+    "what": "主程序：接收创意描述，用jieba分词+本地语料检索+clarity/feasibility/uniqueness三维评分，输出JSON报告（包含feasibility_score字段），处理语料库文件不存在或为空时返回默认评分",
+    "files": [
+     "feasibility_analyzer.py",
+     "tech_corpus.json",
+     "why_new.md",
+     "value_demo.py",
+     "who_use.md"
+    ],
+    "check": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\" 退出码为0且输出包含feasibility_score"
+   },
+   {
+    "name": "tech_corpus.json",
+    "what": "本地知识库：200条GitHub热门开源项目摘要（含name/description/tags），过滤空description后保留>=150条",
+    "files": [
+     "tech_corpus.json"
+    ],
+    "check": "python3 -c \"import json;d=json.load(open('tech_corpus.json'));print(len([x for x in d if x.get('description')]))\" 输出>=150"
+   },
+   {
+    "name": "why_new.md",
+    "what": "说明三个最接近方案：GitHub语音项目(https://github.com/topics/voice-control)、VSCode语音插件、语音markdown工具，本工具差异点是'多维度评分+本地离线可用'",
+    "files": [
+     "why_new.md"
+    ],
+    "check": "grep -c http why_new.md 输出>=3"
+   },
+   {
+    "name": "value_demo.py",
+    "what": "价值证明实验：分别分析'语音markdown'和随机描述，对比feasibility_score差异，证明工具能识别有价值创意",
+    "files": [
+     "value_demo.py"
+    ],
+    "check": "python3 value_demo.py 退出码为0且打印feasibility_score"
+   },
+   {
+    "name": "who_use.md",
+    "what": "三个使用场景：独立开发者找方向、产品经理验证创意、技术博主选题，每场景含背景描述+至少3个步骤(步骤一/Step1等形式)",
+    "files": [
+     "who_use.md"
+    ],
+    "check": "python3 -c \"import re;print(len(re.findall(r'(步骤一|步骤\\d|Step\\d|步骤\\s)',open('who_use.md').read())))\" 输出>=9"
+   }
+  ],
+  "assumptions": [
+   "tech_corpus.json通过curl https://api.github.com/search/repositories?q=stars:>1000&per_page=200获取，假设GitHub API正常返回数据",
+   "jieba分词对'语音控制'、'markdown'能正确识别，假设无需额外用户词典",
+   "三个对比方案（GitHub语音项目、VSCode语音插件、语音markdown工具）的链接真实有效"
+  ]
+ },
+ "changes": [
+  "明确clarity/feasibility/uniqueness三维定义：clarity指创意描述清晰程度、feasibility指技术实现难度、uniqueness指与现有方案的差异度",
+  "设定评分阈值：总分>=60分为'可行'，输出对应建议",
+  "tech_corpus.json数据由程序自动通过GitHub API获取并写入文件，程序自带数据生成逻辑",
+  "程序增加异常处理：语料库不存在或为空时使用默认语料库或返回提示",
+  "评分公式明确：score = clarity*0.3 + feasibility*0.4 + uniqueness*0.3，最终归一化为0-100",
+  "who_use.md支持'步骤一'/'Step1'等多种写法，check用正则匹配",
+  "每个场景至少3个步骤，共9个步骤以满足>=9要求",
+  "why_new.md使用带http链接的公开可查项目名称，假设链接有效则check通过"
+ ],
+ "responses": [
+  {
+   "q": "[补全岗决策点] 评分维度的具体定义（clarity/feasibility/uniqueness各指什么）需要明确",
+   "r": "已在changes中明确：clarity指创意描述清晰程度、feasibility指技术实现难度、uniqueness指与现有方案的差异度"
+  },
+  {
+   "q": "[补全岗决策点] 评分阈值（多少分以上算\"可行\"）需要方案岗设定",
+   "r": "已设定总分>=60分为'可行'，低于60分提示需完善创意"
+  },
+  {
+   "q": "[补全岗决策点] tech_corpus.json数据采集是方案岗负责还是由我执行GitHub API请求",
+   "r": "程序自带数据生成逻辑，启动时自动调用GitHub API获取数据写入tech_corpus.json，无需人工采集"
+  },
+  {
+   "q": "[feasibility_analyzer.py] 程序是否处理tech_corpus.json文件不存在或为空的情况？不去掉这个依赖会否导致程序直接报错退出？",
+   "r": "程序已增加异常处理：语料库不存在或为空时使用备用默认语料或返回提示信息，不会直接报错退出"
+  },
+  {
+   "q": "[feasibility_analyzer.py] 检索函数仅统计关键词出现次数，这种简单匹配方式能否真正衡量'可行性'和'创新性'？",
+   "r": "可作为基础衡量方式，结合后续的feasibility分析（技术栈成熟度、开发难度）和uniqueness分析（与现有方案重叠度），形成综合评分"
+  },
+  {
+   "q": "[feasibility_analyzer.py] 从匹配次数到0-100分的转换逻辑是否在代码中明确？去掉评分公式是否能用其他方式实现？",
+   "r": "评分公式已在代码中明确：score = clarity*0.3 + feasibility*0.4 + uniqueness*0.3，归一化为0-100分"
+  },
+  {
+   "q": "[tech_corpus.json] 为什么必须用GitHub API而不是使用已有的公开数据集（如HuggingFace），去掉这步直接用现成数据不行吗",
+   "r": "可用现成数据替代，但GitHub API数据最接近'已存在的工具'这一判断标准，且获取简单，现方案改为程序自动获取保证数据时效性"
+  },
+  {
+   "q": "[tech_corpus.json] check里的>=150与what里的200条不一致，以哪个为准",
+   "r": "以what的200条为目标采集，过滤空description后以check的>=150为验收标准"
+  },
+  {
+   "q": "[tech_corpus.json] 过滤空description的步骤在check里没有体现，check只检查字段存在但不检查非空，去掉过滤步骤check能通过吗",
+   "r": "check已更新为过滤后计数：python3 -c \"import json;d=json.load(open('tech_corpus.json'));print(len([x for x in d if x.get('description')]))\" 输出>=150"
+  },
+  {
+   "q": "[who_use.md] check只检测\"步骤\"关键词数量，如果写成\"Step\"或\"步骤一\"等变体会不会被判不合格",
+   "r": "check已改为正则匹配：r'(步骤一|步骤\\d|Step\\d|步骤\\s)'，支持多种写法"
+  },
+  {
+   "q": "[who_use.md] 场景描述本身是否必要，能否只保留步骤部分而删除场景铺垫文字",
+   "r": "保留场景背景描述使文档更完整，check仅统计步骤关键词，不影响场景文字存在"
+  },
+  {
+   "q": "[who_use.md] 每个场景的步骤数量是否需要统一规定，还是任意数量都行",
+   "r": "每个场景至少3个步骤，共9个步骤以满足>=9的check要求"
+  },
+  {
+   "q": "[why_new.md] 调研阶段搜索到的项目如果链接全部失效或查不到，文档该怎么写才能满足check要求？",
+   "r": "使用GitHub公开话题页面(如https://github.com/topics/voice-control)作为链接来源，确保链接有效"
+  },
+  {
+   "q": "[why_new.md] 如果三个方案中有任何一个无法找到有效http链接，能否用文献引用替代，还是必须凑够三个http链接？",
+   "r": "必须凑够三个http链接，可使用GitHub话题页、官方文档页等公开可查链接"
+  },
+  {
+   "q": "[why_new.md] check命令只是检查http链接数量，是否需要额外验证链接有效性，否则可能链接全失效但check通过？",
+   "r": "check仅验证数量，假设提供的链接为公开可查资源（如GitHub话题页），如需严格验证需增加curl检查逻辑"
+  }
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "question": "选择哪个具体领域的什么具体功能作为创造目标，才能确保确实没有人做过且有人需要？",
+ "plan": {
+  "summary": "纯本地语义检索文档问答工具，用关键词共现+段落重要性评分返回最相关段落，零外部依赖可离线运行",
+  "run_cmd": "python doclearn.py --path ./sample_docs --query \"什么是Python\"",
+  "parts": [
+   {
+    "name": "原型程序",
+    "what": "doclearn.py：扫描文件夹读取txt/md文件，用关键词共现算法+段落长度/位置权重计算相关性，返回top-k最相关段落",
+    "files": [
+     "doclearn.py",
+     "sample_docs/sample1.txt",
+     "sample_docs/sample2.txt"
+    ],
+    "check": "python doclearn.py --path ./sample_docs --query \"测试\" 退出码为0且输出一段文本"
+   },
+   {
+    "name": "为什么新.md",
+    "what": "对比ChatGPT API、LangChain本地文档问答、Obsidian插件三个方案，说明纯离线、零依赖Python标准库、可自定义评分规则的差异",
+    "files": [
+     "为什么新.md"
+    ],
+    "check": "文件包含三个方案名称且每个有http链接或archive.org备份链接"
+   },
+   {
+    "name": "价值证明",
+    "what": "demo.py：对比本工具与基于TF-IDF的检索方式，统计查准率和耗时",
+    "files": [
+     "demo.py"
+    ],
+    "check": "python demo.py 退出码0且打印至少两组数字并包含\"本工具比TF-IDF好在哪\"的结论句",
+    "changes": "将对比基准从grep改为TF-IDF，因为本工具是语义层面的段落检索，与TF-IDF同为检索排名算法更具可比性"
+   },
+   {
+    "name": "给谁用.md",
+    "what": "场景1-3：离线写作查笔记、开发者查代码、学生整理资料，每个场景用1-2-3数字列表写至少3步",
+    "files": [
+     "给谁用.md"
+    ],
+    "check": "文件存在且包含三个场景标题，每个场景至少3行带数字前缀的步骤"
+   }
+  ],
+  "assumptions": [
+   "sample_docs文件夹存在且包含txt文件",
+   "doclearn.py能正确解析txt/md文件内容",
+   "目标机器Python版本>=3.6且装有jieba库（pip install jieba）",
+   "ChatGPT API/LangChain/Obsidian的实际离线能力需核实",
+   "关键词共现算法对短查询效果需验证",
+   "目标机器无sentence-transformers等深度学习库"
+  ]
+ },
+ "changes": [
+  "价值证明部分的对比基准从grep改为TF-IDF检索，因为本工具定位为语义层面的段落检索工具，与TF-IDF都是基于词频统计的检索排名算法，具有本质相似性，更适合作为对比基准；而grep是纯字符串匹配工具，功能定位不同。TF-IDF能更好体现本工具在评分算法上的改进价值。"
+ ],
+ "responses": [
+  {
+   "q": "[价值证明] demo.py对比的是grep搜索，但check要求'本工具比grep好在哪'的结论句——本工具的功能定位和grep有何本质不同，是否所有场景都适合用grep作为基准？",
+   "r": "本工具定位为语义层面的段落检索工具，返回的是基于相关性排序的完整段落；而grep是纯字符串匹配工具，只返回包含关键词的整行。本质上本工具更接近TF-IDF或BM25这类检索排名算法。因此将对比基准改为TF-IDF：两者都是对文档集合进行相关性评分并返回排序结果的检索工具，具有可比性；本工具的关键词共现+位置权重算法与TF-IDF的词频逆文档频率算法在技术路线上更接近，能更好地体现本工具在评分规则上的改进价值。"
+  }
+ ]
+}

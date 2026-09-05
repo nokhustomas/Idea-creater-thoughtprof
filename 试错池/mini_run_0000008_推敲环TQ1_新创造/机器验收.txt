@@ -1,0 +1,1 @@
+结果 达标：通用 4 项过（TQ1 两层推敲环，20 次调用，方案 v4 自然停机；Fable 于 Mac 实跑 demo/doclearn rc0）

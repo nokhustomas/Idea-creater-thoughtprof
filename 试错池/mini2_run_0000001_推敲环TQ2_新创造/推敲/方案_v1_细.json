@@ -1,0 +1,40 @@
+{
+ "detail": {
+  "idea_validator.py": {
+   "name": "idea_validator.py",
+   "files": [
+    "idea_validator.py：主程序，入口函数main()，使用argparse解析--idea参数，调用search_module.search()和analyze_module.analyze()，输出JSON报告",
+    "why_new_demo.py：价值证明脚本，模拟三个已有方案并输出对比数据"
+   ],
+   "data": {
+    "input": "命令行参数：--idea \"创意描述文本\"",
+    "output": "JSON格式报告，包含feasible(boolean)、reason(string)、score(float)字段",
+    "sample": "输入：python3 idea_validator.py --idea \"语音控制的markdown编辑器\"\n输出：{\"feasible\": true, \"reason\": \"该领域已有语音输入API，但集成到markdown编辑器的方案较少\", \"score\": 0.75}"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "为什么新.md要求对比三个已有方案，本脚本分析时也检查三个方案"
+    }
+   ],
+   "steps": [
+    "用argparse解析--idea参数获取创意描述",
+    "调用search_module在本地数据库模拟搜索相似方案",
+    "调用analyze_module分析创意的可行性和新颖性",
+    "将分析结果以JSON格式输出到stdout",
+    "why_new_demo.py模拟三个已有方案的运行并输出对比分数"
+   ],
+   "pitfalls": [
+    "JSON输出必须符合标准格式，否则下游解析会失败",
+    "创意描述过短时分析结果可能不准确",
+    "本地模拟搜索只能返回预设数据，无法真正联网搜索"
+   ],
+   "check": "python3 idea_validator.py --idea \"语音控制的markdown编辑器\" && echo $?"
+  }
+ },
+ "decisions_needed": [
+  "搜索模块是使用本地模拟数据还是真实文件系统中的已有方案文本",
+  "分析模块的新颖性判断阈值是基于关键词匹配还是语义相似度",
+  "是否需要额外文件存放预设的三个已有方案数据供why_new_demo.py调用"
+ ]
+}

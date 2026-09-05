@@ -1,0 +1,64 @@
+{
+ "coverage": {
+  "idea_validator.py": 1,
+  "idea_conflict.py": 1,
+  "mini_corpus.txt": 1,
+  "why_new.md": 2,
+  "value_demo.py": 1,
+  "feasibility_analyzer.py": 1,
+  "tech_corpus.json": 1,
+  "who_use.md": 1
+ },
+ "asked": {
+  "idea_validator.py": [
+   "搜索模块用本地模拟而非真实联网搜索，是否能满足'系统自己判断什么东西现在还没有'的需求",
+   "去掉本地模拟直接要求用户输入已有方案是否更可行",
+   "check命令只验证退出码为0，未验证JSON输出格式是否符合标准，机器检查是否能真正验证输出正确性"
+  ],
+  "idea_conflict.py": [
+   "方案中用cosine_similarity计算相似度再取反作为冲突度，这个逻辑是否真的能反映创意冲突，而不是相似度？",
+   "为什么必须用TfidfVectorizer+cosine_similarity这一套，换成Word2Vec或直接词匹配不行吗？",
+   "check命令只grep检查conflict_score字段存在，退出码0即PASS，但没验证数值是否在0-1范围内，这种检查够吗？"
+  ],
+  "mini_corpus.txt": [
+   "check只要求>500行，但what和files明确要求1000行，以哪个为准？",
+   "如果只写500行但demo能跑，算通过吗？",
+   "这些技术方案摘要不要标注来源？如果不要，怎么证明不是自己编的？"
+  ],
+  "why_new.md": [
+   "差异点描述的方向是什么——是比功能大小、比使用场景、还是比技术实现方式？",
+   "调研阶段搜索到的项目如果链接全部失效或查不到，文档该怎么写才能满足check要求？",
+   "如果三个方案中有任何一个无法找到有效http链接，能否用文献引用替代，还是必须凑够三个http链接？",
+   "check命令只是检查http链接数量，是否需要额外验证链接有效性，否则可能链接全失效但check通过？",
+   "{'find': 'check只验证http数量不验证有效性，链接全失效仍可通过，是否需要增加有效性验证步骤', 'why': '会导致最终文档虽然通过机器检查但内容无实际价值'}"
+  ],
+  "value_demo.py": [
+   "value_demo.py对比随机字符串的方式能否真正证明价值，随机字符串可能与任何创意都低相关",
+   "如果feasibility_analyzer.py不在当前目录或PATH中，subprocess调用会不会失败，检查机制如何处理",
+   "value_demo.py依赖的JSON输出格式是否固定，输出格式变化会否导致解析失败",
+   "只用两个对比是否足够证明工具的识别能力，是否需要更多样本或统计显著性"
+  ],
+  "feasibility_analyzer.py": [
+   "程序是否处理tech_corpus.json文件不存在或为空的情况？不去掉这个依赖会否导致程序直接报错退出？",
+   "检索函数仅统计关键词出现次数，这种简单匹配方式能否真正衡量'可行性'和'创新性'？",
+   "从匹配次数到0-100分的转换逻辑是否在代码中明确？去掉评分公式是否能用其他方式实现？",
+   "当tech_corpus.json条目数少于200时，uniqueness=1-(匹配数/200)的公式是否会因为除数过小导致分数虚高？",
+   "程序输出的JSON报告中differences字段是否在需求范围内？没有的话机器检查是否会失败？",
+   "argparse解析--idea参数时若输入为空字符串或包含特殊字符，程序能否正常处理还是直接崩溃？"
+  ],
+  "tech_corpus.json": [
+   "为什么必须用GitHub API而不是使用已有的公开数据集（如HuggingFace），去掉这步直接用现成数据不行吗",
+   "check里的>=150与what里的200条不一致，以哪个为准",
+   "过滤空description的步骤在check里没有体现，check只检查字段存在但不检查非空，去掉过滤步骤check能通过吗",
+   "过滤空description的步骤在check命令中没有体现，去掉过滤步骤check仍会通过吗",
+   "为什么必须用curl获取而不用Python的requests库（标准库要求）",
+   "parse脚本是否只能用shell必须配合python，还是可以纯python实现"
+  ],
+  "who_use.md": [
+   "check只检测\"步骤\"关键词数量，如果写成\"Step\"或\"步骤一\"等变体会不会被判不合格",
+   "场景描述本身是否必要，能否只保留步骤部分而删除场景铺垫文字",
+   "每个场景的步骤数量是否需要统一规定，还是任意数量都行"
+  ]
+ },
+ "versions": 5
+}

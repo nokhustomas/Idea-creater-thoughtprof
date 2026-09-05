@@ -1,0 +1,163 @@
+{
+ "detail": {
+  "mdimg_optimizer.py": {
+   "name": "mdimg_optimizer.py",
+   "files": [
+    "mdimg_optimizer.py: 主程序，包含以下函数和命令行接口",
+    "parse_args() - 解析命令行参数，支持--input/--output/--mode/--quality/--verbose",
+    "find_images_in_md(md_content) - 正则匹配Markdown中的图片语法(![alt](url))",
+    "compress_image_bytes(image_path, quality) - 使用zlib.compress压缩图片字节流（对PNG有效）",
+    "convert_path(old_path, mode, base_dir) - 路径转换：relative<->absolute",
+    "process_markdown(input_file, output_file, mode, quality, verbose) - 主处理流程",
+    "main() - 入口，调用上述函数"
+   ],
+   "data": {
+    "input": "Markdown文件(.md)，包含本地图片路径如![Screenshot](images/screen.png)或base64编码图片",
+    "output": "处理后的Markdown文件，图片被压缩或路径被转换",
+    "sample": "输入: ![img](pic/logo.png)\\n输出: ![img](compressed_logo.png) （压缩后）"
+   },
+   "numbers": [
+    {
+     "value": "9",
+     "source": "zlib压缩级别9（最高压缩比）",
+     "reason": "题面要求压缩图片，zlib.compress level=9提供最高压缩率"
+    },
+    {
+     "value": "80",
+     "source": "默认质量参数80%",
+     "reason": "作为图片质量阈值，平衡压缩率与可读性"
+    },
+    {
+     "value": "1048576",
+     "source": "1MB阈值",
+     "reason": "大于1MB的图片才进行压缩，避免过度处理小文件"
+    }
+   ],
+   "steps": [
+    "1. 运行 python mdimg_optimizer.py --input input.md --output output.md",
+    "2. 脚本读取input.md内容",
+    "3. 用正则表达式找出所有图片引用(![alt](url))",
+    "4. 对每个图片路径：如果文件存在且大于1MB，用zlib压缩后保存到compressed目录",
+    "5. 将原Markdown中的图片路径替换为新路径或base64",
+    "6. 写入output.md"
+   ],
+   "pitfalls": [
+    "纯Python标准库无法真正压缩PNG/JPEG像素数据，zlib只对字节流有效，实际压缩率很低",
+    "如果图片路径是相对路径，必须确保--input文件所在目录正确，否则找不到图片",
+    "base64编码的图片会极大增加Markdown文件体积，不建议转换"
+   ],
+   "check": "python mdimg_optimizer.py --help 退出码0并打印帮助信息，包含--input/--output/--mode等参数说明"
+  },
+  "为什么新.md": {
+   "name": "为什么新.md",
+   "files": [
+    "为什么新.md: 对比文档，包含三部分已有方案介绍和差异分析"
+   ],
+   "data": {
+    "input": "无（静态文档）",
+    "output": "Markdown格式的对比分析文档",
+    "sample": "已有方案1:xxx\\n已有方案2:xxx\\n已有方案3:xxx\\n本创造差异:xxx"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "题目要求至少对比三个已有方案",
+     "reason": "验收标准明确要求三个方案各带http链接或文献标注"
+    }
+   ],
+   "steps": [
+    "1. 通过搜索引擎查找Markdown图片处理相关工具",
+    "2. 选取三个最接近的已有方案",
+    "3. 记录每个方案的名称、出处链接、实现方式",
+    "4. 写本创造与每个方案的差异各一句",
+    "5. 确保文档中包含至少3个http链接"
+   ],
+   "pitfalls": [
+    "必须使用真实可访问的链接，不能编造",
+    "如果搜不到足够多的Markdown图片压缩工具，可扩大搜索范围到图片批处理、文档工具",
+    "差异描述要具体，不能只写\"更好\"要说明好在哪"
+   ],
+   "check": "grep -c 'http' 为什么新.md >= 3 至少包含3个http链接"
+  },
+  "demo.py": {
+   "name": "demo.py",
+   "files": [
+    "demo.py（自动生成测试素材并运行mdimg_optimizer.py，输出压缩率等数字）"
+   ],
+   "data": {
+    "input": "无需外部输入，脚本内生成测试markdown文件和PNG图片",
+    "output": "打印压缩率、转换成功率、文件大小对比等数字",
+    "sample": "压缩前总大小: 102400 bytes\n压缩后总大小: 35840 bytes\n压缩率: 65.0%\n转换成功率: 100%\n处理文件数: 1"
+   },
+   "numbers": [
+    {
+     "value": "100",
+     "source": "PNG图片宽度（测试用固定值）"
+    },
+    {
+     "value": "100",
+     "source": "PNG图片高度（测试用固定值）"
+    },
+    {
+     "value": "RGBA",
+     "source": "PNG颜色模式（Python PIL兼容模式）"
+    },
+    {
+     "value": "65.0",
+     "source": "期望压缩率（zlib压缩PNG通常可达60-70%压缩率）"
+    },
+    {
+     "value": "100",
+     "source": "期望转换成功率（测试素材无误应100%成功）"
+    }
+   ],
+   "steps": [
+    "1. 用Python标准库zlib和struct生成测试用PNG图片，保存为test_img.png",
+    "2. 生成包含相对路径图片引用的test.md，内容为![img](test_img.png)",
+    "3. 调用subprocess运行python mdimg_optimizer.py处理test.md",
+    "4. 读取生成的optimized.md和压缩后的图片文件",
+    "5. 计算原始图片与压缩后图片的字节数差，求压缩率",
+    "6. 打印压缩率、转换成功率、文件大小对比等数字"
+   ],
+   "pitfalls": [
+    "PNG生成格式不标准导致mdimg_optimizer.py无法识别，错误表现为转换成功率为0",
+    "路径相对路径与绝对路径混用导致图片找不到，错误表现为优化后图片仍为原大小"
+   ],
+   "check": "python demo.py 退出码0且输出包含\"压缩率:\"和\"成功率:\""
+  },
+  "给谁用.md": {
+   "name": "给谁用.md",
+   "files": [
+    "给谁用.md（三个场景的步骤说明文档）"
+   ],
+   "data": {
+    "input": "用户阅读场景描述，按步骤操作",
+    "output": "用户了解工具在其场景下的使用方法",
+    "sample": "场景一：技术文档写作者\n步骤1：准备包含图片的markdown文件\n步骤2：运行 python mdimg_optimizer.py input.md\n步骤3：查看生成的optimized.md和压缩后的图片"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "题目要求三个具体使用场景"
+    }
+   ],
+   "steps": [
+    "1. 场景一：技术文档写作者 - 写博客或文档时压缩配图",
+    "2. 场景二：学生群体 - 提交实验报告时压缩截图",
+    "3. 场景三：项目维护者 - 减小仓库体积时压缩文档图片"
+   ],
+   "pitfalls": [
+    "场景描述过于抽象导致用户不知道怎么动手",
+    "步骤缺少前置条件说明（如需要先安装Python）"
+   ],
+   "check": "grep -q '场景一' 给谁用.md && grep -q '场景二' 给谁用.md && grep -q '场景三' 给谁用.md"
+  }
+ },
+ "decisions_needed": [
+  "纯Python标准库(zlib)只能压缩字节流，无法真正压缩PNG/JPEG等图片的像素数据，压缩率极低。是否改用本机已装的图片处理工具（如系统自带的convert/magick）？",
+  "如果坚持纯标准库方案，mdimg_optimizer.py实际只能做路径转换和base64编码，压缩功能名存实亡，是否接受？",
+  "三个已有方案需要真实搜索，搜索关键词用什么？（如：markdown image optimizer, markdown 图片压缩工具）",
+  "demo.py中期望压缩率65%是否合理需根据实际zlib压缩PNG的效果调整",
+  "是否需要在给谁用.md中说明Python版本要求（建议3.6+）"
+ ]
+}

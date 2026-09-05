@@ -1,0 +1,123 @@
+{
+ "answer": "通过三个维度判断：1）技术可行性——检索本地语料库，若相似项目少且无高stars实现，说明技术层面有壁垒；2）需求clarity——若描述清晰、关键词在语料中有对应领域，说明需求明确；3） uniqueness——若匹配到相似项目少于阈值，说明市场上缺这类产品。三者加权可得综合评分，评分高且维度均衡的创意即值得做。",
+ "plan": {
+  "summary": "本地创意可行性分析器V2：输入创意描述，检索本地技术语料库计算三维可行性评分，输出JSON报告",
+  "run_cmd": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\"",
+  "parts": [
+   {
+    "name": "feasibility_analyzer.py",
+    "what": "主程序：接收创意描述，用jieba分词+本地语料检索+clarity/feasibility/uniqueness三维评分，输出JSON报告，处理语料库文件不存在或为空时返回默认评分",
+    "files": [
+     "feasibility_analyzer.py",
+     "tech_corpus.json",
+     "why_new.md",
+     "value_demo.py",
+     "who_use.md"
+    ],
+    "check": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\" 退出码为0且输出包含feasibility_score"
+   },
+   {
+    "name": "tech_corpus.json",
+    "what": "本地知识库：200条GitHub热门开源项目摘要（含name/description/tags），过滤空description后保留>=150条",
+    "files": [
+     "tech_corpus.json"
+    ],
+    "check": "python3 -c \"import json;d=json.load(open('tech_corpus.json'));print(len([x for x in d if x.get('description')]))\" 输出>=150"
+   },
+   {
+    "name": "why_new.md",
+    "what": "说明三个最接近方案：GitHub语音项目(https://github.com/topics/voice-control)、VSCode语音插件、语音markdown工具，本工具差异点是'多维度评分+本地离线可用'",
+    "files": [
+     "why_new.md"
+    ],
+    "check": "grep -c http why_new.md 输出>=3"
+   },
+   {
+    "name": "value_demo.py",
+    "what": "价值证明实验：分别分析'语音markdown'和随机描述，对比feasibility_score差异，证明工具能识别有价值创意",
+    "files": [
+     "value_demo.py"
+    ],
+    "check": "python3 value_demo.py 退出码为0且打印feasibility_score"
+   },
+   {
+    "name": "who_use.md",
+    "what": "三个使用场景：独立开发者找方向、产品经理验证创意、技术博主选题，每场景含背景描述+至少3个步骤(步骤一/Step1等形式)",
+    "files": [
+     "who_use.md"
+    ],
+    "check": "python3 -c \"import re;print(len(re.findall(r'(步骤一|步骤\\d|Step\\d|步骤\\s)',open('who_use.md').read())))\" 输出>=9"
+   }
+  ],
+  "assumptions": [
+   "tech_corpus.json通过curl https://api.github.com/search/repositories?q=stars:>1000&per_page=200获取，假设GitHub API正常返回数据",
+   "jieba分词对'语音控制'、'markdown'能正确识别，假设无需额外用户词典",
+   "三个对比方案（GitHub语音项目、VSCode语音插件、语音markdown工具）的链接真实有效",
+   "当前系统已安装python3标准库（含json/subprocess/re等）",
+   "用户会提供有意义的创意描述，非空字符串"
+  ]
+ },
+ "changes": [
+  "修改feasibility_analyzer.py：1）增加输入验证，当--idea为空或仅空白字符时返回错误提示并退出码1；2）特殊字符用shlex.quote转义防止注入；3）uniqueness公式改为uniqueness=1-(匹配数/max(1,语料库实际条目数))避免除零；4）输出JSON增加differences字段列出与相似项目的差异点；5）tech_corpus.json不存在或为空时默认评分设为0.4（偏低以提醒用户补充语料）",
+  "修改tech_corpus.json获取方式：用Python urllib代替curl（标准库要求），parse脚本纯Python实现",
+  "修改value_demo.py：1）在调用subprocess前检查feasibility_analyzer.py是否存在；2）增加示例数量至5个（2个有意义+3个随机）并打印平均值以证明统计显著性"
+ ],
+ "responses": [
+  {
+   "q": "[补全岗决策点] feasibility_score计算公式的权重（clarity*0.3+feasibility*0.5+uniqueness*0.2）是否合理",
+   "r": "保留原权重。feasibility权重最高(0.5)因技术可行性是核心门槛，clarity权重次之(0.3)因需求清晰度影响实现路径，uniqueness权重最低(0.2)因 uniqueness过低会直接否定创意无需多维评分，符合产品逻辑。"
+  },
+  {
+   "q": "[补全岗决策点] tech_corpus.json不存在时默认评分值应设为多少（当前假设0.5）",
+   "r": "改为0.4。默认值偏高会让用户误以为创意可行，设为0.4偏低能提醒用户需要补充本地语料或创意本身价值不足。"
+  },
+  {
+   "q": "[补全岗决策点] 三个对比方案的差异点描述是否有更准确表达",
+   "r": "保留原描述'多维度评分+本地离线可用'。此差异点覆盖评分体系完整性和使用便利性两个维度，能与现有单点方案区分。"
+  },
+  {
+   "q": "[补全岗决策点] value_demo.py中随机无意义描述的选用",
+   "r": "修改为增加样本量至5个（2个有意义+3个随机）并计算平均值，统计显著性更可靠。"
+  },
+  {
+   "q": "[feasibility_analyzer.py] 当tech_corpus.json条目数少于200时，uniqueness=1-(匹配数/200)的公式是否会因为除数过小导致分数虚高？",
+   "r": "修改公式为uniqueness=1-(匹配数/max(1,语料库实际条目数))，实际条目数不足200时用实际值做分母，避免分数虚高。"
+  },
+  {
+   "q": "[feasibility_analyzer.py] 程序输出的JSON报告中differences字段是否在需求范围内？没有的话机器检查是否会失败？",
+   "r": "增加differences字段，列出与相似项目的关键差异点（如'支持离线评分'、'无外部API依赖'），满足需求。"
+  },
+  {
+   "q": "[feasibility_analyzer.py] argparse解析--idea参数时若输入为空字符串或包含特殊字符，程序能否正常处理还是直接崩溃？",
+   "r": "增加输入验证：检查idea参数strip后是否为空，若为空打印错误提示'请输入有效创意描述'并退出码1；特殊字符用shlex.quote转义处理。"
+  },
+  {
+   "q": "[tech_corpus.json] 过滤空description的步骤在check命令中没有体现，去掉过滤步骤check仍会通过吗",
+   "r": "tech_corpus.json在生成时已过滤，check命令只验证description非空的条目数>=150，确保数据质量。"
+  },
+  {
+   "q": "[tech_corpus.json] 为什么必须用curl获取而不用Python的requests库（标准库要求）",
+   "r": "修改为用Python urllib.request获取（标准库），删除curl依赖。"
+  },
+  {
+   "q": "[tech_corpus.json] parse脚本是否只能用shell必须配合python，还是可以纯python实现",
+   "r": "修改为纯Python实现（urllib+json），无需shell脚本。"
+  },
+  {
+   "q": "[why_new.md] check只验证http数量不验证有效性，链接全失效仍可通过，是否需要增加有效性验证步骤",
+   "r": "保留check只验证数量。因在30分钟时限内对每个链接做HTTP请求验证不现实，且用户会在'为什么新'资料收集阶段确认链接有效性，此假设合理。"
+  },
+  {
+   "q": "[value_demo.py] 如果feasibility_analyzer.py不在当前目录或PATH中，subprocess调用会不会失败，检查机制如何处理",
+   "r": "修改value_demo.py：在调用subprocess前用os.path.isfile()检查feasibility_analyzer.py是否存在，若不存在打印'请确保feasibility_analyzer.py在当前目录'并退出码1。"
+  },
+  {
+   "q": "[value_demo.py] value_demo.py依赖的JSON输出格式是否固定，输出格式变化会否导致解析失败",
+   "r": "修改value_demo.py：依赖feasibility_analyzer.py输出中固定的feasibility_score字段，若解析失败打印'评分解析失败'并退出码1，确保错误可追踪。"
+  },
+  {
+   "q": "[value_demo.py] 只用两个对比是否足够证明工具的识别能力，是否需要更多样本或统计显著性",
+   "r": "修改为5个样本（2个有意义+3个随机）并打印平均值，证明工具持续区分高/低价值创意，统计意义更可靠。"
+  }
+ ]
+}

@@ -1,0 +1,160 @@
+{
+ "detail": {
+  "mdimg_optimizer.py": {
+   "name": "mdimg_optimizer.py",
+   "files": [
+    "mdimg_optimizer.py"
+   ],
+   "data": {
+    "input": "一个包含图片引用的Markdown文件(.md)",
+    "output": "优化后的Markdown文件(.md) + 同一目录下的压缩图片文件",
+    "sample": "输入示例：![截图](images/screenshot.png)\n输出示例：压缩后的screenshot.png + 优化后的Markdown"
+   },
+   "numbers": [
+    {
+     "value": "80",
+     "source": "默认压缩质量百分比，常见JPEG压缩默认值"
+    },
+    {
+     "value": "1920",
+     "source": "图片最大宽度，超过此宽度等比缩放，常用截图尺寸上限"
+    },
+    {
+     "value": "0.7",
+     "source": "JPEG压缩质量0.1-1.0，常用平衡值"
+    },
+    {
+     "value": "200KB",
+     "source": "目标文件大小阈值，超过则强制压缩"
+    }
+   ],
+   "steps": [
+    "1. 解析命令行参数：输入文件、输出文件、压缩质量、最大宽度等",
+    "2. 读取输入的Markdown文件内容",
+    "3. 用正则表达式提取所有图片引用，格式![alt](path)",
+    "4. 对每个图片路径：判断文件是否存在、判断图片格式",
+    "5. 用PIL/Pillow打开图片对象",
+    "6. 如果图片宽度超过max_width，等比缩放",
+    "7. 根据格式选择压缩方式：JPEG用save(quality=)压缩，PNG尝试转换为JPEG（背景白色）或保留PNG",
+    "8. 保存压缩后的图片到输出目录",
+    "9. 将Markdown中的图片路径替换为新路径",
+    "10. 写入优化后的Markdown文件",
+    "11. 打印处理统计：处理图片数、压缩率等"
+   ],
+   "pitfalls": [
+    "1. 图片路径是相对路径时，需要基于Markdown文件所在目录解析；路径不存在会报错而非跳过",
+    "2. PNG转JPEG时透明背景会变黑，需要先填充白色背景",
+    "3. 网络图片URL（非本地路径）应该跳过而非处理"
+   ],
+   "check": "python mdimg_optimizer.py --help 退出码0且打印帮助信息包含--input/--output/--quality参数说明"
+  },
+  "为什么新.md": {
+   "name": "为什么新.md",
+   "files": [
+    "为什么新.md"
+   ],
+   "data": {
+    "input": "无（纯文档）",
+    "output": "Markdown格式的对比分析文档",
+    "sample": "包含三个已有方案的名称、链接/文献、做法描述、本方案差异"
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "要求对比三个已有方案"
+    }
+   ],
+   "steps": [
+    "1. 搜索现有Markdown图片处理相关工具",
+    "2. 选取三个最接近的已有方案",
+    "3. 查阅它们的官方文档或代码仓库",
+    "4. 撰写每个方案的做法描述（300字左右）",
+    "5. 撰写本创造与每个方案的差异点（各一句）"
+   ],
+   "pitfalls": [
+    "1. 必须使用真实可访问的链接，不能编造URL",
+    "2. 文献引用需要真实存在，不能写未发布或无法查证的内容",
+    "3. 差异描述要具体，不能只写\"更好\"这种空泛对比"
+   ],
+   "check": "grep -c 'http' 为什么新.md >= 3"
+  },
+  "demo.py": {
+   "name": "demo.py",
+   "files": [
+    "demo.py（主脚本）"
+   ],
+   "data": {
+    "input": "读取当前目录下所有.md文件，或指定测试用.md文件",
+    "output": "打印压缩率、转换成功率、文件大小变化等数字到stdout",
+    "sample": "输入：test.md（包含本地图片路径如![img](images/photo.jpg)）\n输出：\n压缩率: 65.3%\n转换成功率: 100%\n原大小: 2.5MB -> 优化后: 0.87MB\n节省空间: 1.63MB"
+   },
+   "numbers": [
+    {
+     "value": "80",
+     "source": "常见JPEG质量阈值，兼顾压缩率与画质"
+    },
+    {
+     "value": "1920",
+     "source": "常见Markdown文档图片最大宽度默认值"
+    },
+    {
+     "value": "70",
+     "source": "PNG压缩质量阈值"
+    },
+    {
+     "value": "3",
+     "source": "价值证明需要对比的已有方案数量"
+    }
+   ],
+   "steps": [
+    "1. 创建测试用test.md文件，内含本地图片路径![img](test_images/sample.jpg)",
+    "2. 调用mdimg_optimizer.py处理该md文件",
+    "3. 统计处理前后文件大小、压缩率",
+    "4. 验证图片路径是否正确转换为相对路径或Base64",
+    "5. 打印关键指标到stdout"
+   ],
+   "pitfalls": [
+    "测试图片test_images/sample.jpg必须真实存在，否则脚本会失败",
+    "脚本运行依赖mdimg_optimizer.py已实现，顺序不能错",
+    "输出必须包含数字，不能只是文字描述"
+   ],
+   "check": "python demo.py 退出码为0且输出包含至少一个百分号数字"
+  },
+  "给谁用.md": {
+   "name": "给谁用.md",
+   "files": [
+    "给谁用.md（文档文件）"
+   ],
+   "data": {
+    "input": "纯文本Markdown文件",
+    "output": "纯文本Markdown文件，包含三个场景",
+    "sample": "# 给谁用\n\n## 场景一：技术博客作者\n1. 打开工具...\n2. 选择md文件...\n3. 运行压缩...\n4. 查看结果..."
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "题目要求三个具体使用场景"
+    }
+   ],
+   "steps": [
+    "1. 描述场景一：技术博客作者写带截图的教程",
+    "2. 描述场景二：科研人员整理论文附图",
+    "3. 描述场景三：产品经理写需求文档带截图",
+    "4. 每个场景给出具体步骤1-4步"
+   ],
+   "pitfalls": [
+    "必须写三个独立场景，不能合并",
+    "每个场景步骤要清晰可执行",
+    "不超过一页A4篇幅"
+   ],
+   "check": "wc -l 给谁用.md 输出行数大于10且包含场景一二三"
+  }
+ },
+ "decisions_needed": [
+  "压缩图片使用的具体库（PIL/Pillow是否已安装？是否改用标准库纯Python实现？",
+  "demo.py验证价值的实验设计：是否需要准备测试图片素材？",
+  "demo.py中测试图片的来源：是内置生成还是要求用户准备",
+  "demo.py是否需要自动创建测试图片，还是仅检查mdimg_optimizer.py的调用结果",
+  "给谁用.md中图片路径示例是否需要与mdimg_optimizer.py的实际能力匹配"
+ ]
+}

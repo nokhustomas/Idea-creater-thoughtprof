@@ -1,0 +1,164 @@
+{
+ "detail": {
+  "feasibility_analyzer.py": {
+   "name": "feasibility_analyzer.py",
+   "files": [
+    "feasibility_analyzer.py - 主程序文件",
+    "tech_corpus.json - 同目录下的语料库文件（被读取）"
+   ],
+   "data": {
+    "input": "命令行参数 --idea \"创意描述文本\"",
+    "output": "JSON格式报告，包含feasibility_score（0-100分）、dimensions（各维度得分）、reasoning（推理说明）",
+    "sample": "输入: python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\"\n输出: {\"feasibility_score\": 78, \"dimensions\": {\"clarity\": 85, \"feasibility\": 80, \"uniqueness\": 70}, \"reasoning\": \"匹配到speech-recognition、markdown-editor等项目，核心技术成熟度较高\"}"
+   },
+   "numbers": [
+    {
+     "value": "0-100",
+     "source": "评分分数范围，方案设定为百分制"
+    },
+    {
+     "value": "0.5, 0.3, 0.2",
+     "source": "评分维度权重：clarity清晰度50%、feasibility可行性30%、uniqueness创新度20%，方案设定"
+    },
+    {
+     "value": "150",
+     "source": "tech_corpus.json最低条目数要求，来源于check命令中的阈值设定"
+    }
+   ],
+   "steps": [
+    "1. 导入json、jieba、argparse、sys标准库",
+    "2. 定义命令行参数解析：--idea必选参数",
+    "3. 定义分词函数：使用jieba.cut()对创意描述分词",
+    "4. 定义检索函数：读取tech_corpus.json，遍历每条项目的description和tags，统计关键词匹配次数",
+    "5. 定义评分函数：根据匹配数量计算clarity、feasibility、uniqueness三个维度得分",
+    "6. 定义输出函数：将结果格式化为JSON并打印",
+    "7. 主流程：解析参数→分词→检索→评分→输出JSON"
+   ],
+   "pitfalls": [
+    "1. jieba分词对中文新词（如\"语音控制\"）可能需要用户词典，否则会分成单字；检查方法：运行后看分词结果是否包含完整词组",
+    "2. tech_corpus.json文件不存在或格式错误会导致FileNotFoundError或JSONDecodeError；检查方法：运行后看错误信息是否包含文件路径"
+   ],
+   "check": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\" 2>/dev/null | python3 -c \"import sys,json; d=json.load(sys.stdin); assert 'feasibility_score' in d and 0<=d['feasibility_score']<=100\""
+  },
+  "tech_corpus.json": {
+   "name": "tech_corpus.json",
+   "files": [
+    "tech_corpus.json - JSON格式的本地语料库文件"
+   ],
+   "data": {
+    "input": "从GitHub API获取的公开数据（stars>1000的项目），需预先采集并保存为JSON",
+    "output": "JSON数组，每元素含name（字符串）、description（字符串）、tags（字符串数组）",
+    "sample": "[{\"name\": \"speech-recognition\", \"description\": \"Python library for performing speech recognition\", \"tags\": [\"speech\", \"recognition\", \"ai\"]}]"
+   },
+   "numbers": [
+    {
+     "value": "stars:>1000",
+     "source": "方案assumption中明确的GitHub API查询参数"
+    }
+   ],
+   "steps": [
+    "1. 执行curl命令从GitHub API获取数据：curl https://api.github.com/search/repositories?q=stars:>1000&per_page=200",
+    "2. 解析返回的JSON，提取name、description、tags字段",
+    "3. 过滤掉description为空的条目",
+    "4. 保存为tech_corpus.json文件"
+   ],
+   "pitfalls": [
+    "1. GitHub API限流会导致请求失败（返回403），需要在请求头中添加Token或降低请求频率；检查方法：curl命令返回值是否包含\"message\": \"API rate limit exceeded\"",
+    "2. 字段名不匹配导致解析失败，需严格使用name、description、tags三个字段；检查方法：python3 -c \"import json; json.load(open('tech_corpus.json'))\" 是否报错"
+   ],
+   "check": "python3 -c \"import json; d=json.load(open('tech_corpus.json')); assert len(d)>=150 and all('name' in i and 'description' in i and 'tags' in i for i in d)\""
+  },
+  "why_new.md": {
+   "name": "why_new.md",
+   "files": [
+    "why_new.md - 说明文档"
+   ],
+   "data": {
+    "input": "手动撰写或编辑的markdown文档",
+    "output": "markdown格式文档，包含三个已有方案的介绍和差异对比",
+    "sample": "## 最接近的已有方案\n\n### 1. VoiceIn - GitHub语音项目\n链接: https://github.com/voicein\n做法: 提供语音转文字的通用API接口\n差异: 本工具专注创意可行性分析，输出结构化评分\n\n（后续两个方案格式相同）"
+   },
+   "numbers": [
+    {
+     "value": ">=3",
+     "source": "check命令要求grep -c http输出大于等于3"
+    }
+   ],
+   "steps": [
+    "1. 调研阶段：在GitHub搜索voice recognition、speech-to-text相关项目",
+    "2. 记录每个方案的名称、链接、做法描述",
+    "3. 撰写差异点：每条对比说明本工具的独特价值（多维度评分+本地离线可用）",
+    "4. 确保每个方案都有http链接或文献标注"
+   ],
+   "pitfalls": [
+    "1. 链接失效或无法访问会导致验收失败；检查方法：每个链接单独curl或访问确认返回200",
+    "2. 差异点写成泛泛而谈（如\"更好用\"）缺乏说服力；需具体到功能点"
+   ],
+   "check": "python3 -c \"import re; content=open('why_new.md').read(); urls=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\\\(\\\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', content); assert len(urls)>=3\""
+  },
+  "value_demo.py": {
+   "name": "value_demo.py",
+   "files": [
+    "value_demo.py - 价值证明实验脚本"
+   ],
+   "data": {
+    "input": "无命令行参数，读取同目录下的feasibility_analyzer.py和tech_corpus.json",
+    "output": "打印两组可行性分数对比（语音markdown描述 vs 随机描述），含具体数值",
+    "sample": "语音控制markdown编辑器可行性: 78\n随机描述\"asdfgh\"可行性: 23\n差异说明: 工具能识别有技术支撑的创意（高分）与无意义描述（低分）"
+   },
+   "numbers": [
+    {
+     "value": "1",
+     "source": "demo.py需要至少打印一组数字（实际打印两组对比）"
+    }
+   ],
+   "steps": [
+    "1. 导入subprocess、json模块",
+    "2. 定义运行analyzer的函数：subprocess.run调用feasibility_analyzer.py并捕获输出",
+    "3. 运行第一个分析：\"语音控制的markdown编辑器\"",
+    "4. 解析输出JSON提取feasibility_score",
+    "5. 运行第二个分析：随机无意义描述（如\"asdfgh\"）",
+    "6. 解析输出JSON提取feasibility_score",
+    "7. 打印两组分数和差异说明"
+   ],
+   "pitfalls": [
+    "1. 子进程输出包含stderr导致JSON解析失败；检查方法：stderr=subprocess.PIPE并忽略错误输出",
+    "2. 分数差异不明显（都偏高或都偏低）无法证明工具有效；需确保随机描述得分显著低于有效创意"
+   ],
+   "check": "python3 value_demo.py 2>/dev/null | python3 -c \"import sys; lines=sys.stdin.read(); assert 'feasibility' in lines.lower() and any(c.isdigit() for c in lines)\""
+  },
+  "who_use.md": {
+   "name": "who_use.md",
+   "files": [
+    "who_use.md - 使用场景说明文档"
+   ],
+   "data": {
+    "input": "手动撰写的markdown文档",
+    "output": "markdown格式文档，三个场景各含步骤说明",
+    "sample": "## 场景一：独立开发者找方向\n\n步骤：\n1. 运行分析器输入自己的创意想法\n2. 查看输出的可行性分数\n3. 根据各维度得分判断是否值得投入\n\n（场景二、场景三格式相同）"
+   },
+   "numbers": [
+    {
+     "value": ">=3",
+     "source": "check命令要求grep -c \"步骤\" 输出大于等于3，即至少三个场景各一个步骤"
+    }
+   ],
+   "steps": [
+    "1. 确定三个目标用户群体：独立开发者、产品经理、技术博主",
+    "2. 为每个群体构思一个具体使用场景",
+    "3. 为每个场景撰写使用步骤（每步骤以\"步骤N：\"开头）",
+    "4. 确保总步骤数满足>=3的要求"
+   ],
+   "pitfalls": [
+    "1. 场景描述过于抽象（如\"用于分析创意\"）缺乏指导性；需具体到操作动作",
+    "2. 步骤没有以\"步骤\"关键字开头导致grep检测失败；必须明确写\"步骤\"二字"
+   ],
+   "check": "python3 -c \"content=open('who_use.md').read(); assert content.count('步骤')>=3\""
+  }
+ },
+ "decisions_needed": [
+  "评分维度的具体定义（clarity/feasibility/uniqueness各指什么）需要明确",
+  "评分阈值（多少分以上算\"可行\"）需要方案岗设定",
+  "tech_corpus.json数据采集是方案岗负责还是由我执行GitHub API请求"
+ ]
+}

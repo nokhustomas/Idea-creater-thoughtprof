@@ -1,0 +1,178 @@
+{
+ "detail": {
+  "feasibility_analyzer.py": {
+   "name": "feasibility_analyzer.py",
+   "files": [
+    "feasibility_analyzer.py（主程序）\n  - 函数：load_corpus(path) 加载JSON语料\n  - 函数：tokenize(text) 用jieba分词\n  - 函数：calculate_scores(tokens, corpus) 计算clarity/feasibility/uniqueness三维评分\n  - 函数：generate_report(idea, scores) 输出JSON报告\n  - 参数：--idea（必需），--corpus默认tech_corpus.json\n  - 退出：无错误返回0，异常返回1"
+   ],
+   "data": {
+    "input": "命令行参数--idea，值为创意描述字符串",
+    "output": "JSON格式报告，含feasibility_score字段，示例：{\"idea\":\"语音控制的markdown编辑器\",\"clarity\":0.85,\"feasibility\":0.72,\"uniqueness\":0.60,\"feasibility_score\":0.72,\"differences\":[...]}",
+    "sample": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\""
+   },
+   "numbers": [
+    {
+     "value": "0.72",
+     "source": "由clarity*0.3+feasibility*0.5+uniqueness*0.2公式计算得出，待方案岗确认权重是否合理"
+    },
+    {
+     "value": "0.85",
+     "source": "clarity评分=关键词在语料中出现比例，示例中语音控制、markdown均为常见词，识别度高"
+    },
+    {
+     "value": "0.60",
+     "source": "uniqueness评分=1-(匹配到的相似项目数/200)，相似项目少则uniqueness高"
+    },
+    {
+     "value": "150",
+     "source": "tech_corpus.json最小有效条目数，来源于check条件"
+    }
+   ],
+   "steps": [
+    "安装依赖：pip install jieba（假设环境已有Python3）",
+    "创建feasibility_analyzer.py文件",
+    "实现load_corpus函数读取tech_corpus.json，若文件不存在或为空返回默认评分",
+    "实现tokenize函数用jieba分词",
+    "实现calculate_scores函数：clarity=关键词在语料中出现比例，feasibility=匹配到的高stars项目占比，uniqueness=1-相似匹配数/总条目",
+    "实现generate_report函数输出JSON，确保含feasibility_score字段",
+    "实现argparse解析--idea参数",
+    "测试：python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\""
+   ],
+   "pitfalls": [
+    "【易错】jieba未安装会报错，需在步骤中明确安装或假设已装",
+    "【易错】tech_corpus.json不存在时程序应返回默认评分而非崩溃，若返回默认需确定默认值（当前假设feasibility_score=0.5）"
+   ],
+   "check": "python3 feasibility_analyzer.py --idea \"语音控制的markdown编辑器\" && echo $? 输出0且输出包含feasibility_score"
+  },
+  "tech_corpus.json": {
+   "name": "tech_corpus.json",
+   "files": [
+    "tech_corpus.json（JSON数组文件）\n  - 每条：{\"name\":\"项目名\",\"description\":\"描述\",\"tags\":[\"标签1\",\"标签2\"],\"stars\":数字}\n  - 建议用curl从GitHub API获取200条后过滤"
+   ],
+   "data": {
+    "input": "通过curl https://api.github.com/search/repositories?q=stars:>1000&per_page=200获取（假设假设中已说明）",
+    "output": "JSON数组，至少150条有效description的条目",
+    "sample": "[{\"name\":\"Julius\",\"description\":\"Speech recognition engine\",\"tags\":[\"speech\",\"audio\"],\"stars\":2500},...]"
+   },
+   "numbers": [
+    {
+     "value": "200",
+     "source": "方案中要求获取200条GitHub热门项目"
+    },
+    {
+     "value": "150",
+     "source": "check条件要求至少150条有效description（过滤空description后）"
+    },
+    {
+     "value": "stars:>1000",
+     "source": "假设中说明的API查询参数，筛选高星项目"
+    }
+   ],
+   "steps": [
+    "执行：curl -s \"https://api.github.com/search/repositories?q=stars:>1000&per_page=200\" > raw.json",
+    "用Python脚本解析raw.json，提取name/description/tags/stars字段",
+    "过滤description为空的条目",
+    "保存为tech_corpus.json，确保>=150条"
+   ],
+   "pitfalls": [
+    "【易错】GitHub API限流导致数据获取失败，需考虑加Authorization header或等待（本题假设API正常返回）",
+    "【易错】JSON解析错误需检查字段名是否与API返回一致（items/name/description等）"
+   ],
+   "check": "python3 -c \"import json;d=json.load(open('tech_corpus.json'));print(len([x for x in d if x.get('description')]))\" 输出>=150"
+  },
+  "why_new.md": {
+   "name": "why_new.md",
+   "files": [
+    "why_new.md（Markdown文件）\n  - 三个方案各一段：名称+链接+做法描述+差异一句"
+   ],
+   "data": {
+    "input": "手动编写或调研已知方案",
+    "output": "Markdown文件，含至少3个http链接",
+    "sample": "## 最接近的三个方案\n\n### 1. GitHub语音控制项目\n- 链接：https://github.com/topics/voice-control\n- 做法：...（略）\n- 差异：本工具...\n\n### 2. VSCode语音插件...\n### 3. 语音markdown工具..."
+   },
+   "numbers": [
+    {
+     "value": "3",
+     "source": "题目要求三个方案"
+    }
+   ],
+   "steps": [
+    "调研GitHub语音控制相关项目，选取代表性链接",
+    "调研VSCode语音插件，选取代表性方案",
+    "调研现有语音markdown工具",
+    "按格式撰写why_new.md，每方案含名称/链接/做法/差异"
+   ],
+   "pitfalls": [
+    "【易错】链接必须为有效http/https格式，否则grep -c http检测会失败",
+    "【易错】每个方案需明确差异一句，若遗漏check会检测出来"
+   ],
+   "check": "grep -c http why_new.md 输出>=3"
+  },
+  "value_demo.py": {
+   "name": "value_demo.py",
+   "files": [
+    "value_demo.py（演示脚本）\n  - 函数：test_idea(idea) 调用主程序获取评分\n  - 函数：compare_scores() 对比两个创意的评分差异\n  - 打印feasibility_score值"
+   ],
+   "data": {
+    "input": "两个固定创意描述（\"语音markdown\"和随机无意义描述）",
+    "output": "打印至少一组数字（feasibility_score），含对比说明",
+    "sample": "语音markdown feasibility: 0.72\n随机描述 feasibility: 0.35\n结论：工具能识别有价值创意"
+   },
+   "numbers": [
+    {
+     "value": "0.72",
+     "source": "示例：语音markdown的feasibility_score"
+    },
+    {
+     "value": "0.35",
+     "source": "示例：随机无意义描述的feasibility_score（需实际运行获取）"
+    }
+   ],
+   "steps": [
+    "创建value_demo.py",
+    "实现test_idea(idea)函数：调用subprocess运行feasibility_analyzer.py --idea，解析输出JSON",
+    "实现compare_scores函数：测试\"语音控制的markdown编辑器\"和\"啊发发发射井\"等随机描述",
+    "打印两组feasibility_score并说明差异"
+   ],
+   "pitfalls": [
+    "【易错】subprocess调用路径需与实际运行一致，确保能找到feasibility_analyzer.py",
+    "【易错】JSON解析需处理输出中的多余空格或换行"
+   ],
+   "check": "python3 value_demo.py 退出码为0且打印feasibility_score"
+  },
+  "who_use.md": {
+   "name": "who_use.md",
+   "files": [
+    "who_use.md（Markdown使用说明）\n  - 三个场景，每个场景背景+至少3个步骤（步骤一/Step1等形式）"
+   ],
+   "data": {
+    "input": "手动编写三个使用场景",
+    "output": "Markdown文件，含>=9个步骤关键词",
+    "sample": "## 场景一：独立开发者找方向\n背景：...（略）\n步骤一：...\n步骤二：...\n步骤三：...\n\n## 场景二：..."
+   },
+   "numbers": [
+    {
+     "value": "9",
+     "source": "check要求至少9个步骤关键词（3场景*3步骤）"
+    }
+   ],
+   "steps": [
+    "撰写场景一：独立开发者找方向，背景描述+3步骤",
+    "撰写场景二：产品经理验证创意，背景描述+3步骤",
+    "撰写场景三：技术博主选题，背景描述+3步骤",
+    "确保每步骤使用\"步骤一/步骤二/步骤三\"或\"Step1/Step2/Step3\"格式"
+   ],
+   "pitfalls": [
+    "【易错】步骤关键词必须精确匹配正则r'(步骤一|步骤\\d|Step\\d|步骤\\s)'，大小写需一致",
+    "【易错】每个场景需>=3个步骤，否则总数<9会检测失败"
+   ],
+   "check": "python3 -c \"import re;print(len(re.findall(r'(步骤一|步骤\\d|Step\\d|步骤\\s)',open('who_use.md').read())))\" 输出>=9"
+  }
+ },
+ "decisions_needed": [
+  "feasibility_score计算公式的权重（clarity*0.3+feasibility*0.5+uniqueness*0.2）是否合理",
+  "tech_corpus.json不存在时默认评分值应设为多少（当前假设0.5）",
+  "三个对比方案的差异点描述是否有更准确表达",
+  "value_demo.py中随机无意义描述的选用"
+ ]
+}

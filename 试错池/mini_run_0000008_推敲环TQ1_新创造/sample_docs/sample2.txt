@@ -1,0 +1,12 @@
+JavaScript简介
+
+JavaScript是一种脚本语言，主要用于Web前端开发。它可以让你创建动态内容和交互式网页。
+
+JavaScript的特点：
+- 原型继承：JavaScript使用基于原型的继承模型
+- 动态类型：变量类型在运行时确定
+- 异步编程：支持回调、Promise和async/await
+
+与Python相比，JavaScript更适合前端开发，而Python更适合后端和数据处理。
+
+JavaScript生态系统非常丰富，拥有npm这样的包管理器和React、Vue等框架。

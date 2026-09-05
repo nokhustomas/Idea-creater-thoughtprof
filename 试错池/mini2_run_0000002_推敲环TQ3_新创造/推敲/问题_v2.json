@@ -1,0 +1,41 @@
+{
+ "plan_q": [
+  "[补全岗决策点] 纯Python标准库(zlib)只能压缩字节流，无法真正压缩PNG/JPEG等图片的像素数据，压缩率极低。是否改用本机已装的图片处理工具（如系统自带的convert/magick）？",
+  "[补全岗决策点] 如果坚持纯标准库方案，mdimg_optimizer.py实际只能做路径转换和base64编码，压缩功能名存实亡，是否接受？",
+  "[补全岗决策点] 三个已有方案需要真实搜索，搜索关键词用什么？（如：markdown image optimizer, markdown 图片压缩工具）",
+  "[补全岗决策点] demo.py中期望压缩率65%是否合理需根据实际zlib压缩PNG的效果调整",
+  "[补全岗决策点] 是否需要在给谁用.md中说明Python版本要求（建议3.6+）",
+  "[mdimg_optimizer.py] zlib只能压缩字节流不能压缩像素数据，对PNG/JPEG压缩率很低，这步是否真的可行？",
+  "[mdimg_optimizer.py] check只检查--help输出，未验证核心压缩和路径转换功能，机器检查能发现问题吗？",
+  "[mdimg_optimizer.py] 大于1MB的图片用zlib压缩效果极差，去掉压缩步骤只做路径转换是否更合理？",
+  "[demo.py] check要求输出包含'压缩率:'和'成功率:'带百分号，demo.py的steps中打印格式是否会严格匹配这个字符串检查？",
+  "[给谁用.md] check的grep只检查'场景一''场景二''场景三'关键词是否存在，不检查步骤内容完整性，用户只写关键词就能通过吗",
+  "[给谁用.md] 示例场景与outline中的mdimg_optimizer.py功能是否匹配，如果原型是别的工具，场景还有效吗"
+ ],
+ "info_q": [
+  {
+   "find": "zlib.compress对PNG/JPEG图片的实际压缩率",
+   "why": "如果压缩率<5%，工具没有实际价值"
+  },
+  {
+   "find": "1MB阈值是否合理",
+   "why": "如果大部分图片<1MB，压缩功能几乎无用"
+  },
+  {
+   "find": "80%质量参数如何实现",
+   "why": "zlib是通用压缩没有质量概念，代码未真正实现质量控制"
+  },
+  {
+   "find": "Python标准库（zlib和struct）生成的PNG格式是否符合mdimg_optimizer.py的识别要求",
+   "why": "pitfalls明确提到'PNG生成格式不标准导致mdimg_optimizer.py无法识别，错误表现为转换成功率为0'，若不核实demo.py无法达到check要求"
+  },
+  {
+   "find": "示例场景（mdimg_optimizer.py压缩图片）是否就是最终产品",
+   "why": "需要确认示例场景与原型功能一致，否则用户按照场景步骤操作可能无法得到预期结果"
+  },
+  {
+   "find": "场景描述是否真的能在30分钟内跑完",
+   "why": "验收要求全部文件30分钟内可跑完，场景步骤涉及的操作时间需要核实"
+  }
+ ]
+}

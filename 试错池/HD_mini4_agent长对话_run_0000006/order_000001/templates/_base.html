@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}HDIBS{% endblock %}</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;background:#f4f6fb;color:#1f2937;line-height:1.65}
+  a{color:#2563eb;text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 顶部导航 */
+  header{background:#1f2937;color:#fff;position:sticky;top:0;z-index:10}
+  .nav{display:flex;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto;padding:0 16px;height:52px}
+  .brand{font-weight:700;letter-spacing:1px;font-size:18px}
+  nav ul{list-style:none;display:flex;margin:0;padding:0;gap:6px}
+  nav ul li{position:relative}
+  nav ul li > a, nav ul li > span.trigger{display:inline-block;padding:14px 14px;color:#e5e7eb;font-size:15px;cursor:pointer;border:0;background:transparent}
+  nav ul li > a:hover, nav ul li > span.trigger:hover{background:#374151;color:#fff;text-decoration:none}
+  nav ul li.active > a{color:#fff;background:#374151;border-radius:6px}
+  .logout{color:#9ca3af;font-size:13px}
+  .logout:hover{color:#fff}
+
+  /* 二级菜单 */
+  .submenu{display:none;position:absolute;left:0;top:100%;min-width:180px;background:#fff;color:#222;border:1px solid #e5e7eb;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:6px 0;z-index:20}
+  .submenu a{display:block;padding:8px 14px;color:#1f2937;font-size:14px}
+  .submenu a:hover{background:#eef2ff;text-decoration:none}
+  .has-sub.open > .submenu{display:block}
+  .has-sub .arrow{font-size:11px;margin-left:4px;opacity:.75}
+
+  main{max-width:960px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:22px;margin:0 0 16px}
+  h2{font-size:18px;margin:28px 0 10px;padding-left:10px;border-left:4px solid #2563eb}
+  p{font-size:15px}
+  .back{display:inline-block;margin-top:32px;padding:8px 14px;border:1px solid #d1d5db;border-radius:6px;color:#374151;background:#fff;font-size:14px}
+  .back:hover{background:#f3f4f6;text-decoration:none}
+  footer{text-align:center;color:#6b7280;font-size:12px;padding:18px}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <span class="brand">HDIBS</span>
+    <nav>
+      <ul>
+        {% block nav_items %}{% endblock %}
+        {% if session_role == 'client' %}
+          <li><a class="logout" href="/logout">退出</a></li>
+        {% elif session_role == 'admin' %}
+          <li><a class="logout" href="/logout">退出登录</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer>© HDIBS · 科普点亮未来</footer>
+<script>
+  // 二级弹出菜单：hover/click 都不立即跳转
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.has-sub > .trigger').forEach(function(trig){
+      trig.addEventListener('click', function(e){ e.preventDefault(); });
+      var parent = trig.parentElement;
+      trig.addEventListener('mouseenter', function(){ parent.classList.add('open'); });
+      parent.addEventListener('mouseleave', function(){ parent.classList.remove('open'); });
+      trig.addEventListener('click', function(){
+        parent.classList.toggle('open');
+      });
+    });
+    document.addEventListener('click', function(e){
+      document.querySelectorAll('.has-sub.open').forEach(function(li){
+        if(!li.contains(e.target)) li.classList.remove('open');
+      });
+    });
+  });
+</script>
+</body>
+</html>

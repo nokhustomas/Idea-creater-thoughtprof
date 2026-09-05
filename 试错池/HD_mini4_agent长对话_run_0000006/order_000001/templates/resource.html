@@ -1,0 +1,46 @@
+{% extends "_base.html" %}
+{% block title %}{{ category }} - {{ topic }} - HDIBS{% endblock %}
+{% set session_role = "client" %}
+{% block nav_items %}
+  <li><a href="/home">首页</a></li>
+  <li><a href="/about">关于我们</a></li>
+  <li><a href="/members">社团成员</a></li>
+  <li class="has-sub">
+    <span class="trigger">路径资源 <span class="arrow">▾</span></span>
+    <div class="submenu">
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">物理学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/物理学/光学">光学</a>
+          <a href="/resource/物理学/力学">力学</a>
+          <a href="/resource/物理学/电学">电学</a>
+          <a href="/resource/物理学/量子力学">量子力学</a>
+          <a href="/resource/物理学/热学">热学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">化学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/化学/无机化学">无机化学</a>
+          <a href="/resource/化学/有机化学">有机化学</a>
+          <a href="/resource/化学/环境化学">环境化学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">生物学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/生物学/神经生物学">神经生物学</a>
+          <a href="/resource/生物学/其他生物学">其他生物学</a>
+        </div>
+      </div>
+    </div>
+  </li>
+{% endblock %}
+
+{% block content %}
+<div style="background:#fff;border-radius:10px;padding:32px 24px;box-shadow:0 2px 8px rgba(0,0,0,.04);min-height:240px">
+  <h1 style="margin-top:0">{{ category }} · {{ topic }}</h1>
+  <p style="color:#9ca3af">（该板块暂未填充内容，等待编辑补充）</p>
+</div>
+<a class="back" href="/home">← 返回主页</a>
+{% endblock %}

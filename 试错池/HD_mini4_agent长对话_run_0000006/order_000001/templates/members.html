@@ -1,0 +1,58 @@
+{% extends "_base.html" %}
+{% block title %}社团成员 - HDIBS{% endblock %}
+{% set session_role = "client" %}
+{% block nav_items %}
+  <li><a href="/home">首页</a></li>
+  <li><a href="/about">关于我们</a></li>
+  <li class="active"><a href="/members">社团成员</a></li>
+  <li class="has-sub">
+    <span class="trigger">路径资源 <span class="arrow"></span></span>
+    <div class="submenu">
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">物理学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/物理学/光学">光学</a>
+          <a href="/resource/物理学/力学">力学</a>
+          <a href="/resource/物理学/电学">电学</a>
+          <a href="/resource/物理学/量子力学">量子力学</a>
+          <a href="/resource/物理学/热学">热学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">化学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/化学/无机化学">无机化学</a>
+          <a href="/resource/化学/有机化学">有机化学</a>
+          <a href="/resource/化学/环境化学">环境化学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">生物学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/生物学/神经生物学">神经生物学</a>
+          <a href="/resource/生物学/其他生物学">其他生物学</a>
+        </div>
+      </div>
+    </div>
+  </li>
+{% endblock %}
+
+{% block content %}
+<h1>社团成员</h1>
+<p style="color:#6b7280;margin-top:0">HDIBS 的每一位成员都在用自己的方式，把科学带给远方的同学。</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:18px">
+  {% for m in content.members[:10] %}
+    <div class="member-card" style="background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);padding:14px;display:flex;gap:12px;align-items:flex-start">
+      <div class="photo-box" style="width:84px;height:84px;flex:0 0 84px;border-radius:8px;background:linear-gradient(135deg,#e5e7eb,#cbd5e1);display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;border:1px dashed #94a3b8">照片框</div>
+      <div class="member-text" style="flex:1;min-width:0">
+        <div style="font-weight:700;color:#1f2937;font-size:15px">{{ m.name }}</div>
+        <div style="color:#2563eb;font-size:12px;margin:2px 0 6px">{{ m.role }}</div>
+        <div style="color:#4b5563;font-size:13px;line-height:1.5;word-break:break-all">{{ m.desc }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<a class="back" href="/home">← 返回主页</a>
+{% endblock %}

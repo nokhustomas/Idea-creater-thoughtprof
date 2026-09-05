@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+{% block title %}控制端首页 - HDIBS{% endblock %}
+{% set session_role = "admin" %}
+{% block nav_items %}
+  <li><a href="/admin/edit">进入修改</a></li>
+{% endblock %}
+
+{% block content %}
+<section style="background:#fff;border-radius:12px;padding:48px 24px;box-shadow:0 4px 16px rgba(0,0,0,.05);text-align:center">
+  <p style="margin:0;font-size:22px;color:#111827;font-weight:700">欢迎，感谢你对HDIBS作出的贡献。</p>
+  <p style="margin:14px 0 24px;font-size:14px;color:#6b7280">点击下方按钮进入修改页，编辑客户端展示的内容。</p>
+  <a href="/admin/edit" style="display:inline-block;padding:11px 22px;background:#2563eb;color:#fff;border-radius:8px;font-weight:600">进入修改</a>
+</section>
+{% endblock %}

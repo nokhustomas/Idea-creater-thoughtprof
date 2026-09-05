@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+{% block title %}进入修改 - HDIBS{% endblock %}
+{% set session_role = "admin" %}
+{% block nav_items %}
+  <li><a href="/admin">返回控制台</a></li>
+  <li class="active"><a href="/admin/edit">进入修改</a></li>
+{% endblock %}
+
+{% block content %}
+<h1>进入修改</h1>
+<p style="color:#6b7280">在这里编辑客户端展示的内容，保存后会立刻写入 <code>content.json</code>。</p>
+
+<form method="post" action="/admin/save" style="margin-top:18px">
+  <h2>关于HDIBS 正文</h2>
+  <textarea name="about_intro" rows="5" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px">{{ content.about.intro }}</textarea>
+
+  <h2 style="margin-top:32px">历任社长</h2>
+  <p style="color:#6b7280;font-size:13px;margin:0 0 8px">每行格式：<code>年份|姓名|备注</code>（备注可省略）</p>
+  <textarea name="pres_row" rows="6" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-family:Menlo,monospace;font-size:13px">
+{%- for p in content.about.presidents -%}
+{{ p.year }}|{{ p.name }}|{{ p.note }}
+{%- endfor -%}
+</textarea>
+
+  <h2 style="margin-top:32px">社团成员（第 1 栏文字）</h2>
+  <p style="color:#6b7280;font-size:13px;margin:0 0 8px">这里编辑成员一（第 1 栏）的简介文字；下方可一并保存其他成员。</p>
+  <label style="display:block;font-size:13px;color:#374151;margin:10px 0 4px">成员一 · {{ content.members[0].name }}（{{ content.members[0].role }}）简介</label>
+  <textarea name="member_0_desc" rows="3" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px">{{ content.members[0].desc }}</textarea>
+
+  <details style="margin-top:24px">
+    <summary style="cursor:pointer;color:#2563eb">展开编辑其余 9 位成员简介（可选）</summary>
+    {% for m in content.members[1:] %}
+      {% set idx = loop.index %}
+      <label style="display:block;font-size:13px;color:#374151;margin:14px 0 4px">成员{{ idx+1 }} · {{ m.name }}（{{ m.role }}）</label>
+      <textarea name="member_{{ idx }}_desc" rows="2" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px">{{ m.desc }}</textarea>
+    {% endfor %}
+  </details>
+
+  <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+    <button type="submit" style="padding:11px 22px;border:0;border-radius:8px;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer">保存修改</button>
+    <a href="/admin" style="padding:11px 22px;border-radius:8px;background:#fff;border:1px solid #d1d5db;color:#374151;font-size:15px">返回</a>
+  </div>
+</form>
+
+<form method="post" action="/admin/reset" style="margin-top:32px" onsubmit="return confirm('确定恢复默认内容？')">
+  <button type="submit" style="padding:8px 16px;border:1px solid #ef4444;background:#fff;color:#b91c1c;border-radius:6px;font-size:13px;cursor:pointer">恢复默认内容</button>
+</form>
+{% endblock %}

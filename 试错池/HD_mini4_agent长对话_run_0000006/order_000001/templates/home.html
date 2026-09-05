@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+{% block title %}HDIBS · 客户端首页{% endblock %}
+{% set session_role = "client" %}
+{% block nav_items %}
+  <li><a href="/home">首页</a></li>
+  <li><a href="/about">关于我们</a></li>
+  <li><a href="/members">社团成员</a></li>
+  <li class="has-sub">
+    <span class="trigger">路径资源 <span class="arrow">▾</span></span>
+    <div class="submenu">
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">物理学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/物理学/光学">光学</a>
+          <a href="/resource/物理学/力学">力学</a>
+          <a href="/resource/物理学/电学">电学</a>
+          <a href="/resource/物理学/量子力学">量子力学</a>
+          <a href="/resource/物理学/热学">热学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">化学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/化学/无机化学">无机化学</a>
+          <a href="/resource/化学/有机化学">有机化学</a>
+          <a href="/resource/化学/环境化学">环境化学</a>
+        </div>
+      </div>
+      <div class="has-sub" style="position:relative">
+        <span class="trigger" style="padding:8px 14px;display:block;color:#1f2937;font-size:14px">生物学 <span class="arrow">›</span></span>
+        <div class="submenu" style="left:100%;top:0">
+          <a href="/resource/生物学/神经生物学">神经生物学</a>
+          <a href="/resource/生物学/其他生物学">其他生物学</a>
+        </div>
+      </div>
+    </div>
+  </li>
+{% endblock %}
+
+{% block content %}
+<section style="background:#fff;border-radius:12px;padding:36px 24px;box-shadow:0 4px 16px rgba(0,0,0,.05);text-align:center">
+  <p style="margin:0;font-size:20px;color:#111827;font-weight:600">欢迎，</p>
+  <p style="margin:14px 0 0;font-size:16px;color:#374151">希望你可以在这里燃起你对科学的兴趣。</p>
+</section>
+
+<section style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+  <a href="/about" style="background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:#1f2937">
+    <div style="font-size:16px;font-weight:700;margin-bottom:6px">关于我们</div>
+    <div style="font-size:13px;color:#6b7280">了解 HDIBS 的故事与历任社长</div>
+  </a>
+  <a href="/members" style="background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:#1f2937">
+    <div style="font-size:16px;font-weight:700;margin-bottom:6px">社团成员</div>
+    <div style="font-size:13px;color:#6b7280">看看和你一起探索科学的伙伴</div>
+  </a>
+  <a href="#" onclick="event.preventDefault();document.querySelector('.has-sub .trigger').click()" style="background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:#1f2937">
+    <div style="font-size:16px;font-weight:700;margin-bottom:6px">路径资源</div>
+    <div style="font-size:13px;color:#6b7280">按学科分类的科学学习路径</div>
+  </a>
+</section>
+{% endblock %}

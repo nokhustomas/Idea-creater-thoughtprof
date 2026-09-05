@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>登录 - HDIBS</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;background:#f4f6fb;color:#222}
+  header{background:#1f2937;color:#fff;padding:14px 18px;display:flex;align-items:center}
+  header .brand{font-weight:700;font-size:18px;letter-spacing:1px}
+  main{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{background:#fff;width:100%;max-width:380px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:28px 26px}
+  h1{font-size:20px;margin:0 0 6px;text-align:center}
+  p.tip{margin:0 0 18px;color:#6b7280;font-size:13px;text-align:center}
+  label{display:block;font-size:13px;color:#374151;margin-bottom:6px}
+  input[type=password]{width:100%;padding:11px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:15px;outline:none}
+  input[type=password]:focus{border-color:#2563eb}
+  button{width:100%;margin-top:14px;padding:11px 0;border:0;border-radius:8px;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+  button:hover{background:#1d4ed8}
+  .err{color:#b91c1c;font-size:13px;margin-top:10px;text-align:center;min-height:18px}
+  footer{text-align:center;color:#6b7280;font-size:12px;padding:14px}
+</style>
+</head>
+<body>
+<header><span class="brand">HDIBS</span></header>
+<main>
+  <form class="card" method="post" action="/login" autocomplete="off">
+    <h1>欢迎来到 HDIBS</h1>
+    <p class="tip">请输入访问密码</p>
+    <label for="password">密码</label>
+    <input id="password" name="password" type="password" placeholder="请输入密码" required>
+    <button type="submit">进入</button>
+    <div class="err" id="err"></div>
+  </form>
+</main>
+<footer>© HDIBS · 科普点亮未来</footer>
+<script>
+  // 客户端不做任何密码校验，只负责把密码原样提交给服务器
+  document.querySelector('form').addEventListener('submit', function(e){
+    var v = document.getElementById('password').value.trim();
+    if(!v){ e.preventDefault(); document.getElementById('err').textContent = '请输入密码'; }
+  });
+</script>
+</body>
+</html>

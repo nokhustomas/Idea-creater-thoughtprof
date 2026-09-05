@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑内容 - HDIBS控制端</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; min-height: 100vh; }
+        .nav { background: #1a1a2e; padding: 15px; display: flex; gap: 15px; }
+        .nav a { color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; background: #4a4a6a; transition: background 0.3s; }
+        .nav a:hover { background: #5a5a7a; }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1a1a2e; margin-bottom: 20px; border-bottom: 2px solid #4a4a6a; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #333; font-weight: bold; }
+        textarea { width: 100%; height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        .btn { padding: 12px 30px; background: #4a4a6a; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #5a5a7a; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/control">控制台首页</a>
+        <a href="/control/edit">进入修改</a>
+        <a href="/logout">退出</a>
+    </div>
+    <div class="container">
+        <h2>编辑内容</h2>
+        {% if success %}
+        <div class="success">保存成功！</div>
+        {% endif %}
+        <form method="POST" action="/control/update">
+            <div class="form-group">
+                <label for="about_hdibs">关于HDIBS:</label>
+                <textarea name="about_hdibs" id="about_hdibs">{{ content.about_hdibs }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="about_history">历任社长:</label>
+                <textarea name="about_history" id="about_history">{{ content.about_history }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="member1_name">社团成员1 - 姓名:</label>
+                <input type="text" name="member1_name" id="member1_name" value="{{ content.members[0].name }}">
+            </div>
+            <div class="form-group">
+                <label for="member1_desc">社团成员1 - 简介:</label>
+                <input type="text" name="member1_desc" id="member1_desc" value="{{ content.members[0].desc }}">
+            </div>
+            <button type="submit" class="btn">保存</button>
+        </form>
+    </div>
+</body>
+</html>

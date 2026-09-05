@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "ma_cross",
+      "short_period": 5,
+      "long_period": 20,
+      "direction": "short_above_long"
+    },
+    {
+      "type": "breakout",
+      "period": 20,
+      "breakout_type": "high"
+    },
+    {
+      "type": "price_change",
+      "days": 1,
+      "threshold": 2,
+      "direction": "up"
+    }
+  ],
+  "must_all": true,
+  "stop_loss": 5,
+  "take_profit": 15,
+  "max_hold_days": 10
+}

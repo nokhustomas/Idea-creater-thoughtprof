@@ -1,0 +1,11 @@
+{
+    "entry_conditions": [
+        {"type": "ma_cross", "short": 5, "long": 20, "direction": "up"},
+        {"type": "threshold", "field": "close", "operator": ">", "value": 15.0}
+    ],
+    "exit_conditions": {
+        "stop_loss_pct": -5.0,
+        "take_profit_pct": 10.0,
+        "max_holding_days": 20
+    }
+}

@@ -1,0 +1,92 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; color: #222; background: #fafafa; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* 登录页 */
+.login-body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%); }
+.login-card { background: #fff; padding: 36px 28px; border-radius: 12px; width: 90%; max-width: 360px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); text-align: center; }
+.login-title { font-size: 32px; color: #1e3a5f; margin-bottom: 6px; }
+.login-sub { font-size: 14px; color: #666; margin-bottom: 22px; }
+.password-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; margin-bottom: 14px; }
+.login-btn { width: 100%; padding: 12px; background: #1e3a5f; color: #fff; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+.login-error { color: #c00; margin-top: 12px; font-size: 14px; }
+
+/* 导航栏 */
+.navbar { background: #1e2a3a; color: #fff; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: relative; }
+.nav-brand { font-size: 20px; font-weight: bold; }
+.nav-brand a { color: #fff; }
+.nav-menu { display: flex; gap: 8px; }
+.nav-menu > li { position: relative; padding: 8px 14px; }
+.nav-menu > li > a { color: #fff; font-size: 15px; }
+.nav-menu > li:hover { background: #2c3e50; border-radius: 4px; }
+
+/* 一级弹出菜单 */
+.sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; color: #222; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; z-index: 10; }
+.sub-menu.show { display: block; }
+.sub-list { padding: 6px 0; }
+.sub-item { padding: 10px 14px; cursor: pointer; position: relative; white-space: nowrap; }
+.sub-item:hover { background: #f0f4f8; }
+.sub-sub-menu { display: none; position: absolute; top: 0; left: 100%; background: #fff; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; }
+.sub-sub-menu.show { display: block; }
+.sub-item:hover .sub-sub-menu { display: block; }
+.sub-sub-menu a { display: block; padding: 10px 14px; color: #222; }
+.sub-sub-menu a:hover { background: #e2e8f0; }
+
+/* 首页 */
+.home-main { padding: 60px 20px; text-align: center; }
+.welcome-row { font-size: 28px; font-weight: bold; color: #1e2a3a; margin-bottom: 20px; line-height: 1.6; }
+.welcome-row2 { font-size: 18px; color: #444; line-height: 1.8; }
+
+/* 通用页面 */
+.page-main { padding: 30px 20px; max-width: 960px; margin: 0 auto; }
+.page-title { font-size: 24px; color: #1e2a3a; margin-bottom: 20px; border-bottom: 2px solid #1e3a5f; padding-bottom: 8px; }
+.page-tip { color: #666; padding: 30px 0; text-align: center; }
+
+/* 关于我们 */
+.about-section { margin-bottom: 36px; }
+.section-title { font-size: 20px; color: #1e3a5f; margin-bottom: 12px; }
+.section-spacer { height: 18px; }
+.section-body { color: #333; line-height: 1.8; font-size: 16px; }
+.president-list { margin-top: 8px; }
+.president-item { padding: 10px 0; border-bottom: 1px dashed #ddd; }
+.president-term { color: #888; margin-left: 10px; font-size: 14px; }
+.president-intro { color: #555; font-size: 14px; margin-top: 4px; }
+
+/* 社团成员 */
+.members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.member-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+.member-photo { width: 100%; height: 160px; background: #cbd5e0; display: flex; align-items: center; justify-content: center; color: #4a5568; font-size: 18px; }
+.member-info { padding: 12px; }
+.member-name { font-size: 16px; font-weight: bold; color: #1e2a3a; }
+.member-role { font-size: 13px; color: #2c5282; margin: 4px 0; }
+.member-intro { font-size: 14px; color: #555; }
+
+/* 返回链接 */
+.back-row { margin-top: 40px; text-align: center; }
+.back-link { color: #2c5282; font-size: 15px; padding: 8px 16px; border: 1px solid #2c5282; border-radius: 4px; }
+.back-link:hover { background: #2c5282; color: #fff; }
+
+/* 空白页 */
+.blank-area { min-height: 320px; background: #fff; border: 1px dashed #cbd5e0; border-radius: 8px; }
+
+/* 控制端编辑 */
+.edit-form { background: #fff; padding: 20px; border-radius: 8px; }
+.edit-section { margin-bottom: 24px; }
+.edit-title { font-size: 18px; color: #1e3a5f; margin-bottom: 10px; }
+.edit-form label { display: block; margin: 8px 0; font-size: 14px; color: #444; }
+.edit-form input, .edit-textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 15px; font-family: inherit; }
+.edit-textarea { resize: vertical; }
+.edit-actions { text-align: center; margin-top: 20px; }
+.save-btn { background: #1e3a5f; color: #fff; border: none; padding: 12px 28px; border-radius: 6px; font-size: 16px; cursor: pointer; }
+.save-btn:hover { background: #2c5282; }
+
+/* 手机端 */
+@media (max-width: 600px) {
+  .navbar { flex-direction: column; align-items: flex-start; }
+  .nav-menu { margin-top: 8px; flex-wrap: wrap; }
+  .welcome-row { font-size: 22px; }
+  .welcome-row2 { font-size: 16px; }
+  .members-grid { grid-template-columns: 1fr 1fr; }
+  .sub-menu { left: 0; }
+}

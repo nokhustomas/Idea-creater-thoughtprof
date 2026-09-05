@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS - 首页</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand">HDIBS</div>
+  <ul class="nav-menu">
+    <li><a href="/client/about">关于我们</a></li>
+    <li><a href="/client/members">社团成员</a></li>
+    <li class="nav-has-sub">
+      <a href="/client/path" id="path-link">路径资源</a>
+      <div class="sub-menu" id="sub-menu">
+        <ul class="sub-list">
+          <li class="sub-item" data-cat="物理学">物理学
+            <div class="sub-sub-menu">
+              <a href="/client/path/物理学/光学">光学</a>
+              <a href="/client/path/物理学/力学">力学</a>
+              <a href="/client/path/物理学/电学">电学</a>
+              <a href="/client/path/物理学/量子力学">量子力学</a>
+              <a href="/client/path/物理学/热学">热学</a>
+            </div>
+          </li>
+          <li class="sub-item" data-cat="化学">化学
+            <div class="sub-sub-menu">
+              <a href="/client/path/化学/无机化学">无机化学</a>
+              <a href="/client/path/化学/有机化学">有机化学</a>
+              <a href="/client/path/化学/环境化学">环境化学</a>
+            </div>
+          </li>
+          <li class="sub-item" data-cat="生物学">生物学
+            <div class="sub-sub-menu">
+              <a href="/client/path/生物学/神经生物学">神经生物学</a>
+              <a href="/client/path/生物学/其他生物学">其他生物学</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<main class="home-main">
+  <div class="welcome-row">欢迎，</div>
+  <div class="welcome-row2">希望你可以在这里燃起你对科学的兴趣。</div>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

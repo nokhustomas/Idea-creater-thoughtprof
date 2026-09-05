@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS - 进入修改</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand">HDIBS 控制端</div>
+  <ul class="nav-menu">
+    <li><a href="/admin">返回首页</a></li>
+  </ul>
+</nav>
+
+<main class="page-main">
+  <h2 class="page-title">进入修改</h2>
+
+  <form method="post" action="/admin/edit" class="edit-form">
+    <section class="edit-section">
+      <h3 class="edit-title">关于HDIBS 正文</h3>
+      <textarea name="about_text" rows="6" class="edit-textarea">{{ data.about_text }}</textarea>
+    </section>
+
+    <section class="edit-section">
+      <h3 class="edit-title">社团成员 · 第 1 栏</h3>
+      <label>姓名 <input type="text" name="member1_name" value="{{ members[0].name }}"></label>
+      <label>方向 <input type="text" name="member1_role" value="{{ members[0].role }}"></label>
+      <label>介绍 <textarea name="member1_intro" rows="3">{{ members[0].intro }}</textarea></label>
+    </section>
+
+    <div class="edit-actions">
+      <button type="submit" class="save-btn">保存修改</button>
+    </div>
+  </form>
+
+  <div class="back-row">
+    <a href="/admin" class="back-link">返回控制端首页</a>
+  </div>
+</main>
+</body>
+</html>

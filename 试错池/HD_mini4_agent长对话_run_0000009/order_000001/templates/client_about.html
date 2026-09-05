@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS - 关于我们</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><a href="/client">HDIBS</a></div>
+  <ul class="nav-menu">
+    <li><a href="/client/about">关于我们</a></li>
+    <li><a href="/client/members">社团成员</a></li>
+    <li><a href="/client/path">路径资源</a></li>
+  </ul>
+</nav>
+
+<main class="page-main">
+  <section class="about-section">
+    <h2 class="section-title">关于HDIBS</h2>
+    <div class="section-spacer"></div>
+    <p class="section-body">{{ data.about_text }}</p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="section-title">历任社长</h2>
+    <div class="section-spacer"></div>
+    <ul class="president-list">
+      {% for p in data.presidents %}
+      <li class="president-item">
+        <strong>{{ p.name }}</strong>
+        <span class="president-term">{{ p.term }}</span>
+        <p class="president-intro">{{ p.intro }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <div class="back-row">
+    <a href="/client" class="back-link">返回主页</a>
+  </div>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

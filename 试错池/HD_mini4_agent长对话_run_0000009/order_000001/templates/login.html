@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS - 登录</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-body">
+<div class="login-card">
+  <h1 class="login-title">HDIBS</h1>
+  <p class="login-sub">科学之光 · 请输入访问密码</p>
+  <form method="post" action="/login" class="login-form">
+    <input type="password" name="password" placeholder="请输入密码" class="password-input" autocomplete="off" required>
+    <button type="submit" class="login-btn">进入</button>
+  </form>
+  {% if error %}
+  <p class="login-error">{{ error }}</p>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS - 社团成员</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><a href="/client">HDIBS</a></div>
+  <ul class="nav-menu">
+    <li><a href="/client/about">关于我们</a></li>
+    <li><a href="/client/members">社团成员</a></li>
+    <li><a href="/client/path">路径资源</a></li>
+  </ul>
+</nav>
+
+<main class="page-main">
+  <h2 class="page-title">社团成员</h2>
+  <div class="members-grid">
+    {% for m in data.members %}
+    <div class="member-card">
+      <div class="member-photo">照片</div>
+      <div class="member-info">
+        <div class="member-name">{{ m.name }}</div>
+        <div class="member-role">{{ m.role }}</div>
+        <div class="member-intro">{{ m.intro }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="back-row">
+    <a href="/client" class="back-link">返回主页</a>
+  </div>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

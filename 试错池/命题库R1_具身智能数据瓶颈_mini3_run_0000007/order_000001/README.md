@@ -1,0 +1,1 @@
+timeout 30 python3 自检.py

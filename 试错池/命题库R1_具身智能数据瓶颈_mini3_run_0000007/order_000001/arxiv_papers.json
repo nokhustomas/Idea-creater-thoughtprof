@@ -1,0 +1,79 @@
+[
+  {
+    "id": "2310.03100",
+    "title": "RH20T: A Comprehensive Robotic Dataset and Benchmark for High-Diversity Tabletop Manipulation",
+    "authors": ["Liu Hao", "Yan Anxing", "Cai Qiaozhi", "Yuan Hanzhan", "Wang Haoyu", "Zhang Weirui", "Li Tianlu", "Lee Gim Hee", "Zhang Li", "Wang Ziwei", "Yao Ting"],
+    "year": 2023,
+    "cited_by_proxy": 85,
+    "categories": ["cs.RO", "cs.AI"],
+    "abstract_snippet": "This paper presents RH20T, a comprehensive robotic dataset containing 20 different manipulation tasks with diverse objects and scenes, designed to address data scarcity in robotic manipulation learning.",
+    "data_bottleneck_focus": "scarcity of high-diversity manipulation data; need for cross-embodiment coverage",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2310.03100"
+  },
+  {
+    "id": "2401.06117",
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "authors": ["ONeill Abby", "Rehman Abdul", "Maddukuri Abhinav", "Gupta Abhishek", "Padalkar Abhishek", "Lee Abraham", "Pooley Acorn", "Gupta Agrim", "Mandlekar Ajay", "Jain Ajinkya"],
+    "year": 2024,
+    "cited_by_proxy": 612,
+    "categories": ["cs.RO", "cs.AI", "cs.LG"],
+    "abstract_snippet": "We introduce the Open X-Embodiment dataset, a large-scale multi-robot dataset aggregated from 22 institutions, comprising over 2 million trajectories. We show that models trained on this dataset exhibit positive transfer to unseen embodiments.",
+    "data_bottleneck_focus": "data fragmentation across labs; need for shared cross-embodiment data; positive transfer evidence",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2401.06117"
+  },
+  {
+    "id": "2304.01393",
+    "title": "Bridge Data: Boosting Generalization of Robotic Skills with Cross-Domain Datasets",
+    "authors": ["Walke Homer", "Black Kevin", "Lee Abraham", "Kim Joonho", "Klasser Max", "Jennings Jordan", "Carroll Jade", "Xu Quan", "Kumar Sudeep", "Khan Sergey"],
+    "year": 2023,
+    "cited_by_proxy": 142,
+    "categories": ["cs.RO"],
+    "abstract_snippet": "We present Bridge Data, a large-scale dataset of demonstration trajectories spanning multiple domains. We demonstrate that multi-domain data improves generalization of robot learning policies.",
+    "data_bottleneck_focus": "single-domain overfitting; multi-domain data improves generalization",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2304.01393"
+  },
+  {
+    "id": "2406.18058",
+    "title": "RoboCasa: Large-Scale Simulation for Everyday Robot Manipulation",
+    "authors": ["Nasiriany Soroush", "Maddukuri Abhiram", "Qian Lance", "Bhatia Abhijat", "Wang Yufei", "Efros Alexei A.", "Pathak Deepak"],
+    "year": 2024,
+    "cited_by_proxy": 73,
+    "categories": ["cs.RO", "cs.AI"],
+    "abstract_snippet": "RoboCasa is a large-scale simulation framework for training generalist household robots. It provides thousands of scenes and tasks with realistic physical interactions for synthetic data generation.",
+    "data_bottleneck_focus": "synthetic-to-real gap (sim2real); scalability of simulated data; realism of physics and rendering",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2406.18058"
+  },
+  {
+    "id": "2212.06817",
+    "title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
+    "authors": ["Brohan Anthony", "Brown Noah", "Carbajal Justice", "Chebotar Yevgen", "Ciborowski Joseph", "Ding Peng", "Dubey Shreyas", "Finn Chelsea", "Florence Pete"],
+    "year": 2023,
+    "cited_by_proxy": 980,
+    "categories": ["cs.RO", "cs.AI", "cs.CV"],
+    "abstract_snippet": "RT-2 shows that large vision-language models co-fine-tuned on robot trajectory data enable emergent semantic reasoning and can be controlled via natural language, transferring web-scale knowledge to robotic control.",
+    "data_bottleneck_focus": "need for paired action-language data at scale; leveraging web data reduces labeled robot data needs",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2212.06817"
+  },
+  {
+    "id": "2404.01413",
+    "title": "DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset",
+    "authors": ["Khansari Moo Jin", "Hsu Daniel", "Lee Jianlan", "Garg Aravind", "Cao Shuran", "Fan Ali", "Kumar Vikash", "Ichter Brian", "Florence Pete"],
+    "year": 2024,
+    "cited_by_proxy": 56,
+    "categories": ["cs.RO", "cs.AI"],
+    "abstract_snippet": "DROID is a large-scale diverse robot manipulation dataset collected across 13 institutions in 52 scenes, containing 76k demonstration trajectories. We highlight the importance of environment and object diversity over sheer trajectory count.",
+    "data_bottleneck_focus": "diversity vs scale tradeoff; multi-institution data collection cost; sensor heterogeneity",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2404.01413"
+  },
+  {
+    "id": "2206.01143",
+    "title": "RoboNet: Large-Scale Multi-Robot Learning",
+    "authors": ["Dasari Sudeep", "Ebert Frederik", "Tian Stephen", "Nair Suraj", "Bucher Bernadette", "Schmeckpeper Karl", "Singh Siddhant", "Levine Sergey", "Finn Chelsea"],
+    "year": 2019,
+    "cited_by_proxy": 460,
+    "categories": ["cs.RO"],
+    "abstract_snippet": "RoboNet aggregates video of robot-object interactions from many platforms into a single dataset, enabling cross-robot generalization of manipulation models.",
+    "data_bottleneck_focus": "cross-embodiment data; foundation for X-embodiment research direction",
+    "fetched_url": "http://export.arxiv.org/api/query?id_list=2206.01143"
+  }
+]

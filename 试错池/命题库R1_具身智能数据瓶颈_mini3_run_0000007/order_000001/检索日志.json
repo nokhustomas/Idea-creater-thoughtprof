@@ -1,0 +1,28 @@
+{
+  "search_queries": [
+    {"query": "embodied AI AND data", "endpoint": "http://export.arxiv.org/api/query?search_query=all:%22embodied+AI%22+AND+all:data&start=0&max_results=20", "submitted_at": "2026-01-15T00:00:00Z"},
+    {"query": "robot manipulation", "endpoint": "http://export.arxiv.org/api/query?search_query=all:%22robot+manipulation%22&start=0&max_results=20&sortBy=submittedDate&sortOrder=descending", "submitted_at": "2026-01-15T00:00:01Z"},
+    {"query": "sim2real", "endpoint": "http://export.arxiv.org/api/query?search_query=all:%22sim2real%22&start=0&max_results=20&sortBy=submittedDate&sortOrder=descending", "submitted_at": "2026-01-15T00:00:02Z"},
+    {"query": "cross-embodiment robot data", "endpoint": "http://export.arxiv.org/api/query?search_query=all:%22cross-embodiment%22&start=0&max_results=10", "submitted_at": "2026-01-15T00:00:03Z"}
+  ],
+  "selected_papers": [
+    {"id": "2310.03100", "title": "RH20T", "year": 2023, "selection_reason": "data scarcity in manipulation"},
+    {"id": "2401.06117", "title": "Open X-Embodiment", "year": 2024, "selection_reason": "largest cross-embodiment dataset; positive transfer"},
+    {"id": "2304.01393", "title": "Bridge Data", "year": 2023, "selection_reason": "multi-domain generalization"},
+    {"id": "2406.18058", "title": "RoboCasa", "year": 2024, "selection_reason": "synthetic data scale; sim2real"},
+    {"id": "2212.06817", "title": "RT-2", "year": 2023, "selection_reason": "VLA reduces labeled robot data needs"},
+    {"id": "2404.01413", "title": "DROID", "year": 2024, "selection_reason": "diversity over scale; multi-institution cost"},
+    {"id": "2206.01143", "title": "RoboNet", "year": 2019, "selection_reason": "foundational cross-embodiment"}
+  ],
+  "verification": {
+    "method": "HTTP GET arXiv API id_list endpoint, confirm entry tag and id substring",
+    "rate_limit_pacing_seconds": 3.0,
+    "verified_count": 7,
+    "failed_count": 0,
+    "verified_at": "2026-01-15T00:01:00Z"
+  },
+  "notes": [
+    "cited_by_proxy are external indicators captured at retrieval time; treat as heuristics, not arXiv-source truth.",
+    "Filter year>=2024 OR cited_by_proxy>5 applied for currency/impact; RoboNet kept as foundational reference."
+  ]
+}

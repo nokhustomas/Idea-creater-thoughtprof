@@ -1,0 +1,10 @@
+backtest.py	3f1fcef55c714bf5
+gen_sample.py	835ea0f404fb5827
+out/交易明细.csv	e1167bd10a54f116
+out/回测报告.md	8c0b366a960624f2
+out/资金曲线.csv	b151f2e2075b8e4c
+rules_example.json	e2668cb635e07901
+sample_data/STOCK_A.csv	219b3adf5472a690
+sample_data/STOCK_B.csv	e1c106771d007cfb
+sample_data/STOCK_C.csv	e7d150c99e1af176
+order_000001_成品.zip	zip 9成员

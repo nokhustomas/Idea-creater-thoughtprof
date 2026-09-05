@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社团成员 - HDIBS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav .brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a2e;
+            border-radius: 5px;
+            min-width: 150px;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .dropdown-trigger:hover .dropdown { display: block; }
+        .dropdown li { width: 100%; }
+        .dropdown li a { display: block; width: 100%; }
+        .dropdown-second { position: relative; }
+        .sub-dropdown {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background: #1a1a2e;
+            border-radius: 5px;
+            min-width: 120px;
+            display: none;
+        }
+        .dropdown-second:hover .sub-dropdown { display: block; }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .member-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .photo-placeholder {
+            width: 120px;
+            height: 120px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .member-info {
+            min-height: 60px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        .back-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1a1a2e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        .back-link:hover { background: #16213e; }
+        .logout {
+            position: absolute;
+            right: 30px;
+            top: 15px;
+        }
+        .logout a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/client/home" class="brand">HDIBS</a>
+        <a href="/logout" class="logout">退出</a>
+        <ul>
+            <li><a href="/client/about">关于我们</a></li>
+            <li><a href="/client/members">社团成员</a></li>
+            <li class="dropdown-trigger">
+                <a href="#">路径资源 ▾</a>
+                <ul class="dropdown">
+                    <li class="dropdown-second">
+                        <a href="#">物理学 ▸</a>
+                        <ul class="sub-dropdown">
+                            <li><a href="/client/resource/physics/optics">光学</a></li>
+                            <li><a href="/client/resource/physics/mechanics">力学</a></li>
+                            <li><a href="/client/resource/physics/electricity">电学</a></li>
+                            <li><a href="/client/resource/physics/quantum">量子力学</a></li>
+                            <li><a href="/client/resource/physics/thermal">热学</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-second">
+                        <a href="#">化学 ▸</a>
+                        <ul class="sub-dropdown">
+                            <li><a href="/client/resource/chemistry/inorganic">无机化学</a></li>
+                            <li><a href="/client/resource/chemistry/organic">有机化学</a></li>
+                            <li><a href="/client/resource/chemistry/environmental">环境化学</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-second">
+                        <a href="#">生物学 ▸</a>
+                        <ul class="sub-dropdown">
+                            <li><a href="/client/resource/biology/neuro">神经生物学</a></li>
+                            <li><a href="/client/resource/biology/other">其他生物学</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="members-grid">
+            {% for i in range(10) %}
+            <div class="member-card">
+                <div class="photo-placeholder">👤</div>
+                <div class="member-info">{{ content.members[i] if content.members[i] else '待添加成员信息' }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <a href="/client/home" class="back-link">← 返回主页</a>
+    </div>
+</body>
+</html>

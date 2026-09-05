@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDIBS - 科学之光</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { color: #1a1a2e; margin-bottom: 10px; font-size: 28px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #16213e;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background: #16213e; }
+        .error { color: #e74c3c; margin-top: 15px; font-size: 14px; }
+        .logo { font-size: 48px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🔬</div>
+        <h1>HDIBS</h1>
+        <p class="subtitle">科学之光 - 知识照亮未来</p>
+        <form method="POST" action="/login">
+            <input type="password" name="password" placeholder="请输入访问密码" required>
+            <button type="submit">进入</button>
+        </form>
+        {% if error %}
+        <p class="error">密码错误，请重试</p>
+        {% endif %}
+    </div>
+</body>
+</html>

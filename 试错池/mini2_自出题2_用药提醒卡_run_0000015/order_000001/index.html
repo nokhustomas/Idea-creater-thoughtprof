@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>每日用药提醒卡 - 王奶奶</title>
+<style>
+  @page { size: A4; margin: 8mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Verdana, Arial, "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-size: 28pt;
+    color: #000000;
+    background: #ffffff;
+    padding: 8mm;
+    line-height: 1.35;
+  }
+  .header {
+    text-align: center;
+    border: 4px solid #000;
+    padding: 10px 6px;
+    margin-bottom: 8px;
+    background: #ffeb3b;
+  }
+  .header h1 {
+    font-size: 46pt;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+  .header .sub {
+    font-size: 24pt;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+  .patient-info {
+    font-size: 28pt;
+    text-align: center;
+    border: 3px solid #000;
+    padding: 6px;
+    margin-bottom: 8px;
+    background: #fff8e1;
+    font-weight: 700;
+  }
+  .time-block {
+    border: 4px solid #000;
+    margin-bottom: 8px;
+    background: #ffffff;
+  }
+  .time-title {
+    font-size: 38pt;
+    font-weight: 900;
+    color: #ffffff;
+    background: #000000;
+    padding: 6px 10px;
+    border-bottom: 4px solid #000;
+    letter-spacing: 2px;
+  }
+  .med-list {
+    list-style: none;
+    padding: 6px 10px;
+    margin: 0;
+  }
+  .med-item {
+    font-size: 26pt;
+    padding: 4px 0;
+    border-bottom: 2px dashed #333;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .med-item:last-child { border-bottom: none; }
+  .med-name { color: #b71c1c; font-weight: 900; }
+  .med-dose { color: #000000; font-weight: 900; }
+  .med-note { color: #1a237e; font-weight: 700; }
+  .footer {
+    margin-top: 6px;
+    border: 3px solid #000;
+    padding: 6px;
+    background: #e8f5e9;
+    font-size: 24pt;
+    text-align: center;
+    font-weight: 700;
+  }
+  .emergency {
+    color: #ffffff;
+    background: #b71c1c;
+    padding: 8px;
+    margin-top: 6px;
+    text-align: center;
+    font-size: 28pt;
+    font-weight: 900;
+    border: 4px solid #000;
+    letter-spacing: 1px;
+  }
+  @media print {
+    body { padding: 0; }
+    .time-block, .header, .patient-info, .footer, .emergency { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>每日用药提醒卡</h1>
+    <div class="sub">贴冰箱 · 每天照着吃</div>
+  </div>
+
+  <div class="patient-info">王奶奶 · 78 岁 · 独居</div>
+
+  <div class="time-block">
+    <div class="time-title">早（7:00 起床后）</div>
+    <ul class="med-list">
+      <li class="med-item"><span class="med-name">降压药</span><span class="med-dose">1 片</span><span class="med-note">温水送服</span></li>
+      <li class="med-item"><span class="med-name">钙片 + 维生素 D</span><span class="med-dose">各 1 片</span><span class="med-note">早餐同吃</span></li>
+    </ul>
+  </div>
+
+  <div class="time-block">
+    <div class="time-title">中（12:30 午饭后）</div>
+    <ul class="med-list">
+      <li class="med-item"><span class="med-name">护心丸</span><span class="med-dose">1 粒</span><span class="med-note">饭后 10 分钟</span></li>
+      <li class="med-item"><span class="med-name">护胃药</span><span class="med-dose">1 片</span><span class="med-note">饭前 30 分</span></li>
+    </ul>
+  </div>
+
+  <div class="time-block">
+    <div class="time-title">晚（17:30 晚饭前）</div>
+    <ul class="med-list">
+      <li class="med-item"><span class="med-name">降压药</span><span class="med-dose">1 片</span><span class="med-note">饭前 30 分</span></li>
+      <li class="med-item"><span class="med-name">甲钴胺</span><span class="med-dose">1 片</span><span class="med-note">饭后吃</span></li>
+    </ul>
+  </div>
+
+  <div class="time-block">
+    <div class="time-title">睡前（21:00 上床前）</div>
+    <ul class="med-list">
+      <li class="med-item"><span class="med-name">安眠药</span><span class="med-dose">半 片</span><span class="med-note">温水送服</span></li>
+      <li class="med-item"><span class="med-name">钙片</span><span class="med-dose">1 片</span><span class="med-note">睡前吃</span></li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    吃药顺序：饭前 30 分 → 饭中 → 饭后 10 分。忘吃药不补，下次照常。
+  </div>
+
+  <div class="emergency">
+    紧急电话：120 | 子女 138-0000-0000
+  </div>
+</body>
+</html>

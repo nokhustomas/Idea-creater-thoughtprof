@@ -1,0 +1,106 @@
+<<<FILE
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>每日用药提醒卡</title>
+<style>
+@page { size: A4; margin: 12mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #ffffff; }
+body {
+  font-family: "Verdana", "Arial", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  color: #111111;
+  font-size: 24pt;
+  line-height: 1.5;
+  padding: 14pt;
+}
+header {
+  background: #003366;
+  color: #ffffff;
+  padding: 18pt 16pt;
+  border-radius: 14pt;
+  margin-bottom: 14pt;
+  text-align: center;
+}
+header h1 {
+  font-size: 48pt;
+  font-weight: 900;
+  letter-spacing: 3pt;
+  margin-bottom: 6pt;
+}
+header .name { font-size: 30pt; font-weight: 700; }
+header .tip { font-size: 24pt; margin-top: 6pt; }
+.slot {
+  border: 4pt solid #111111;
+  border-radius: 14pt;
+  padding: 14pt 18pt;
+  margin-bottom: 12pt;
+  page-break-inside: avoid;
+}
+.slot h2 {
+  font-size: 40pt;
+  font-weight: 900;
+  display: inline-block;
+  background: #ffcc00;
+  color: #111111;
+  padding: 4pt 24pt;
+  border-radius: 10pt;
+  margin-bottom: 10pt;
+}
+.slot .time { font-size: 26pt; color: #333333; margin-left: 10pt; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 8pt 4pt; vertical-align: middle; }
+td.num { font-size: 36pt; font-weight: 900; color: #8b0000; width: 60pt; }
+td.drug { font-size: 28pt; font-weight: 700; }
+td.dose { font-size: 26pt; color: #003366; font-weight: 700; width: 90pt; }
+td.note { font-size: 24pt; color: #222222; }
+.warn {
+  background: #b00020;
+  color: #ffffff;
+  padding: 14pt;
+  border-radius: 12pt;
+  margin-top: 12pt;
+  text-align: center;
+  font-size: 26pt;
+  font-weight: 700;
+}
+footer {
+  margin-top: 12pt;
+  padding: 12pt;
+  background: #f2f2f2;
+  color: #111111;
+  border-radius: 10pt;
+  font-size: 24pt;
+  text-align: center;
+  font-weight: 700;
+}
+@media print { body { padding: 0; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>每日用药提醒卡</h1>
+  <div class="name">王奶奶 · 78 岁</div>
+  <div class="tip">请按时服药 · 祝您健康</div>
+</header>
+
+<section class="slot">
+  <h2>早</h2><span class="time">7:00 – 8:00</span>
+  <table>
+    <tr><td class="num">①</td><td class="drug">降压药</td><td class="dose">1 片</td><td class="note">饭后，温水送服</td></tr>
+    <tr><td class="num">②</td><td class="drug">钙片</td><td class="dose">1 粒</td><td class="note">吃饭时一起吃</td></tr>
+  </table>
+</section>
+
+<section class="slot">
+  <h2>中</h2><span class="time">12:00 – 13:00</span>
+  <table>
+    <tr><td class="num">③</td><td class="drug">护心丸</td><td class="dose">2 粒</td><td class="note">午饭后，含服</td></tr>
+  </table>
+</section>
+
+<section class="slot">
+  <h2>晚</h2><span class="time">18:00 – 19:00</span>
+  <table>
+    <tr><td class="num">④</td><td class="drug">降

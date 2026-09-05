@@ -1,0 +1,19 @@
+{
+    "buy_conditions": [
+        {
+            "type": "ma_cross",
+            "short_ma": 5,
+            "long_ma": 20
+        }
+    ],
+    "sell_conditions": [
+        {
+            "type": "ma_cross",
+            "short_ma": 5,
+            "long_ma": 20
+        }
+    ],
+    "stop_loss_percent": 5,
+    "take_profit_percent": 10,
+    "holding_days_limit": 20
+}

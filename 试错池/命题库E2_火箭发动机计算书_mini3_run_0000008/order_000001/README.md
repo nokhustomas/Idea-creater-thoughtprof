@@ -1,0 +1,1 @@
+python3 -c "import json; data=json.load(open('design_verification.json','r')); checks=[abs(data.get('thrust',0)-5000)<1, data.get('mr',0)>3 and data.get('mr',0)<4, data.get('isp',0)>0]; print('PASS' if all(checks) else 'FAIL')"

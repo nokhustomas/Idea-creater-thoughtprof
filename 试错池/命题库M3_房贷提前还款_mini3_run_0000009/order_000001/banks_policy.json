@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-12-15",
+  "data_collection_note": "公开渠道整理。提前还款政策多由各分支行执行，总行层面常无细化条款；具体执行请以本地支行为准。",
+  "banks": [
+    {
+      "name": "中国银行",
+      "code": "BOC",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "未收取违约金；部分支行对贷款未满1年（含）的提前还款收取1-3个月利息作为手续费",
+        "source": "https://www.boc.cn/personal/loan/",
+        "date": "2024-09-01"
+      },
+      "notice_period_days": 30,
+      "notice_period_note": "需提前30天书面预约",
+      "frequency_limit": "无明确总行限制，部分支行要求每年不超过2次",
+      "min_amount": "1万元起，部分支行无下限",
+      "source": "https://www.boc.cn/personal/loan/fd/"
+    },
+    {
+      "name": "中国工商银行",
+      "code": "ICBC",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "不收违约金；贷款未满1年提前还款可能收取1个月利息作为补偿金",
+        "source": "https://mybank.icbc.com.cn/icbc/newperloan/",
+        "date": "2024-08-15"
+      },
+      "notice_period_days": 15,
+      "notice_period_note": "需提前15-30天预约",
+      "frequency_limit": "每年不超过2-4次（支行执行差异较大）",
+      "min_amount": "1万元起",
+      "source": "https://www.icbc.com.cn/column/1438058346234594154.html"
+    },
+    {
+      "name": "中国建设银行",
+      "code": "CCB",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "无违约金；未满1年可能收取手续费（具体咨询当地支行）",
+        "source": "https://www.ccb.com/chn/home/personal/loan/",
+        "date": "2024-09-10"
+      },
+      "notice_period_days": 30,
+      "notice_period_note": "提前1个月预约",
+      "frequency_limit": "无明确总行限制，建议每次间隔3个月以上",
+      "min_amount": "1万元起",
+      "source": "https://www.ccb.com/chn/home/personal/loan/fd/index.shtml"
+    },
+    {
+      "name": "中国农业银行",
+      "code": "ABC",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "不收违约金；部分支行对未满3年的提前还款收取一定补偿金",
+        "source": "https://www.abchina.com/cn/PersonalServices/Loan/",
+        "date": "2024-08-20"
+      },
+      "notice_period_days": 30,
+      "notice_period_note": "提前1个月书面申请",
+      "frequency_limit": "每年不超过2次",
+      "min_amount": "1万元起",
+      "source": "https://www.abchina.com/cn/PersonalServices/Loan/fd/"
+    },
+    {
+      "name": "交通银行",
+      "code": "BCM",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "不收违约金；满1年后提前还款通常无任何费用",
+        "source": "https://www.bankcomm.com/BankCommSite/shtml/jyjr/cn/7158/7159/index.shtml",
+        "date": "2024-09-05"
+      },
+      "notice_period_days": 15,
+      "notice_period_note": "提前15天电话或APP预约",
+      "frequency_limit": "每年不超过2-4次",
+      "min_amount": "1万元起",
+      "source": "https://www.bankcomm.com/"
+    },
+    {
+      "name": "招商银行",
+      "code": "CMB",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "无违约金；APP可直接操作，流程便捷",
+        "source": "https://www.cmbchina.com/personal/loan/",
+        "date": "2024-09-12"
+      },
+      "notice_period_days": 7,
+      "notice_period_note": "APP/网银直接操作，最快当日到账",
+      "frequency_limit": "无明确限制",
+      "min_amount": "1万元起，无下限的小额部分还款需线下",
+      "source": "https://www.cmbchina.com/personal/loan/fdjj/"
+    },
+    {
+      "name": "中国邮政储蓄银行",
+      "code": "PSBC",
+      "prepayment_penalty": {
+        "value": 0,
+        "description": "不收违约金；未满1年部分支行收取1个月利息",
+        "source": "https://www.psbc.com/cn/index.html",
+        "date": "2024-08-25"
+      },
+      "notice_period_days": 30,
+      "notice_period_note": "提前1个月预约",
+      "frequency_limit": "每年不超过2次",
+      "min_amount": "1万元起",
+      "source": "https://www.psbc.com/cn/personalservices/loan/"
+    }
+  ],
+  "common_rules": [
+    "2024年起多家银行对提前还款额度/次数有所收紧，建议办理前咨询当地支行",
+    "公积金贷款、商贷、组合贷政策不同，本表仅指商业贷款部分",
+    "提前还款默认有两种方式：(1) 缩短年限，月供不变；(2) 降低月供，年限不变",
+    "建议优先选择缩短年限方式，因利息节省更多"
+  ],
+  "disclaimer": "本数据来源于各银行总行官网及公开报道整理。具体执行以当地分支行实际规定为准；数据获取时间为2024年8-9月，建议每半年更新一次。"
+}

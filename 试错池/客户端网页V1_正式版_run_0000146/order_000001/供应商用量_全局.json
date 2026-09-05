@@ -1,0 +1,60 @@
+{
+  "schema": "tj-usage-global/v1",
+  "generated_at": "2025-01-15T00:00:00",
+  "currency": "CNY",
+  "providers": {
+    "stub-local": {
+      "name": "本地桩模型（无外部依赖，用于自检与演示）",
+      "endpoint": "local://stub",
+      "unit": "token",
+      "price_per_1k_tokens": 0.0,
+      "currency": "CNY",
+      "total_tokens": 0,
+      "total_cost": 0.0,
+      "calls": 0,
+      "note": "默认桩模型，不产生费用"
+    },
+    "openai-compatible": {
+      "name": "OpenAI 兼容（占位，按需启用）",
+      "endpoint": "https://api.openai.com/v1",
+      "unit": "token",
+      "price_per_1k_tokens": 0.002,
+      "currency": "USD",
+      "total_tokens": 0,
+      "total_cost": 0.0,
+      "calls": 0,
+      "note": "需设置 OPENAI_API_KEY 环境变量"
+    },
+    "anthropic-compatible": {
+      "name": "Anthropic 兼容（占位）",
+      "endpoint": "https://api.anthropic.com",
+      "unit": "token",
+      "price_per_1k_tokens": 0.003,
+      "currency": "USD",
+      "total_tokens": 0,
+      "total_cost": 0.0,
+      "calls": 0,
+      "note": "需设置 ANTHROPIC_API_KEY 环境变量"
+    },
+    "local-llama": {
+      "name": "本地 llama.cpp（占位）",
+      "endpoint": "llama-cli",
+      "unit": "token",
+      "price_per_1k_tokens": 0.0,
+      "currency": "CNY",
+      "total_tokens": 0,
+      "total_cost": 0.0,
+      "calls": 0,
+      "note": "通过 sandbox/aiarch 跑 llama-cli 时记入"
+    }
+  },
+  "by_tier": {
+    "basic": {"runs": 0, "tokens": 0, "cost": 0.0},
+    "pro":   {"runs": 0, "tokens": 0, "cost": 0.0},
+    "biz":   {"runs": 0, "tokens": 0, "cost": 0.0}
+  },
+  "by_run": [],
+  "ledger_file": "$TJ_ROOT/logs/ledger.txt",
+  "live_usage_file": "$TJ_ROOT/logs/usage.json",
+  "self_test_note": "本文件是「总账」的镜像快照；真实增量由 app.py 的 run_pipeline 写入 logs/usage.json 与 runs/run_*/llm_usage.jsonl，每次启动汇总后回写本文件。"
+}

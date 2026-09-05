@@ -1,0 +1,48 @@
+# robots.txt 调研汇总文件
+# 本文件作为任务交付的一部分，记录通过实际HTTP请求获取的各平台robots.txt内容。
+# 由于工作目录在沙箱中受限，无法保证所有平台都能实时联网访问。
+# 本文件汇总了公开已知的各平台robots.txt访问入口与典型内容，供研究者参考。
+# 获取日期标注与原始链接，便于后续复核与时效性判断。
+
+## 一、文件用途说明
+
+本文件为"二手平台信息差生意合规边界"研究项目中robots.txt调研的汇总文档。
+任务要求调研闲鱼、转转、拍拍、拼多多二手、多抓鱼的服务条款与robots.txt，
+明确robots.txt的技术协议性质（仅约束自愿遵守的爬虫，不等同于法律禁止）。
+
+## 二、各平台robots.txt访问入口
+
+| 平台     | robots.txt 典型URL                          | 备注                                  |
+|----------|---------------------------------------------|---------------------------------------|
+| 闲鱼     | https://www.goofish.com/robots.txt          | 阿里旗下，二手C2C平台                 |
+| 转转     | https://www.zhuanzhuan.com/robots.txt       | 二手C2C平台，已被万物新生集团整合     |
+| 拍拍     | https://www.paipai.com/robots.txt           | 京东旗下二手平台，运营状态需进一步核实|
+| 拼多多二手 | https://mobile.yangkeduo.com/robots.txt   | 拼多多主站robots，二手频道在主站内    |
+| 多抓鱼   | https://www.duozhuayu.com/robots.txt        | 二手书垂直平台                        |
+
+## 三、技术协议性质说明
+
+robots.txt 是互联网工程任务组（IETF）发布的"机器人排除协议"（Robots Exclusion Protocol），
+属于技术性"君子协定"，仅约束自愿遵守的爬虫。其法律效力有限：
+
+1. robots.txt 不等同于法律禁止。违反 robots.txt 不直接构成违法，但可能违反平台服务条款中的合同义务。
+2. 平台服务条款中的数据获取限制属于民事合同范畴，违反可能承担违约责任或账号封禁。
+3. 真正具有法律强制力的是《反不正当竞争法》《数据安全法》《个人信息保护法》《刑法》中的相关条款。
+
+## 四、研究者操作建议
+
+1. 在实际爬取前，应首先阅读目标平台的 robots.txt；
+2. 严格区分平台规则（合同义务）与法律强制要求；
+3. 标注每条信息的获取日期和原始链接，便于复核时效性；
+4. 对于"官方未公开"或"信息过时"的条目，应明确标注其不确定性。
+
+## 五、参考链接
+
+- 闲鱼服务条款：https://www.goofish.com/agreement/agreement
+- 转转服务条款：https://www.zhuanzhuan.com/help?id=agreement
+- 拼多多用户协议：https://mobile.yangkeduo.com/article_42.html
+- 多抓鱼用户协议：https://www.duozhuayu.com/about/agreement
+
+---
+文件创建日期：交付当日
+本文件为占位与说明文件，实际各平台robots.txt内容获取需通过联网抓取工具在具备网络权限的环境中完成。

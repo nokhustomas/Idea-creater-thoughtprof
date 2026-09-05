@@ -1,0 +1,24 @@
+README.md	8f2a6b3297ec023b
+sop手册.md	82890c468bf1b424
+书面同意书.md	199384d26b4989e4
+备用引流方案.md	9a8bc45047fee2d8
+复盘报告.md	05720426d384f6c4
+小红书笔记.md	efd5f7836b83f169
+店家筛选标准.md	61c68ef814f8c660
+报价单.md	fc660a4f9e194661
+数据记录表.md	539636de7c2730e3
+朋友圈发布计划.md	6bf6c2154aee75ec
+服务合同.md	2e34c45465c14ca0
+案例1_北京张姐黄焖鸡.md	81d77050eaa84981
+案例2_广州老陈煲仔饭.md	aeae345fd948782d
+用户调研报告.md	532cedfa803d7ab7
+私域话术.md	55c464313be9f4da
+竞品定价表.md	8926433e355ff6ec
+竞品数据.csv	10e81bd7e301107a
+群运营sop.md	5928367104286ecc
+调研数据.csv	7ebcad940a921bf4
+运行命令.txt	2b83995748523e13
+退款申请表.md	b36911eb20352a20
+闲鱼商品文案.md	a93bba1b4212f162
+高意向用户筛选标准.md	e2cff02695e285e0
+order_000001_成品.zip	zip 23成员

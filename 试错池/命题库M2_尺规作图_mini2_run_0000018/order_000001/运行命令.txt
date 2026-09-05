@@ -1,0 +1,1 @@
+python3 -m http.server 8080 & sleep 2 && curl -s localhost:8080/index.html | grep -q "正五边形" && curl -s localhost:8080/index.html | grep -q "正七边形" && curl -s localhost:8080/index.html | grep -q "SVG" && pkill -f "http.server"

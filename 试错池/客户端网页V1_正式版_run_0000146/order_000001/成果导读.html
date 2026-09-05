@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>成果导读 · 想法推进器</title>
+<style>
+body{font-family:-apple-system,Segoe UI,Helvetica,sans-serif;margin:0;background:#fafafa;color:#222}
+header{padding:32px 40px;background:linear-gradient(135deg,#6a82fb,#fc5c7d);color:#fff}
+header h1{margin:0 0 8px 0;font-size:28px}
+header p{margin:0;opacity:.92}
+main{max-width:880px;margin:24px auto;padding:0 16px}
+section{background:#fff;padding:20px 24px;margin:16px 0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+section h2{margin-top:0;border-bottom:2px solid #eee;padding-bottom:8px}
+ul.files{padding-left:20px;line-height:1.9}
+ul.files code{background:#f4f4f8;padding:2px 6px;border-radius:4px}
+.tier{display:inline-block;padding:4px 10px;margin-right:6px;border-radius:12px;background:#eef;color:#6a82fb;font-size:13px}
+footer{text-align:center;color:#888;padding:24px;font-size:13px}
+a{color:#6a82fb;text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <h1>想法推进器 · 成果导读</h1>
+  <p>客户一句话 → 推敲 → 制作 → 机器验收 → 归档 → 浏览器拿走成品。</p>
+</header>
+<main>
+  <section>
+    <h2>这套网页是什么</h2>
+    <p>「想法推进器」是一台叫 Idea-Pusher 的机器的<b>客户用门面</b>。客户在浏览器里：</p>
+    <ol>
+      <li>首页一句话写下要做什么（不超过 1000 字）。</li>
+      <li>选一档套餐：<span class="tier">基础档 免费 · 2 轮</span><span class="tier">进阶档 ¥29 · 4 轮</span><span class="tier">企业档 ¥199 · 8 轮</span></li>
+      <li>提交后，后台写一行进 <code>$TJ_ROOT/logs/queue.txt</code>，并起一个流水线线程。</li>
+      <li>流水线：<b>推敲</b>（写 <code>plan.md</code>）→ <b>制作</b>（按题面关键词分类，写真文件）→ <b>机器验收</b>（不达标自动重跑，最多到档位上限）→ <b>归档</b>（zip + 导读 + 账本 + 用量）。</li>
+      <li>浏览器结果页有 <code>*_成品.zip</code> 与本导读页直链下载。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>本仓库文件清单</h2>
+    <ul class="files">
+      <li><code>app.py</code> — 主程序（HTTP 服务 + 流水线 + 自检 + CLI 子命令）</li>
+      <li><code>README.md</code> — 自己定的规则与理由（定价、流程、口令、归档）</li>
+      <li><code>运行命令.txt</code> — 第一行是 <code>TJ_DEMO=1 timeout 10 python3 app.py --selftest</code></li>
+      <li><code>成果导读.html</code> — 本文件</li>
+      <li><code>供应商用量_全局.json</code> — 模型用量总账（按供应商、按档位）</li>
+      <li><code>user_research_plan.md</code> / <code>user_research_questions.md</code> — 用户调研</li>
+      <li><code>competitor_analysis_plan.md</code> / <code>competitor_analysis_criteria.md</code> — 竞品分析</li>
+      <li><code>user_test_plan.md</code> / <code>user_feedback_form.md</code> — 原型与可用性测试</li>
+      <li><code>iteration_report.md</code> / <code>iteration_log.md</code> — 迭代优化</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>关键命令</h2>
+    <ul class="files">
+      <li><code>python3 app.py</code> — 守护模式启动（fork 到后台，写 <code>server.pid</code> 后父进程退出 0）</li>
+      <li><code>python3 app.py --fg</code> — 前台运行，<kbd>Ctrl-C</kbd> 退出</li>
+      <li><code>python3 app.py --selftest</code> — 自检：起服务 → 走完一单 → 停服务 → 退出 0</li>
+      <li><code>python3 app.py user_research --plan --questions</code> — 打印用户调研方案 + 问卷</li>
+      <li><code>python3 app.py competitor_analysis --plan --criteria</code> — 打印竞品方案 + 维度</li>
+      <li><code>python3 app.py prototyping --design --test --plan --form</code> — 打印原型 + 测试 + 计划 + 表单</li>
+      <li><code>python3 app.py iteration --report --log</code> — 打印迭代报告 + 记录</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>定价与档位（自己定的）</h2>
+    <table style="border-collapse:collapse;width:100%">
+      <thead><tr style="background:#f4f4f8"><th style="padding:8px;text-align:left">档位</th><th>价格</th><th>最大迭代轮</th><th>适用</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:8px">基础档 basic</td><td>免费</td><td>2</td><td>尝鲜、一次性小品</td></tr>
+        <tr><td style="padding:8px">进阶档 pro</td><td>¥29</td><td>4</td><td>个人 / 小团队常用</td></tr>
+        <tr><td style="padding:8px">企业档 biz</td><td>¥199</td><td>8</td><td>多次打磨、要 PDF 报告</td></tr>
+      </tbody>
+    </table>
+    <p style="color:#666">价格档位保存在 <code>app.py</code> 的 <code>PRICING</code> 字典里，浏览器点击切换；每次报价落到 <code>logs/ledger.txt</code> 与 <code>logs/usage.json</code>，方便对账。</p>
+  </section>
+
+  <section>
+    <h2>环境变量</h2>
+    <ul class="files">
+      <li><code>TJ_ROOT</code> — 根目录（默认 <code>/opt/tuijinqi</code>，无则自动建）</li>
+      <li><code>TJ_PORT</code> — 监听端口（默认 8765）</li>
+      <li><code>TJ_DEMO</code> — 设为 1 自动塞演示单（自检用）</li>
+      <li><code>TJ_NO_OPEN</code> — 设为 1 关闭自动开浏览器</li>
+    </ul>
+  </section>
+</main>
+<footer>归档时间：见每次成品的 <code>验收.txt</code> · Idea-Pusher 想法推进器 · 客户用门面</footer>
+</body>
+</html>

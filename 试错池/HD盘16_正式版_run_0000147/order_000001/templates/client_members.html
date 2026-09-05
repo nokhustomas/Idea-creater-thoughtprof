@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社团成员 - HDIBS</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f6f9;color:#222}
+  nav{background:#1f2a44;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .brand{font-size:18px;font-weight:700}
+  .nav-links a{display:inline-block;padding:8px 14px;color:#fff;text-decoration:none;border-radius:6px;font-size:15px}
+  .nav-links a:hover{background:#2c3a5a}
+  main{padding:24px 16px;max-width:960px;margin:0 auto}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .member{background:#fff;border-radius:10px;padding:16px;display:flex;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .photo{width:80px;height:80px;border-radius:8px;background:#e6ecf5;border:1px dashed #b8c2d1;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#8a96aa;font-size:12px}
+  .info{flex:1;min-width:0}
+  .info .name{font-size:16px;font-weight:700;color:#1f2a44;margin-bottom:6px}
+  .info .desc{font-size:14px;color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+  .back{display:inline-block;margin-top:20px;padding:8px 16px;background:#1f2a44;color:#fff;text-decoration:none;border-radius:6px;font-size:14px}
+  .back:hover{background:#2c3a5a}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">HDIBS</div>
+  <div class="nav-links">
+    <a href="/client">首页</a>
+  </div>
+</nav>
+<main>
+  <div class="grid">
+    {% for m in members %}
+    <div class="member">
+      <div class="photo">照片</div>
+      <div class="info">
+        <div class="name">{{ m.name }}</div>
+        <div class="desc">{{ m.desc }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="back" href="/client">返回主页</a>
+</main>
+</body>
+</html>

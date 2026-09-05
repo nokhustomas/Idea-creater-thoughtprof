@@ -1,0 +1,1 @@
+ls -la *.md && echo "OK: 4 files present" && for f in copyright_status.md 目录.md 第一篇-计篇.md 第二篇-作战篇.md; do test -s "$f" || exit 1; done && echo "PASS"

@@ -1,0 +1,97 @@
+I need to send the writes as file content. Let me retry properly:ACTION: write templates/client_home.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDIBS 科学之光</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f6f9;color:#222}
+  nav{background:#1f2a44;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .brand{font-size:18px;font-weight:700}
+  .menu{display:flex;gap:8px;flex-wrap:wrap;position:relative}
+  .menu>li{list-style:none;position:relative}
+  .menu>li>a,.menu>li>.top{display:inline-block;padding:8px 14px;color:#fff;text-decoration:none;border-radius:6px;font-size:15px;cursor:pointer}
+  .menu>li>a:hover,.menu>li>.top:hover{background:#2c3a5a}
+  .submenu{position:absolute;top:100%;left:0;background:#fff;color:#222;border:1px solid #ddd;border-radius:6px;min-width:160px;padding:6px 0;display:none;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:10}
+  .submenu li{list-style:none;position:relative}
+  .submenu li a{display:block;padding:8px 14px;color:#222;text-decoration:none;font-size:14px}
+  .submenu li a:hover{background:#eef2f8}
+  .sub2{position:absolute;top:0;left:100%;background:#fff;color:#222;border:1px solid #ddd;border-radius:6px;min-width:140px;padding:6px 0;display:none;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+  .menu>li:hover>.submenu,.menu>li:focus-within>.submenu{display:block}
+  .submenu li:hover>.sub2,.submenu li:focus-within>.sub2{display:block}
+  main{padding:24px 16px}
+  .hero{background:#fff;border-radius:10px;padding:28px 20px;margin:0 auto;max-width:680px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .hero .welcome{display:block;font-size:22px;font-weight:700;color:#1f2a44;margin-bottom:14px}
+  .hero .subline{display:block;font-size:16px;color:#444;line-height:1.7}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">HDIBS</div>
+  <ul class="menu">
+    <li><a href="/client/about">关于我们</a></li>
+    <li><a href="/client/members">社团成员</a></li>
+    <li>
+      <span class="top" tabindex="0">路径资源 </span>
+      <ul class="submenu">
+        <li>
+          <a href="#">物理学 ▸</a>
+          <ul class="sub2">
+            <li><a href="/client/resource/物理学/光学">光学</a></li>
+            <li><a href="/client/resource/物理学/力学">力学</a></li>
+            <li><a href="/client/resource/物理学/电学">电学</a></li>
+            <li><a href="/client/resource/物理学/量子力学">量子力学</a></li>
+            <li><a href="/client/resource/物理学/热学">热学</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">化学 ▸</a>
+          <ul class="sub2">
+            <li><a href="/client/resource/化学/无机化学">无机化学</a></li>
+            <li><a href="/client/resource/化学/有机化学">有机化学</a></li>
+            <li><a href="/client/resource/化学/环境化学">环境化学</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">生物学 ▸</a>
+          <ul class="sub2">
+            <li><a href="/client/resource/生物学/神经生物学">神经生物学</a></li>
+            <li><a href="/client/resource/生物学/其他生物学">其他生物学</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+<main>
+  <section class="hero">
+    <div class="welcome">欢迎，</div>
+    <div class="subline">希望你可以在这里燃起你对科学的兴趣。</div>
+  </section>
+</main>
+<script>
+  document.querySelectorAll('.menu>li>.top').forEach(function(t){
+    t.addEventListener('click', function(e){
+      var sm = t.nextElementSibling;
+      if (sm) {
+        var show = sm.style.display !== 'block';
+        sm.style.display = show ? 'block' : 'none';
+      }
+    });
+  });
+  document.querySelectorAll('.submenu>li>a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var s2 = a.nextElementSibling;
+      if (s2) {
+        var show = s2.style.display !== 'block';
+        s2.style.display = show ? 'block' : 'none';
+        e.preventDefault();
+      }
+    });
+  });
+</script>
+</body>
+</html>
+FILE>>>

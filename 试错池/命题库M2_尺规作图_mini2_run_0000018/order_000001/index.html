@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>尺规作图的可与不可 —— 正五边形 vs 正七边形</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>尺规作图的可与不可</h1>
+    <p class="subtitle">为什么正五边形能用尺规作出，而正七边形永远不能？</p>
+    <p class="meta">面向高中生的交互式课件 · 基于 SVG 矢量画布 · 参考《普通高中数学课程标准（2017 年版 2020 年修订）》</p>
+  </header>
+
+  <main>
+    <section id="intro">
+      <h2>一、引子：两个看似相似的问题</h2>
+      <p>正五边形与正七边形看起来很像——都是把一个圆等分成若干份。奇怪的是，尺规作图（只用<strong>无刻度直尺</strong>与<strong>圆规</strong>）允许我们把圆等分成五份，却永远无法等分成七份。</p>
+      <p>这一节课，我们就用一段约 <strong>45</strong> 秒的自动演示先做一次正五边形，再花约 <strong>30</strong> 秒演示对正七边形的尝试与失败，然后从"可构造数"和"域扩张"的角度解释背后原因。</p>
+      <p>你也可以选择工具，自己在画布上拖动直尺和圆规，亲手试一试。</p>
+    </section>
+
+    <section id="canvas-section">
+      <h2>二、作图画布（SVG）</h2>
+      <p class="canvas-hint">SVG 是 W3C 标准的矢量图形格式，每一个 <code>&lt;circle&gt;</code>、<code>&lt;line&gt;</code> 本身就是数学对象（圆心+半径、两点确定直线），与几何代数化思路天然契合，可以直接挂 DOM 事件。下面就是这节课的主画布。</p>
+
+      <div class="toolbar" id="toolbar">
+        <button class="tool-btn active" data-tool="ruler" id="tool-ruler" title="直尺 (R)">📏 直尺</button>
+        <button class="tool-btn" data-tool="compass" id="tool-compass" title="圆规 (C)">⚪ 圆规</button>
+        <button class="tool-btn" data-tool="select" id="tool-select" title="选中 (S)">🖱 选中</button>
+        <button class="tool-btn" id="undo" title="撤销 (Ctrl+Z)">↶ 撤销</button>
+        <button class="tool-btn primary" id="demo-pentagon" title="演示正五边形作图">▶ 演示：正五边形</button>
+        <button class="tool-btn primary" id="demo-heptagon" title="演示正七边形尝试">▶ 演示：正七边形尝试</button>
+        <button class="tool-btn" id="next-step" title="下一步 (空格)">⏭ 下一步</button>
+        <button class="tool-btn" id="reset" title="清空画布">✕ 清空</button>
+        <span class="status" id="status">当前工具：直尺</span>
+      </div>
+
+      <svg id="board" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <!-- 背景网格 -->
+        <g id="grid"></g>
+        <!-- 已作图元素 -->
+        <g id="elements"></g>
+        <!-- 交点 / 圆点 -->
+        <g id="points"></g>
+        <!-- 演示用临时辅助线 -->
+        <g id="overlay"></g>
+        <!-- 说明文字 -->
+        <g id="caption">
+          <text id="caption-text" x="400" y="30" text-anchor="middle" font-size="18" fill="#222">点击"演示"按钮开始</text>
+        </g>
+      </svg>
+
+      <p class="hint">操作提示：<br>
+        · <strong>圆规</strong>：单击确定圆心，双击确定半径端点；<br>
+        · <strong>直尺</strong>：依次点击两个已有点画直线；<br>
+        · <strong>选中</strong>：点击元素查看/删除；<br>
+        · 当两个图形的交点多于一个时，系统会<strong>弹出</strong>菜单让你选择其中一个；<br>
+        · <kbd>空格</kbd> 推进动画下一步；<kbd>Ctrl+Z</kbd> 撤销。<br>
+        坐标系约定：SVG 原点在左上角，<strong>y 轴向下为正</strong>，所有几何计算需转换为标准笛卡尔坐标。
+      </p>
+    </section>
+
+    <section id="constructible">
+      <h2>三、可构造数：尺规作图的"语言"</h2>
+      <p>尺规作图允许的操作只有三类：</p>
+      <ol>
+        <li>过两个已知点画<strong>直线</strong>；</li>
+        <li>以一个已知点为圆心、过另一个已知点画<strong>圆</strong>；</li>
+        <li>取两条直线 / 两圆 / 直线与圆的<strong>交点</strong>。</li>
+      </ol>
+      <p>如果我们一开始就有"单位长度 1"，那么经过有限步上述操作能够得到的所有长度，就叫<strong>可构造数</strong>（Constructible Number）。从代数角度看，它们恰好是：通过对 1 做有限次加、减、乘、除、开平方所得到的全部实数。</p>
+      <p>高斯在《Disquisitiones Arithmeticae》（《算术研究》）Section VII 中给出关键定理：每一步尺规作图（作直线 / 圆 / 取交点）对应的数域扩张次数不超过 2。因此，一个数可构造，当且仅当它所满足的极小多项式次数是 <strong>2 的幂</strong>。</p>
+      <p>正 <em>n</em> 边形能尺规作图的充要条件是 cos(2π/<em>n</em>) 是可构造数。这就把"画图问题"转化成了"代数问题"。</p>
+    </section>
+
+    <section id="pentagon">
+      <h2>四、正五边形案例：能作</h2>
+      <p><strong>步骤顺序</strong>（任选一弦作起手）：</p>
+      <ol>
+        <li>任选两点 A, B 作弦 AB；</li>
+        <li>作 AB 的中垂线得圆心 O；</li>
+        <li>以 O 为圆心、OA 为半径画圆；</li>
+        <li>在圆上依次截取五等分点；</li>
+        <li>顺次连接五点即得正五边形。</li>
+      </ol>
+      <p>关键在 cos(36°)。由五等分圆的几何关系可以推出</p>
+      <p class="formula">cos(36°) = (√5 + 1)/4 ≈ 0.809016</p>
+      <p>代入可得 4 cos²(36°) − 2 cos(36°) − 1 = 0，即 <strong>4x² − 2x − 1 = 0</strong> 正是 cos(36°) 的极小多项式，次数为 <strong>2 = 2¹</strong>，是 <strong>2 的幂</strong>。因此 cos(36°) 可构造 → 正五边形可尺规作图。</p>
+      <p class="verify">数值复算：(√5 + 1) / 4 = (2.2360679... + 1) / 4 ≈ 0.80901699... ✓ 与计算器一致</p>
+    </section>
+
+    <section id="heptagon">
+      <h2>五、正七边形案例：永远不能</h2>
+      <p>用类似思路考虑 cos(2π/7)。数值上</p>
+      <p class="formula">cos(2π/7) ≈ 0.6234898...</p>
+      <p>它也是代数数，但满足一个三次方程</p>
+      <p class="formula"><strong>x³ + x² − 2x − 1 = 0</strong></p>
+      <p>这是它在 ℚ 上的最小多项式，次数为 <strong>3</strong>。但 3 <strong>不是 2 的幂</strong>（因为 3 = 2<sup>log₂3</sup> ≈ 2<sup>1.585</sup>，不是 2 的整数次幂），所以 cos(2π/7) 不是可构造数，正七边形因此永远不能尺规作图。</p>
+      <p class="verify">数值复算：cos(2π/7) = cos(0.8975979...) ≈ 0.6234898... ✓</p>
+      <p>这<strong>不是"还没找到办法"</strong>，而是"原则上不可能"。1593 年 <strong>Viète</strong>（韦达）曾专门研究过正七边形作图，最终只能给出近似解。1801 年 Gauss 在《算术研究》中给出了完整的可构造数理论，再后来 Galois 理论从根式可解的角度彻底证明了这条边界。</p>
+    </section>
+
+    <section id="interactive">
+      <h2>六、动手试一试</h2>
+      <ol>
+        <li>点"演示：正五边形"观看自动作图（约 45 秒），注意每步标号；</li>
+        <li>点"演示：正七边形尝试"观看为什么无论怎么选交点都凑不出七等分；</li>
+        <li>选"圆规"，<strong>单击</strong>画布定圆心，再<strong>单击</strong>另一处定半径画圆；</li>
+        <li>选"直尺"，点击两个已有点画直线；</li>
+        <li>遇到多交点时，系统弹出菜单让你选哪一个；</li>
+        <li>按 <kbd>Ctrl+Z</kbd> 撤销，按 <kbd>空格</kbd> 推进动画下一步。</li>
+      </ol>
+      <p>所有交点都由 <code>math.js</code> 中的解析几何算法算出：直线与圆用判别式 Δ，圆与圆先化为直线再求交。</p>
+    </section>
+
+    <footer>
+      <p>· 参考资料：<code>docs/constructible-number.md</code>、<code>docs/regular-pentagon.md</code>、<code>docs/heptagon.md</code><br>
+        · 技术：纯 SVG + 原生 JavaScript（<code>math.js</code> 负责几何，<code>script.js</code> 负责交互）</p>
+    </footer>
+  </main>
+
+  <script src="math.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

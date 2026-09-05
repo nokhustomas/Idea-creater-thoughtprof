@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关于我们 - HDIBS</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f6f9;color:#222}
+  nav{background:#1f2a44;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .brand{font-size:18px;font-weight:700}
+  .nav-links{display:flex;gap:8px;flex-wrap:wrap}
+  .nav-links a{display:inline-block;padding:8px 14px;color:#fff;text-decoration:none;border-radius:6px;font-size:15px}
+  .nav-links a:hover{background:#2c3a5a}
+  main{padding:24px 16px;max-width:720px;margin:0 auto}
+  .card{background:#fff;border-radius:10px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:20px}
+  h2{font-size:20px;color:#1f2a44;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eef2f8}
+  p{font-size:15px;line-height:1.8;color:#333;white-space:pre-wrap}
+  .back{display:inline-block;margin-top:10px;padding:8px 16px;background:#1f2a44;color:#fff;text-decoration:none;border-radius:6px;font-size:14px}
+  .back:hover{background:#2c3a5a}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">HDIBS</div>
+  <div class="nav-links">
+    <a href="/client">首页</a>
+  </div>
+</nav>
+<main>
+  <section class="card">
+    <h2>关于HDIBS</h2>
+    <p>{{ about }}</p>
+  </section>
+  <section class="card">
+    <h2>历任社长</h2>
+    <p>{{ history }}</p>
+  </section>
+  <a class="back" href="/client">返回主页</a>
+</main>
+</body>
+</html>

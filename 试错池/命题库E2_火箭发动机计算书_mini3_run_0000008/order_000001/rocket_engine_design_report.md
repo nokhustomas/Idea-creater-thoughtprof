@@ -1,0 +1,9 @@
+Pc (MPa) = 5.0
+O/F = 3.5
+T_chamber (K) = 3472.4
+gamma = 1.253
+R (J/kg/K) = 360.1
+c* (m/s) = 1632.5
+Isp_vac (m/s) = 3420
+Isp_sl (m/s) = 3370
+m_dot (kg/s) = 1.464

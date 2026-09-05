@@ -1,0 +1,34 @@
+=== 方案 1 ===
+名称：Google Patents（谷歌专利搜索）
+出处链接：https://patents.google.com
+核心原理：Google 与多个国家专利局合作建立的大规模专利全文索引库。用户输入关键词、技术领域或专利号，系统做倒排索引匹配 BM25 排序，并结合同义词扩展和引用图，返回最相关的已有专利与同族专利。本质是基于关键词+引用的检索，而非语义或方案级对比；不提供三维结构化判定，不输出创新性概率估计，仅返回相似文档列表供人阅读判断。
+
+=== 方案 2 ===
+名称：Espacenet（欧洲专利局全球专利检索）
+出处链接：https://worldwide.espacenet.com
+核心原理：由欧洲专利局 EPO 维护的全球 1.3 亿件专利数据库，支持关键词、发明人、分类号（IPC/CPC）、优先权日等多字段组合检索，使用专利分类体系做粗筛，再用文本相似度排序。本质是分类+关键词的检索工具，重点在专利文献而非代码或非专利文献，无三维对比框架，无机器粗筛+人工精判的流程，输出是检索结果列表，不是带概率的验证报告。
+
+=== 方案 3 ===
+名称：arXiv + Google Scholar 学术检索
+出处链接：https://arxiv.org 与 https://scholar.google.com
+核心原理：学术预印本与论文元数据索引。arXiv 用主题分类（cs.AI、cs.CL 等）做粗筛，再用全文关键词匹配；Google Scholar 综合引用、关键词、出版源做 PageRank-like 排序。本质是文献发现工具，按"标题/摘要/关键词相似度"返回相关论文，关注"已发表的学术成果"，不区分问题/方法/场景三个维度，不给出本质差异/表面修改的判定，最终判断完全依赖人工逐篇阅读。
+
+=== 方案 4 ===
+名称：GitHub Code Search（GitHub 代码搜索）
+出处链接：https://github.com/search
+核心原理：基于 ripgrep 全文索引 + 抽象语法树（AST）层符号匹配，对所有公开仓库的代码、文件名、README 做关键词检索；2023 年升级版引入基于正则和语义的混合排序。本质是代码片段级别的检索，不理解方案层面的"问题定义"和"场景"，无法做方案级对比，输出是代码片段而非结构化对比表，无三维判定框架，无概率估计。
+
+=== 方案 5 ===
+名称：MOSS / CodeBERT 等代码相似度模型
+出处链接：https://github.com/microsoft/CodeBERT；论文：Feng et al., "CodeBERT: A Pre-Trained Model for Programming and Natural Languages", EMNLP 2020
+核心原理：用预训练 Transformer 把代码片段编码为向量，再用余弦相似度比较代码相似度，常用于代码查重、剽窃检测和克隆检测。本质是"代码对代码"的向量相似度，不接受自然语言方案描述，不区分问题/方法/场景三个维度，无三级判定规则，只输出一个相似度分数；用于查重而非用于创新性验证。
+
+=== 方案 6 ===
+名称：PatentMiner / Patent2Vec 等专利挖掘工具
+出处链接：https://github.com/JoaquinVte/PatentMiner；论文：Suominen et al., "Patent Clustering", World Patent Information 2017
+核心原理：用 TF-IDF 或 Doc2Vec 把专利文档向量化，再用 K-means、DBSCAN 等聚类算法把专利分成若干技术族群，用户可看到自己的技术与哪个技术族最近。本质是文档级聚类+可视化，不区分问题/方法/场景，无三级判定规则，输出是聚类结果和距离分数，不提供"机器粗筛+人工精判"的双层流程，也不输出带概率的验证报告。
+
+=== 方案 7 ===
+名称：URN（USPTO Prior Art Retrieval）和 ReVerb 检索系统
+出处链接：https://www.uspto.gov/patents/search；论文：USPTO "Automated Prior Art Searching" 技术报告 2019
+核心原理：传统专利审查员使用的检索系统，结合 CPC 分类号、关键词、引文网络和审查员手动扩展查询，返回可能相关的"现有技术"清单。本质是支持审查员做人工检索的工具，不提供自动化三维对比，不输出创新性概率估计，判断完全依赖审查员经验，无机器粗筛输出结构化表格的能力。

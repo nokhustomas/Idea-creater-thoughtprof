@@ -1,0 +1,9 @@
+existing_solutions.txt	05f50ad91637a833
+my_idea.txt	4d0b076bb3980892
+output/comparison.md	d8484b1f93a0d497
+verify_novelty.py	51db4b068cb2f566
+三维对比.md	a93df7f05a8695f6
+三维验证框架.md	1330423818ff11e2
+结论.md	34636836d8d5abdc
+调研报告.md	8ce2934d5364c98f
+order_000002_成品.zip	zip 8成员

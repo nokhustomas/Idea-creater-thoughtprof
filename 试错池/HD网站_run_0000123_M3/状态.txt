@@ -1,0 +1,1 @@
+未达标：Aider×MiniMax-M3 适配失败，模型只输出思考不吐编辑，7 单各只产出 Aider 占位 test.txt；提示词 8000+ 行。

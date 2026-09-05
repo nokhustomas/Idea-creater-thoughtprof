@@ -1,0 +1,15 @@
+{
+    "description": "示例规则：均线金叉买入，死叉卖出",
+    "ma_cross": {
+        "short": 5,
+        "long": 20,
+        "type": "golden"
+    },
+    "conditions": {
+        "buy": ["ma_cross"],
+        "sell": ["ma_cross"]
+    },
+    "stop_loss": 5,
+    "take_profit": 20,
+    "max_position_days": 30
+}

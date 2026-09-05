@@ -1,0 +1,26 @@
+{
+    "buy_conditions": [
+        {
+            "type": "ma_crossover",
+            "short_ma": 5,
+            "long_ma": 20
+        }
+    ],
+    "sell_conditions": [
+        {
+            "type": "ma_crossover",
+            "short_ma": 5,
+            "long_ma": 20
+        },
+        {
+            "type": "stop_loss",
+            "stop_loss": 0.05
+        },
+        {
+            "type": "take_profit",
+            "take_profit": 0.10
+        }
+    ],
+    "max_hold_days": 30,
+    "description": "均线金叉买入，死叉卖出，止损5%，止盈10%，最多持有30天"
+}

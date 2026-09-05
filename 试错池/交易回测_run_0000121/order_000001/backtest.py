@@ -1,0 +1,487 @@
+import argparse
+import csv
+import datetime
+import json
+import math
+import os
+import sys
+from collections import defaultdict
+
+# ------------------------------------------------------------
+# Fee constants
+BUY_FEE_RATE = 0.0003          # 万分之三
+SELL_FEE_RATE = 0.0003 + 0.001 # 卖出印花税千分之零点五加万分之三
+INITIAL_CAPITAL = 1_000_000.0
+
+# ------------------------------------------------------------
+def load_data(data_dir):
+    """Load all CSV files from data_dir. Returns dict: stock_name -> list of dicts."""
+    stocks = {}
+    if not os.path.isdir(data_dir):
+        print(f"Error: data directory '{data_dir}' not found.", file=sys.stderr)
+        sys.exit(1)
+    for fname in sorted(os.listdir(data_dir)):
+        if not fname.endswith('.csv'):
+            continue
+        path = os.path.join(data_dir, fname)
+        rows = []
+        with open(path, newline='') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                row['date'] = row['date'].strip()
+                row['open'] = float(row['open'])
+                row['high'] = float(row['high'])
+                row['low'] = float(row['low'])
+                row['close'] = float(row['close'])
+                row['volume'] = int(row['volume'])
+                rows.append(row)
+        if not rows:
+            continue
+        # sort by date
+        rows.sort(key=lambda r: r['date'])
+        name = fname.replace('.csv','')
+        stocks[name] = rows
+    return stocks
+
+def parse_date(s):
+    return datetime.datetime.strptime(s, '%Y-%m-%d').date()
+
+def next_business_day(d):
+    d += datetime.timedelta(days=1)
+    while d.weekday() >= 5:
+        d += datetime.timedelta(days=1)
+    return d
+
+def generate_sample_data():
+    """Generate sample_data/ with 3 stocks, each 300 rows (synthetic)."""
+    import random
+    random.seed(42)
+    os.makedirs('sample_data', exist_ok=True)
+    start = datetime.date(2024, 1, 1)
+    for stock_idx in range(3):
+        rows = []
+        price = 100.0 + stock_idx * 50
+        d = start
+        for _ in range(300):
+            delta = random.uniform(-0.02, 0.02)
+            new_price = round(price * (1 + delta), 2)
+            open_ = round(price + random.uniform(-0.5, 0.5), 2)
+            high = round(max(open_, new_price) + random.uniform(0, 0.5), 2)
+            low = round(min(open_, new_price) - random.uniform(0, 0.5), 2)
+            vol = random.randint(1_000_000, 5_000_000)
+            rows.append([d.isoformat(), open_, high, low, new_price, vol])
+            price = new_price
+            d = next_business_day(d)
+        fname = f'sample_data/stock{stock_idx+1}.csv'
+        with open(fname, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['date', 'open', 'high', 'low', 'close', 'volume'])
+            writer.writerows(rows)
+        print(f"Generated {fname}")
+
+# ------------------------------------------------------------
+# Indicator helpers
+def compute_sma(prices, window):
+    sma = [None] * len(prices)
+    for i in range(len(prices)):
+        if i + 1 < window:
+            continue
+        sma[i] = sum(prices[i-window+1:i+1]) / window
+    return sma
+
+def compute_highest_high(highs, window):
+    out = [None] * len(highs)
+    for i in range(len(highs)):
+        if i + 1 < window:
+            continue
+        out[i] = max(highs[i-window+1:i+1])
+    return out
+
+def compute_lowest_low(lows, window):
+    out = [None] * len(lows)
+    for i in range(len(lows)):
+        if i + 1 < window:
+            continue
+        out[i] = min(lows[i-window+1:i+1])
+    return out
+
+# ------------------------------------------------------------
+# Rules evaluation
+def evaluate_buy_conditions(row_idx, stock_data, rules, indicators):
+    """Return True if all buy conditions are satisfied."""
+    buy_conds = rules.get('buy', [])
+    if not buy_conds:
+        return False
+    for cond in buy_conds:
+        if not eval_condition(cond, row_idx, stock_data, indicators):
+            return False
+    return True
+
+def evaluate_sell_conditions(row_idx, stock_data, rules, indicators):
+    """Return True if all sell conditions are satisfied."""
+    sell_conds = rules.get('sell', [])
+    if not sell_conds:
+        return False
+    for cond in sell_conds:
+        if not eval_condition(cond, row_idx, stock_data, indicators):
+            return False
+    return True
+
+def eval_condition(cond, idx, stock_data, indicators):
+    t = cond.get('type')
+    if t == 'crossover':
+        short = cond['short']
+        long_ = cond['long']
+        sma_short = indicators['sma'][short]
+        sma_long = indicators['sma'][long_]
+        if idx < 1:
+            return False
+        prev_short = sma_short[idx-1]
+        prev_long = sma_long[idx-1]
+        cur_short = sma_short[idx]
+        cur_long = sma_long[idx]
+        if prev_short is None or prev_long is None or cur_short is None or cur_long is None:
+            return False
+        # direction? assume 'above' for buy, 'below' for sell? We'll use cond 'direction'
+        direction = cond.get('direction', 'above')
+        if direction == 'above':
+            return prev_short <= prev_long and cur_short > cur_long
+        else:
+            return prev_short >= prev_long and cur_short < cur_long
+    elif t == 'breakout':
+        direction = cond.get('direction', 'high')
+        period = cond['period']
+        if direction == 'high':
+            hh = indicators['hh'][period][idx]
+            if hh is None or idx < 1:
+                return False
+            return stock_data[idx]['close'] > hh
+        else:
+            ll = indicators['ll'][period][idx]
+            if ll is None or idx < 1:
+                return False
+            return stock_data[idx]['close'] < ll
+    elif t == 'threshold':
+        direction = cond.get('direction', 'above')
+        value = cond['value']  # percent
+        if idx < 1:
+            return False
+        prev_close = stock_data[idx-1]['close']
+        cur_close = stock_data[idx]['close']
+        change = (cur_close - prev_close) / prev_close * 100
+        if direction == 'above':
+            return change > value
+        else:
+            return change < -value
+    return False
+
+# ------------------------------------------------------------
+def run_backtest(stocks, rules, start_date, end_date):
+    # Convert date strings to date objects
+    start = parse_date(start_date)
+    end = parse_date(end_date)
+
+    # Build list of all trading days (union across stocks)
+    all_dates = set()
+    for name, data in stocks.items():
+        for row in data:
+            d = parse_date(row['date'])
+            if start <= d <= end:
+                all_dates.add(d)
+    all_dates = sorted(all_dates)
+
+    # Precompute indicators for each stock (only needed periods)
+    needed_periods = set()
+    buy_conds = rules.get('buy', [])
+    sell_conds = rules.get('sell', [])
+    for cond in buy_conds + sell_conds:
+        if cond['type'] == 'crossover':
+            needed_periods.add(cond['short'])
+            needed_periods.add(cond['long'])
+        elif cond['type'] == 'breakout':
+            needed_periods.add(cond['period'])
+    indicators = {}
+    for name, data in stocks.items():
+        closes = [r['close'] for r in data]
+        highs = [r['high'] for r in data]
+        lows = [r['low'] for r in data]
+        ind = {'sma': {}, 'hh': {}, 'll': {}}
+        for period in needed_periods:
+            ind['sma'][period] = compute_sma(closes, period)
+            ind['hh'][period] = compute_highest_high(highs, period)
+            ind['ll'][period] = compute_lowest_low(lows, period)
+        indicators[name] = ind
+
+    # Build date index for each stock
+    stock_date_idx = {}
+    for name, data in stocks.items():
+        idx_map = {}
+        for i, row in enumerate(data):
+            d = parse_date(row['date'])
+            if start <= d <= end:
+                idx_map[d] = i
+        stock_date_idx[name] = idx_map
+
+    # State
+    cash = INITIAL_CAPITAL
+    positions = {}  # name -> {'shares': int, 'entry_price': float, 'entry_date': date, 'cost': float}
+    trades = []
+    equity_curve = []
+
+    # Helper to get previous close for limit price
+    def get_prev_close(name, cur_date):
+        data = stocks[name]
+        # find previous trading day's close
+        idx = stock_date_idx[name].get(cur_date)
+        if idx is None:
+            return None
+        if idx == 0:
+            return None
+        return data[idx-1]['close']
+
+    # Process each trading day
+    for cur_date in all_dates:
+        # For each stock that has data on this day
+        for name, data in stocks.items():
+            idx = stock_date_idx[name].get(cur_date)
+            if idx is None:
+                continue
+            row = data[idx]
+            close = row['close']
+            # Check if price is at limit
+            prev_close = get_prev_close(name, cur_date)
+            limit_up = round(prev_close * 1.1, 2) if prev_close else None
+            limit_down = round(prev_close * 0.9, 2) if prev_close else None
+
+            # Check buy
+            if name not in positions:
+                if evaluate_buy_conditions(idx, data, rules, indicators[name]):
+                    # Check T+1 not needed for buy
+                    # Check price not at limit up
+                    if limit_up and close >= limit_up:
+                        pass  # cannot buy
+                    else:
+                        shares = 1  # buy 1 share
+                        buy_cost = close * shares * (1 + BUY_FEE_RATE)
+                        if cash >= buy_cost:
+                            cash -= buy_cost
+                            positions[name] = {
+                                'shares': shares,
+                                'entry_price': close,
+                                'entry_date': cur_date,
+                                'cost': buy_cost
+                            }
+                            trades.append({
+                                'date': cur_date.isoformat(),
+                                'stock': name,
+                                'action': 'buy',
+                                'price': close,
+                                'shares': shares,
+                                'fee': close * shares * BUY_FEE_RATE,
+                                'profit': 0.0
+                            })
+            # Check sell
+            else:
+                pos = positions[name]
+                # Check if we can sell (T+1)
+                if cur_date <= pos['entry_date']:
+                    continue  # cannot sell same day
+                # Check if sell conditions met or stop/take profit or max days
+                sell_signal = False
+                # stop loss
+                stop_loss_pct = rules.get('stop_loss_pct', None)
+                if stop_loss_pct is not None:
+                    pnl_pct = (close - pos['entry_price']) / pos['entry_price'] * 100
+                    if pnl_pct <= -stop_loss_pct:
+                        sell_signal = True
+                # take profit
+                take_profit_pct = rules.get('take_profit_pct', None)
+                if take_profit_pct is not None and not sell_signal:
+                    pnl_pct = (close - pos['entry_price']) / pos['entry_price'] * 100
+                    if pnl_pct >= take_profit_pct:
+                        sell_signal = True
+                # max holding days
+                max_holding_days = rules.get('max_holding_days', None)
+                if max_holding_days is not None and not sell_signal:
+                    days_held = (cur_date - pos['entry_date']).days
+                    if days_held >= max_holding_days:
+                        sell_signal = True
+                # rule-based sell
+                if not sell_signal:
+                    if evaluate_sell_conditions(idx, data, rules, indicators[name]):
+                        sell_signal = True
+
+                if sell_signal:
+                    # Check price not at limit down
+                    if limit_down and close <= limit_down:
+                        pass  # cannot sell
+                    else:
+                        shares = pos['shares']
+                        sell_proceeds = close * shares * (1 - SELL_FEE_RATE)
+                        cash += sell_proceeds
+                        trade_profit = sell_proceeds - pos['cost']
+                        trades.append({
+                            'date': cur_date.isoformat(),
+                            'stock': name,
+                            'action': 'sell',
+                            'price': close,
+                            'shares': shares,
+                            'fee': close * shares * SELL_FEE_RATE,
+                            'profit': trade_profit
+                        })
+                        del positions[name]
+
+        # Compute net value for the day
+        net_value = cash
+        for name, pos in positions.items():
+            # find current close for this stock on this date
+            idx = stock_date_idx[name].get(cur_date)
+            if idx is not None:
+                cur_close = stocks[name][idx]['close']
+                net_value += pos['shares'] * cur_close
+        equity_curve.append({'date': cur_date.isoformat(), 'net_value': round(net_value, 2)})
+
+    # Post-process
+    return trades, equity_curve, INITIAL_CAPITAL
+
+# ------------------------------------------------------------
+def compute_statistics(trades, equity_curve, initial_capital):
+    # Total return
+    final_net = equity_curve[-1]['net_value'] if equity_curve else initial_capital
+    total_return_pct = (final_net - initial_capital) / initial_capital * 100
+
+    # Annualized return
+    start_date = parse_date(equity_curve[0]['date']) if equity_curve else None
+    end_date = parse_date(equity_curve[-1]['date']) if equity_curve else None
+    years = (end_date - start_date).days / 365.25 if start_date and end_date else 1.0
+    annualized = ((final_net / initial_capital) ** (1 / years) - 1) * 100
+
+    # Max drawdown
+    max_dd = 0.0
+    peak = initial_capital
+    for e in equity_curve:
+        if e['net_value'] > peak:
+            peak = e['net_value']
+        dd = (peak - e['net_value']) / peak * 100
+        if dd > max_dd:
+            max_dd = dd
+
+    # Trades stats
+    win_trades = [t for t in trades if t['profit'] > 0]
+    lose_trades = [t for t in trades if t['profit'] < 0]
+    # total_trades = number of round trips (buy+sell pairs)
+    total_trades = len(trades) // 2
+    win_rate = len(win_trades) / total_trades * 100 if total_trades else 0.0
+    avg_win = sum(t['profit'] for t in win_trades) / len(win_trades) if win_trades else 0.0
+    avg_loss = sum(t['profit'] for t in lose_trades) / len(lose_trades) if lose_trades else 0.0
+    profit_loss_ratio = abs(avg_win / avg_loss) if avg_loss != 0 else 0.0
+
+    # Monthly returns
+    monthly = defaultdict(float)
+    monthly_start = {}
+    for e in equity_curve:
+        d = parse_date(e['date'])
+        month_key = d.strftime('%Y-%m')
+        if month_key not in monthly_start:
+            monthly_start[month_key] = e['net_value']
+        monthly[month_key] = e['net_value']
+    monthly_returns = {}
+    for mon, end_val in monthly.items():
+        start_val = monthly_start[mon]
+        monthly_returns[mon] = (end_val - start_val) / start_val * 100
+
+    return {
+        'total_return_pct': round(total_return_pct, 2),
+        'annualized': round(annualized, 2),
+        'max_drawdown': round(max_dd, 2),
+        'win_rate': round(win_rate, 2),
+        'profit_loss_ratio': round(profit_loss_ratio, 2),
+        'total_trades': total_trades,
+        'monthly_returns': monthly_returns
+    }
+
+# ------------------------------------------------------------
+def write_report(statistics, out_dir):
+    lines = []
+    lines.append("# 回测报告")
+    lines.append("")
+    lines.append(f"总收益: {statistics['total_return_pct']}%")
+    lines.append(f"年化收益: {statistics['annualized']}%")
+    lines.append(f"最大回撤: {statistics['max_drawdown']}%")
+    lines.append(f"胜率: {statistics['win_rate']}%")
+    lines.append(f"盈亏比: {statistics['profit_loss_ratio']}")
+    lines.append(f"交易次数: {statistics['total_trades']}")
+    lines.append("")
+    lines.append("## 每月收益表")
+    lines.append("")
+    lines.append("| 月份 | 收益率(%) |")
+    lines.append("|------|-----------|")
+    for mon in sorted(statistics['monthly_returns'].keys()):
+        ret = statistics['monthly_returns'][mon]
+        lines.append(f"| {mon} | {ret:.2f} |")
+    lines.append("")
+    report_path = os.path.join(out_dir, '回测报告.md')
+    with open(report_path, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines))
+
+def write_trades_csv(trades, out_dir):
+    path = os.path.join(out_dir, '交易明细.csv')
+    with open(path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=['date','stock','action','price','shares','fee','profit'])
+        writer.writeheader()
+        for t in trades:
+            writer.writerow(t)
+
+def write_equity_csv(equity_curve, out_dir):
+    path = os.path.join(out_dir, '资金曲线.csv')
+    with open(path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=['date','net_value'])
+        writer.writeheader()
+        for e in equity_curve:
+            writer.writerow(e)
+
+# ------------------------------------------------------------
+def main():
+    parser = argparse.ArgumentParser(description='A股个人交易规则回测工具（只研究，不下单）')
+    parser.add_argument('--data', required=True, help='CSV目录')
+    parser.add_argument('--rules', required=True, help='规则JSON文件')
+    parser.add_argument('--start', required=True, help='起始日期 YYYY-MM-DD')
+    parser.add_argument('--end', required=True, help='结束日期 YYYY-MM-DD')
+    parser.add_argument('--generate-sample', action='store_true', help='生成示例数据并退出')
+    args = parser.parse_args()
+
+    if args.generate_sample:
+        generate_sample_data()
+        return
+
+    # Load data
+    stocks = load_data(args.data)
+    if not stocks:
+        print("Error: no stock data loaded.", file=sys.stderr)
+        sys.exit(1)
+
+    # Load rules
+    with open(args.rules, 'r') as f:
+        rules = json.load(f)
+
+    # Run backtest
+    trades, equity_curve, initial_capital = run_backtest(stocks, rules, args.start, args.end)
+
+    # Create output directory
+    out_dir = 'out'
+    os.makedirs(out_dir, exist_ok=True)
+
+    # Write trades and equity
+    write_trades_csv(trades, out_dir)
+    write_equity_csv(equity_curve, out_dir)
+
+    # Compute statistics and write report
+    stats = compute_statistics(trades, equity_curve, initial_capital)
+    write_report(stats, out_dir)
+
+    # Print summary
+    print(f"回测完成，结果写入 {out_dir}/")
+    print(f"总收益: {stats['total_return_pct']}%  交易次数: {stats['total_trades']}")
+
+if __name__ == '__main__':
+    main()

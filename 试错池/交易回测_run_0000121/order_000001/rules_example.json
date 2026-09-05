@@ -1,0 +1,26 @@
+{
+  "buy": [
+    {
+      "type": "crossover",
+      "short": 5,
+      "long": 20,
+      "direction": "above"
+    },
+    {
+      "type": "threshold",
+      "direction": "above",
+      "value": 1.0
+    }
+  ],
+  "sell": [
+    {
+      "type": "crossover",
+      "short": 5,
+      "long": 20,
+      "direction": "below"
+    }
+  ],
+  "stop_loss_pct": 5,
+  "take_profit_pct": 10,
+  "max_holding_days": 30
+}

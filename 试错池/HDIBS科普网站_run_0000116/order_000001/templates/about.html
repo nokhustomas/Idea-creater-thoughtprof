@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - HDIBS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+            margin-top: 15px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            display: block;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a2e;
+            min-width: 160px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 200;
+        }
+        .nav-item:hover .dropdown {
+            display: block;
+        }
+        .dropdown-item {
+            position: relative;
+        }
+        .dropdown-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .dropdown-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .sub-dropdown {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: #1a1a2e;
+            min-width: 140px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+        }
+        .dropdown-item:hover .sub-dropdown {
+            display: block;
+        }
+        .sub-dropdown-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .sub-dropdown-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .main-content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+        .section-content {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #16213e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .main-content {
+                margin: 20px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/client/home" class="navbar-brand">HDIBS</a>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/client/about" class="nav-link">关于我们</a>
+            </li>
+            <li class="nav-item">
+                <a href="/client/members" class="nav-link">社团成员</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">路径资源</a>
+                <div class="dropdown">
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">物理学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_physics_optics" class="sub-dropdown-link">光学</a>
+                            <a href="/client/resource_physics_mechanics" class="sub-dropdown-link">力学</a>
+                            <a href="/client/resource_physics_electricity" class="sub-dropdown-link">电学</a>
+                            <a href="/client/resource_physics_quantum" class="sub-dropdown-link">量子力学</a>
+                            <a href="/client/resource_physics_thermodynamics" class="sub-dropdown-link">热学</a>
+                        </div>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">化学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_chemistry_inorganic" class="sub-dropdown-link">无机化学</a>
+                            <a href="/client/resource_chemistry_organic" class="sub-dropdown-link">有机化学</a>
+                            <a href="/client/resource_chemistry_environmental" class="sub-dropdown-link">环境化学</a>
+                        </div>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">生物学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_biology_neuro" class="sub-dropdown-link">神经生物学</a>
+                            <a href="/client/resource_biology_other" class="sub-dropdown-link">其他生物学</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h2 class="section-title">关于HDIBS</h2>
+        <p class="section-content" id="about-hdibs">{{ content.about_hdibs }}</p>
+        
+        <h2 class="section-title">历任社长</h2>
+        <p class="section-content" id="past-presidents">{{ content.past_presidents }}</p>
+        
+        <a href="/client/home" class="back-link">← 返回主页</a>
+    </main>
+</body>
+</html>

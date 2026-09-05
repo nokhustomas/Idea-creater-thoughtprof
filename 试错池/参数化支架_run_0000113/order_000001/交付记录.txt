@@ -1,0 +1,15 @@
+README.md	5d018d12a033d3f9
+bracket.scad	555c90e364826e36
+check.py	2caa6e566356d262
+final_delivery.py	efa4eadc385c9d41
+first_scad.py	a705ccb2504e2b5d
+main_runner.py	6dc3adf3d2e3259f
+render.sh	6cd6eae856459dd9
+run_final.py	54d1a82479733b85
+run_tasks.py	6231be0393d02c6f
+sandbox_run.py	ac61aea0e03fd71e
+setup_and_run.py	7ab73c79fb219120
+slice_analysis.py	8eaf7ef987153fc3
+stl_analysis.py	72f8ffc82318d900
+use_sandbox.py	9f70d1d5fd1fee9f
+order_000001_成品.zip	zip 14成员

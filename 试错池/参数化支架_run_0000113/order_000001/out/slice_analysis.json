@@ -1,0 +1,12 @@
+{
+  "parts": [
+    {
+      "file": "fbspool-hub-v1-inner.stl",
+      "error": "File not found"
+    },
+    {
+      "file": "dospool-hub-v1-outer.stl",
+      "error": "File not found"
+    }
+  ]
+}

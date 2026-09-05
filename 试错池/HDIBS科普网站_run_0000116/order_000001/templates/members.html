@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社团成员 - HDIBS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+            margin-top: 15px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            display: block;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a2e;
+            min-width: 160px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 200;
+        }
+        .nav-item:hover .dropdown {
+            display: block;
+        }
+        .dropdown-item {
+            position: relative;
+        }
+        .dropdown-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .dropdown-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .sub-dropdown {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: #1a1a2e;
+            min-width: 140px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+        }
+        .dropdown-item:hover .sub-dropdown {
+            display: block;
+        }
+        .sub-dropdown-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .sub-dropdown-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .main-content {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .page-title {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .member-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .photo-box {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            border: 2px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            color: #999;
+            font-size: 14px;
+        }
+        .member-info {
+            min-height: 80px;
+        }
+        .member-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .member-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #16213e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .main-content {
+                margin: 20px;
+                padding: 25px;
+            }
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/client/home" class="navbar-brand">HDIBS</a>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/client/about" class="nav-link">关于我们</a>
+            </li>
+            <li class="nav-item">
+                <a href="/client/members" class="nav-link">社团成员</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">路径资源</a>
+                <div class="dropdown">
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">物理学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_physics_optics" class="sub-dropdown-link">光学</a>
+                            <a href="/client/resource_physics_mechanics" class="sub-dropdown-link">力学</a>
+                            <a href="/client/resource_physics_electricity" class="sub-dropdown-link">电学</a>
+                            <a href="/client/resource_physics_quantum" class="sub-dropdown-link">量子力学</a>
+                            <a href="/client/resource_physics_thermodynamics" class="sub-dropdown-link">热学</a>
+                        </div>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">化学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_chemistry_inorganic" class="sub-dropdown-link">无机化学</a>
+                            <a href="/client/resource_chemistry_organic" class="sub-dropdown-link">有机化学</a>
+                            <a href="/client/resource_chemistry_environmental" class="sub-dropdown-link">环境化学</a>
+                        </div>
+                    </div>
+                    <div class="dropdown-item">
+                        <a href="#" class="dropdown-link">生物学</a>
+                        <div class="sub-dropdown">
+                            <a href="/client/resource_biology_neuro" class="sub-dropdown-link">神经生物学</a>
+                            <a href="/client/resource_biology_other" class="sub-dropdown-link">其他生物学</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="page-title">社团成员</h1>
+        <div class="members-grid">
+            {% for i in range(10) %}
+            <div class="member-card">
+                <div class="photo-box">照片</div>
+                <div class="member-info">
+                    <p class="member-name">{{ content.members[i].name if content.members[i].name else '成员 ' + (i+1)|string }}</p>
+                    <p class="member-desc">{{ content.members[i].description if content.members[i].description else '简介待填写...' }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/client/home" class="back-link">← 返回主页</a>
+    </main>
+</body>
+</html>

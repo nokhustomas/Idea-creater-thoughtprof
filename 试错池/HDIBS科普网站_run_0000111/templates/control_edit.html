@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容编辑 - HDIBS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }
+        .navbar { background: #1a1a2e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { color: #667eea; font-size: 24px; font-weight: bold; }
+        .logout { color: #fff; text-decoration: none; opacity: 0.8; }
+        .main-content { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+        h1 { font-size: 28px; color: #1a1a2e; margin-bottom: 30px; text-align: center; }
+        .form-section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .form-section h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #555; }
+        .form-group textarea, .form-group input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; font-family: inherit; }
+        .form-group textarea:focus, .form-group input:focus { outline: none; border-color: #667eea; }
+        .btn { display: block; width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .message.success { background: #d4edda; color: #155724; display: block; }
+        .message.error { background: #f8d7da; color: #721c24; display: block; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #667eea; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">HDIBS 控制端</div>
+        <a href="/logout" class="logout">退出登录</a>
+    </nav>
+    <main class="main-content">
+        <a href="/control" class="back-link">← 返回控制端首页</a>
+        <h1>内容编辑</h1>
+        <div id="message" class="message"></div>
+        <form id="editForm">
+            <div class="form-section">
+                <h2>关于我们</h2>
+                <div class="form-group"><label for="about_hdibs">关于HDIBS</label><textarea id="about_hdibs" name="about_hdibs" rows="4">{{ content.about_hdibs }}</textarea></div>
+                <div class="form-group"><label for="past_presidents">历任社长</label><textarea id="past_presidents" name="past_presidents" rows="4">{{ content.past_presidents }}</textarea></div>
+            </div>
+            <div class="form-section">
+                <h2>社团成员</h2>
+                {% for i in range(10) %}
+                <div class="form-group"><label>成员 {{ i+1 }} 姓名</label><input type="text" name="member_name_{{ i }}" value="{{ content.members[i].name }}"></div>
+                <div class="form-group"><label>成员 {{ i+1 }} 信息</label><textarea name="member_info_{{ i }}" rows="2">{{ content.members[i].info }}</textarea></div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn">保存修改</button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var data = { about_hdibs: document.getElementById('about_hdibs').value, past_presidents: document.getElementById('past_presidents').value, members: [] };
+            for (var i = 0; i < 10; i++) { data.members.push({ name: document.querySelector('[name="member_name_' + i + '"]').value, info: document.querySelector('[name="member_info_' + i + '"]').value }); }
+            fetch('/api/update', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) })
+            .then(function(response) { return response.json(); })
+            .then(function(result) { var msg = document.getElementById('message'); if (result.success) { msg.className = 'message success'; msg.textContent = '保存成功！'; } else { msg.className = 'message error'; msg.textContent = '保存失败: ' + result.error; } })
+            .catch(function(error) { var msg = document.getElementById('message'); msg.className = 'message error'; msg.textContent = '请求失败: ' + error; });
+        });
+    </script>
+</body>
+</html>

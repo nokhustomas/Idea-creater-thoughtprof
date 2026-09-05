@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容编辑 - HDIBS 控制端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background 0.3s;
+            display: inline-block;
+            margin-left: 20px;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .main-content {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .page-title {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-section {
+            margin-bottom: 30px;
+        }
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #16213e;
+        }
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .member-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .member-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #16213e;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1a1a2e;
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 20px;
+                padding: 25px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/control" class="navbar-brand">HDIBS 控制端</a>
+        <a href="/control/edit" class="nav-link">进入修改</a>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="page-title">内容编辑</h1>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="form-section">
+            <label class="form-label">关于HDIBS</label>
+            <textarea id="about-hdibs" class="form-input">{{ content.about_hdibs }}</textarea>
+        </div>
+        
+        <div class="form-section">
+            <label class="form-label">历任社长</label>
+            <textarea id="past-presidents" class="form-input">{{ content.past_presidents }}</textarea>
+        </div>
+        
+        <div class="member-section">
+            <div class="member-title">社团成员 - 第1位</div>
+            <div class="form-section">
+                <label class="form-label">姓名</label>
+                <input type="text" id="member-0-name" class="form-input" value="{{ content.members[0].name }}">
+            </div>
+            <div class="form-section">
+                <label class="form-label">简介</label>
+                <textarea id="member-0-desc" class="form-input">{{ content.members[0].description }}</textarea>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="saveContent()">保存</button>
+            <button class="btn btn-secondary" onclick="resetForm()">重置</button>
+        </div>
+    </main>
+
+    <script>
+        function saveContent() {
+            const data = {
+                about_hdibs: document.getElementById('about-hdibs').value,
+                past_presidents: document.getElementById('past-presidents').value,
+                members: [
+                    {
+                        name: document.getElementById('member-0-name').value,
+                        description: document.getElementById('member-0-desc').value
+                    }
+                ]
+            };
+            
+            // Get existing members data for members 2-10
+            fetch('/api/content')
+                .then(r => r.json())
+                .then(existing => {
+                    for (let i = 1; i < 10; i++) {
+                        if (existing.members && existing.members[i]) {
+                            data.members.push(existing.members[i]);
+                        } else {
+                            data.members.push({name: '', description: ''});
+                        }
+                    }
+                    
+                    fetch('/api/content', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                    .then(r => r.json())
+                    .then(result => {
+                        const msg = document.getElementById('message');
+                        if (result.success) {
+                            msg.className = 'message success';
+                            msg.textContent = '保存成功！';
+                        } else {
+                            msg.className = 'message error';
+                            msg.textContent = '保存失败';
+                        }
+                        setTimeout(() => msg.className = 'message', 3000);
+                    });
+                });
+        }
+        
+        function resetForm() {
+            document.getElementById('about-hdibs').value = '这里将显示关于HDIBS的内容...';
+            document.getElementById('past-presidents').value = '这里将显示历任社长的信息...';
+            document.getElementById('member-0-name').value = '';
+            document.getElementById('member-0-desc').value = '';
+        }
+    </script>
+</body>
+</html>

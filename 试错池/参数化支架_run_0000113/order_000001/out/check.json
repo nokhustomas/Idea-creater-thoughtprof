@@ -1,0 +1,9 @@
+{
+  "bbox_ok": true,
+  "volume_ok": true,
+  "bbox": {
+    "x": 60.0,
+    "y": 30.0,
+    "z": 40.0
+  }
+}

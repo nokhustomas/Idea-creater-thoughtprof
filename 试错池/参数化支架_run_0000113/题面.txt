@@ -1,0 +1,20 @@
+题目：参数化 L 形支架（OpenSCAD，工程线第一题）
+
+【参数】
+L=60(长) W=30(宽) T=4(厚) H1=40 H2=40(臂高) D=5(孔径) N=2(孔数) R=3(圆角)，单位 mm
+
+【交付】（四个文件）
+1. bracket.scad - 参数化模型
+2. render.sh - 调用 openscad 生成 STL/PNG；无 openscad 退出码 2
+3. check.py - 读 STL、验证 bbox/volume、输出 JSON 到 out/check.json
+4. README.md - 三行用法
+
+【验收】
+✓ bash render.sh 退出码 0，out/bracket.stl 存在
+✓ python3 check.py 退出码 0，check.json: bbox_ok=true、volume_ok=true
+✓ N=3 后体积减小
+✓ zip 含四个文件
+
+【不做】
+GUI、其它 CAD 格式、装配体
+

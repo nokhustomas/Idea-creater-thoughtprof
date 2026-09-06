@@ -1,0 +1,37 @@
+{
+  "strategy": {
+    "name": "momentum_rotation_topN",
+    "window": 20,
+    "top_n": 5,
+    "start_date": "20231201",
+    "end_date": "20231229",
+    "n_days": 20,
+    "final_nav": 1.0079553081969421,
+    "final_nav_fee": 1.0046981816021463,
+    "max_drawdown": -0.02351082757614953,
+    "turnover": 5.4,
+    "return_after_fee": 0.004698181602146301,
+    "fee_paid": 0.0032105368539124
+  },
+  "benchmark": {
+    "name": "equal_weight_50",
+    "start_date": "20231201",
+    "end_date": "20231229",
+    "n_days": 20,
+    "final_nav": 1.0020207166616424,
+    "final_nav_fee": 0.9903661586518299,
+    "max_drawdown": -0.043115842495064616,
+    "turnover": 20.0,
+    "return_after_fee": -0.009934668010203374,
+    "fee_paid": 0.011654558009812488
+  },
+  "alpha": {
+    "final_nav_diff": 0.005934591535299738,
+    "return_after_fee_diff": 0.014632849612349674
+  },
+  "params": {
+    "data_dir": "/opt/tuijinqi/sandbox/data/bars",
+    "universe": "/opt/tuijinqi_mini3/runs/run_0000012/work/universe.json",
+    "fee_rate": 0.0003
+  }
+}

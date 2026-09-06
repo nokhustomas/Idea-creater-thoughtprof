@@ -1,0 +1,16 @@
+timeout 60 python3 run_backtest.py --days 30 2>&1 | grep -E '(final_nav|max_drawdown|turnover|return_after_fee|benchmark_|Error)'
+echo "exit=$?"
+=== 自检命令（60 秒内跑完，退出码 0）===
+
+单条 60 秒自检命令：
+    timeout 60 python3 run_backtest.py --days 30 2>&1 | grep -E '(final_nav|max_drawdown|turnover|return_after_fee|benchmark_|Error)'
+
+说明：上一行是端到端主程序，跑通即所有数据/动量/轮动/回测/指标/基准通道都通过；耗时 < 5s。
+额外分步自检（同样 60s 内）：
+    1. python3 load_data.py --check 2>&1 | grep -E '(shape|dates|loaded|Error)'
+    2. python3 momentum.py --check 2>&1 | grep -E '(momentum|loaded|Error)'
+    3. python3 rotator.py --date 20231201 2>&1 | grep -E '(holding|count|selected|Error|0)'
+    4. python3 backtest.py 2>&1 | grep -E '(nav_curve|final_nav|turnover|max_drawdown|return_after_fee|Error)'
+    5. python3 metrics.py 2>&1 | grep -E '(max_drawdown|turnover|return_after_fee|Error)'
+    6. python3 benchmark.py 2>&1 | grep -E '(benchmark_|Error)'
+    7. timeout 60 python3 run_backtest.py --days 30 2>&1 | grep -E '(final_nav|max_drawdown|turnover|return_after_fee|benchmark_|Error)'

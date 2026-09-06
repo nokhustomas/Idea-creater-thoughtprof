@@ -1,0 +1,8 @@
+三档定价方案.md	1aae659cd11fd93f
+付费意愿证据.md	aa1d910d809f19b5
+前100用户获客.md	7e55071c6e7ddc86
+小脚本.py	bffdf342d353a786
+竞品定价全景.md	91025ea822578896
+运行命令.txt	3f0f8aa5ee06d07d
+需核清单.md	8722077d55bcdc76
+order_000001_成品.zip	zip 7成员

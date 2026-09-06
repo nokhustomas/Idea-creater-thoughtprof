@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+{% block title %}{{ topic }} · {{ category }}{% endblock %}
+{% block nav %}
+  <a href="/client">首页</a>
+  <a href="/client/about">关于我们</a>
+  <a href="/client/members">社团成员</a>
+  <a href="/client/resources">路径资源</a>
+{% endblock %}
+{% block content %}
+<h1>{{ category }} / {{ topic }}</h1>
+<div class="card" style="background:#fff; border-radius:12px; padding:24px; min-height:200px; box-shadow:0 4px 14px rgba(0,0,0,.05);">
+  <p class="muted">（此处为空白页面，后续可由控制端填充 {{ topic }} 相关学习内容。）</p>
+</div>
+<a class="back" href="/client/resources">返回路径资源</a>
+{% endblock %}

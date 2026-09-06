@@ -1,0 +1,23 @@
+{% extends "_base.html" %}
+{% block title %}HDIBS · 关于我们{% endblock %}
+{% block nav %}
+  <a href="/client">首页</a>
+  <a href="/client/about">关于我们</a>
+  <a href="/client/members">社团成员</a>
+  <a href="/client/resources">路径资源</a>
+{% endblock %}
+{% block content %}
+<h1>关于我们</h1>
+
+<section>
+  <h2>关于HDIBS</h2>
+  <p class="about-body" style="font-size:15px; line-height:1.7; white-space:pre-wrap;">{{ about_hdibs }}</p>
+</section>
+
+<section>
+  <h2>历任社长</h2>
+  <p class="about-body" style="font-size:15px; line-height:1.7; white-space:pre-wrap;">{{ about_history }}</p>
+</section>
+
+<a class="back" href="/client">返回主页</a>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HDIBS · 登录</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         background: #f5f7fb; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .card { background:#fff; padding:28px 24px; border-radius:12px; width: min(92%, 360px);
+          box-shadow:0 6px 24px rgba(0,0,0,.08); }
+  h1 { margin:0 0 4px; font-size:20px; color:#222; }
+  .sub { color:#777; font-size:13px; margin-bottom:18px; }
+  label { display:block; font-size:13px; color:#555; margin-bottom:6px; }
+  input[type=password] { width:100%; padding:10px 12px; border:1px solid #dcdfe6; border-radius:8px;
+                         font-size:15px; outline:none; }
+  input[type=password]:focus { border-color:#3a6df0; }
+  button { margin-top:14px; width:100%; padding:11px; border:none; border-radius:8px;
+           background:#3a6df0; color:#fff; font-size:15px; cursor:pointer; }
+  button:hover { background:#2f5dd6; }
+  .err { color:#d33; font-size:13px; margin-top:10px; }
+  .brand { text-align:center; font-weight:700; color:#3a6df0; margin-bottom:18px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+  <form class="card" method="post" action="/login" autocomplete="off">
+    <div class="brand">HDIBS</div>
+    <h1>请输入访问密码</h1>
+    <div class="sub">科普网站 · 控制端 / 客户端统一入口</div>
+    <label for="password">密码</label>
+    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+    <button type="submit">进入</button>
+    {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  </form>
+</body>
+</html>

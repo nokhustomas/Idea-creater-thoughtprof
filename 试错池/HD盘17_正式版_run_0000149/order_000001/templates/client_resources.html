@@ -1,0 +1,76 @@
+{% extends "_base.html" %}
+{% block title %}HDIBS · 路径资源{% endblock %}
+{% block nav %}
+  <a href="/client">首页</a>
+  <a href="/client/about">关于我们</a>
+  <a href="/client/members">社团成员</a>
+  <a href="/client/resources">路径资源</a>
+{% endblock %}
+{% block content %}
+<h1>路径资源</h1>
+<p class="muted">点击下方菜单查看具体学科路径。</p>
+
+<style>
+  .rmenu { display:flex; gap:14px; flex-wrap:wrap; margin-top:18px; position:relative; }
+  .rmenu .cat { position:relative; }
+  .rmenu .cat > button { background:#1f2a44; color:#fff; border:none; padding:10px 16px;
+                         border-radius:8px; font-size:14px; cursor:pointer; }
+  .rmenu .cat > button:hover { background:#2c3a5a; }
+  .rmenu .sub { display:none; position:absolute; left:0; top:110%; background:#fff;
+                 min-width:160px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.15);
+                 padding:6px 0; z-index:5; }
+  .rmenu .cat.open .sub { display:block; }
+  .rmenu .sub a { display:block; padding:8px 14px; color:#222; font-size:14px; }
+  .rmenu .sub a:hover { background:#eef3ff; text-decoration:none; }
+</style>
+
+<div class="rmenu" id="rmenu">
+  <div class="cat" data-cat="物理学">
+    <button type="button">物理学 ▾</button>
+    <div class="sub">
+      <a href="/client/resources/物理学/光学">光学</a>
+      <a href="/client/resources/物理学/力学">力学</a>
+      <a href="/client/resources/物理学/电学">电学</a>
+      <a href="/client/resources/物理学/量子力学">量子力学</a>
+      <a href="/client/resources/物理学/热学">热学</a>
+    </div>
+  </div>
+  <div class="cat" data-cat="化学">
+    <button type="button">化学 ▾</button>
+    <div class="sub">
+      <a href="/client/resources/化学/无机化学">无机化学</a>
+      <a href="/client/resources/化学/有机化学">有机化学</a>
+      <a href="/client/resources/化学/环境化学">环境化学</a>
+    </div>
+  </div>
+  <div class="cat" data-cat="生物学">
+    <button type="button">生物学 ▾</button>
+    <div class="sub">
+      <a href="/client/resources/生物学/神经生物学">神经生物学</a>
+      <a href="/client/resources/生物学/其他生物学">其他生物学</a>
+    </div>
+  </div>
+</div>
+
+<p class="muted" style="margin-top:24px;">提示：点击菜单中任意选项即可跳转到对应学习路径的空白页面（后续可填充内容）。</p>
+<a class="back" href="/client">返回主页</a>
+
+<script>
+  (function(){
+    var cats = document.querySelectorAll("#rmenu .cat");
+    function closeAll() { cats.forEach(function(c){ c.classList.remove("open"); }); }
+    cats.forEach(function(c){
+      var btn = c.querySelector("button");
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        var wasOpen = c.classList.contains("open");
+        closeAll();
+        if (!wasOpen) c.classList.add("open");
+      });
+    });
+    document.addEventListener("click", function(e){
+      if (!e.target.closest("#rmenu")) closeAll();
+    });
+  })();
+</script>
+{% endblock %}

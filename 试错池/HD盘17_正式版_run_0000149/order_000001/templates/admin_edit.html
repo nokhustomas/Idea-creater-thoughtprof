@@ -1,0 +1,142 @@
+{% extends "_base.html" %}
+{% block title %}HDIBS · 进入修改{% endblock %}
+{% block nav %}
+  <a href="/admin">返回首页</a>
+{% endblock %}
+{% block content %}
+<style>
+  .edit-card { background:#fff; padding:18px; border-radius:12px;
+               box-shadow:0 4px 14px rgba(0,0,0,.05); margin-top:14px; }
+  .edit-card h2 { margin-top:0; font-size:17px; }
+  .field { margin-bottom:14px; }
+  .field label { display:block; font-size:13px; color:#555; margin-bottom:6px; }
+  textarea { width:100%; min-height:90px; padding:10px 12px; border:1px solid #dcdfe6;
+             border-radius:8px; font-size:14px; font-family:inherit; resize:vertical; outline:none; }
+  textarea:focus { border-color:#3a6df0; }
+  .row { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+  .actions { margin-top:18px; display:flex; gap:10px; align-items:center; }
+  .btn { padding:10px 18px; background:#3a6df0; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:14px; }
+  .btn:hover { background:#2f5dd6; }
+  .msg { font-size:13px; color:#3a6df0; }
+  .msg.err { color:#d33; }
+</style>
+
+<h1>进入修改</h1>
+
+<section class="edit-card">
+  <h2>关于我们</h2>
+  <div class="field">
+    <label for="about_hdibs">关于HDIBS 正文</label>
+    <textarea id="about_hdibs"></textarea>
+  </div>
+  <div class="field">
+    <label for="about_history">历任社长</label>
+    <textarea id="about_history"></textarea>
+  </div>
+</section>
+
+<section class="edit-card">
+  <h2>客户端首页欢迎语</h2>
+  <div class="field">
+    <label for="client_home_intro">欢迎语（除"欢迎，"之外的部分）</label>
+    <textarea id="client_home_intro"></textarea>
+  </div>
+</section>
+
+<section class="edit-card">
+  <h2>社团成员（10 栏）</h2>
+  <div id="members" class="row"></div>
+</section>
+
+<div class="actions">
+  <button class="btn" id="save">保存修改</button>
+  <span id="msg" class="msg"></span>
+</div>
+
+<script>
+  function $(id) { return document.getElementById(id); }
+
+  function buildEditors(members) {
+    var root = $("members");
+    root.innerHTML = "";
+    for (var i = 0; i < 10; i++) {
+      var m = (members && members[i]) || {photo: "", text: ""};
+      var card = document.createElement("div");
+      card.style.background = "#fafbff";
+      card.style.padding = "12px";
+      card.style.borderRadius = "10px";
+      card.style.border = "1px solid #eef0f5";
+      var h = document.createElement("div");
+      h.textContent = "成员 " + (i + 1);
+      h.style.fontSize = "13px";
+      h.style.color = "#666";
+      h.style.marginBottom = "8px";
+      var photoLabel = document.createElement("label");
+      photoLabel.textContent = "照片链接（可留空）";
+      photoLabel.style.fontSize = "12px";
+      var photoInput = document.createElement("input");
+      photoInput.type = "text";
+      photoInput.value = m.photo || "";
+      photoInput.style.width = "100%";
+      photoInput.style.padding = "6px 8px";
+      photoInput.style.border = "1px solid #dcdfe6";
+      photoInput.style.borderRadius = "6px";
+      photoInput.style.marginBottom = "8px";
+      photoInput.id = "member_photo_" + i;
+      var textLabel = document.createElement("label");
+      textLabel.textContent = "成员文字";
+      textLabel.style.fontSize = "12px";
+      var textInput = document.createElement("textarea");
+      textInput.value = m.text || "";
+      textInput.id = "member_text_" + i;
+      textInput.style.minHeight = "60px";
+      card.appendChild(h);
+      card.appendChild(photoLabel);
+      card.appendChild(photoInput);
+      card.appendChild(textLabel);
+      card.appendChild(textInput);
+      root.appendChild(card);
+    }
+  }
+
+  function load() {
+    fetch("/admin/api/content", {credentials: "include"}).then(r => r.json()).then(data => {
+      $("about_hdibs").value = data.about_hdibs || "";
+      $("about_history").value = data.about_history || "";
+      $("client_home_intro").value = data.client_home_intro || "";
+      buildEditors(data.members || []);
+    }).catch(function(e){
+      var m = $("msg"); m.textContent = "加载失败：" + e; m.className = "msg err";
+    });
+  }
+
+  function save() {
+    var members = [];
+    for (var i = 0; i < 10; i++) {
+      members.push({
+        photo: ($("member_photo_" + i).value || "").trim(),
+        text: $("member_text_" + i).value || ""
+      });
+    }
+    var payload = {
+      about_hdibs: $("about_hdibs").value,
+      about_history: $("about_history").value,
+      client_home_intro: $("client_home_intro").value,
+      members: members
+    };
+    fetch("/admin/api/content", {
+      method: "POST",
+      credentials: "include",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
+    }).then(r => r.json()).then(function(){
+      var m = $("msg"); m.textContent = "保存成功"; m.className = "msg";
+    }).catch(function(e){
+      var m = $("msg"); m.textContent = "保存失败：" + e; m.className = "msg err";
+    });
+  }
+
+  $("save").addEventListener("click", save);
+  load();
+</script>
+{% endblock %}

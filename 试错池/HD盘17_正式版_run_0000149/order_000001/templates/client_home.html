@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+{% block title %}HDIBS · 首页{% endblock %}
+{% block nav %}
+  <a href="/client">首页</a>
+  <a href="/client/about">关于我们</a>
+  <a href="/client/members">社团成员</a>
+  <a href="/client/resources" id="nav-resources">路径资源</a>
+{% endblock %}
+{% block content %}
+<style>
+  .resources-menu { position:relative; }
+  .resources-menu .panel { display:none; position:absolute; left:0; top:100%; background:#fff;
+                           color:#222; min-width:140px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.15);
+                           padding:6px 0; z-index:10; }
+  .resources-menu.open > .panel { display:block; }
+  .resources-menu .panel a { display:block; padding:8px 14px; color:#222; font-size:14px; border-radius:0; }
+  .resources-menu .panel a:hover { background:#eef3ff; text-decoration:none; }
+  .resources-menu .submenu { position:relative; }
+  .resources-menu .submenu .sub { display:none; position:absolute; left:100%; top:0; background:#fff;
+                                  min-width:140px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.15);
+                                  padding:6px 0; }
+  .resources-menu .submenu:hover > .sub,
+  .resources-menu .submenu.open > .sub { display:block; }
+  .resources-menu .sub .item a { display:block; padding:8px 14px; color:#222; font-size:14px; }
+  .resources-menu .sub .item a:hover { background:#eef3ff; text-decoration:none; }
+</style>
+
+<section class="hero" style="text-align:center; padding:36px 8px 24px;">
+  <div style="font-size:22px;">欢迎，</div>
+  <div id="welcome-line" style="font-size:22px; margin-top:10px; color:#333;"></div>
+</section>
+
+<div class="columns" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:18px;">
+  <a class="card" href="/client/about" style="background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,.05); display:block; color:#222;">
+    <div style="font-weight:700; font-size:16px; margin-bottom:6px;">关于我们</div>
+    <div class="muted">了解 HDIBS 社团与历任社长</div>
+  </a>
+  <a class="card" href="/client/members" style="background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,.05); display:block; color:#222;">
+    <div style="font-weight:700; font-size:16px; margin-bottom:6px;">社团成员</div>
+    <div class="muted">认识一起传播科学的伙伴</div>
+  </a>
+  <a class="card" href="/client/resources" style="background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,.05); display:block; color:#222;">
+    <div style="font-weight:700; font-size:16px; margin-bottom:6px;">路径资源</div>
+    <div class="muted">物理学 / 化学 / 生物学 学习路径</div>
+  </a>
+</div>
+
+<script>
+  // Load editable intro text
+  fetch("/client/api/content").then(r => r.json()).then(data => {
+    var el = document.getElementById("welcome-line");
+    if (el && data && typeof data.client_home_intro === "string") {
+      el.textContent = data.client_home_intro;
+    }
+  }).catch(function(){});
+</script>
+{% endblock %}

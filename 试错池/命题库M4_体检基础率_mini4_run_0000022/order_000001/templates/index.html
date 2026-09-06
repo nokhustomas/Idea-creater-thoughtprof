@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>体检异常指标真相计算器</title>
+<style>
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;max-width:880px;margin:24px auto;padding:0 16px;color:#222;line-height:1.7}
+h1{font-size:22px;border-bottom:2px solid #2c7be5;padding-bottom:8px}
+h2{font-size:18px;margin-top:28px;color:#2c7be5}
+.warn{background:#fff7e6;border:1px solid #ffd591;padding:10px 14px;border-radius:6px;margin:16px 0;color:#874d00}
+.box{background:#f6f8fa;border:1px solid #d0d7de;padding:14px;border-radius:6px;margin:14px 0}
+table{border-collapse:collapse;width:100%;margin:10px 0}
+th,td{border:1px solid #d0d7de;padding:6px 10px;text-align:left;font-size:14px}
+th{background:#eef2f7}
+ol{margin:6px 0 6px 20px}
+.kv{display:flex;flex-wrap:wrap;gap:10px}
+.kv .item{flex:1 1 200px;background:#eef2f7;padding:8px 10px;border-radius:4px}
+.kv .item b{display:block;font-size:12px;color:#555}
+select,input,button{font-size:14px;padding:6px 10px}
+button{background:#2c7be5;color:#fff;border:0;border-radius:4px;cursor:pointer}
+.muted{color:#666;font-size:12px}
+footer{margin-top:30px;padding-top:10px;border-top:1px solid #eee;font-size:12px;color:#888}
+</style>
+</head>
+<body>
+
+<h1>体检异常指标真相计算器</h1>
+<p class="muted">基于公开流行病学数据，用贝叶斯定理帮你看清：一次体检异常，到底有多大概率意味着真出问题？</p>
+
+<div class="warn">
+本页仅做概率科普与基础率解读，<b>不构成任何诊疗建议</b>。具体健康判断<b>以医生意见为准</b>。
+</div>
+
+<h2>输入你的情况</h2>
+<form method="post" action="/">
+  <p>
+    年龄：
+    <input type="number" name="age" min="1" max="120" required value="{{ age if age is defined else 35 }}">
+  </p>
+  <p>
+    性别：
+    <select name="sex">
+      <option value="female" {% if sex == 'female' %}selected{% endif %}>女</option>
+      <option value="male" {% if sex == 'male' %}selected{% endif %}>男</option>
+    </select>
+  </p>
+  <p>
+    异常指标：
+    <select name="item">
+      {% for key, meta in disease_meta.items() %}
+        <option value="{{ key }}" {% if item == key %}selected{% endif %}>{{ meta.label }}</option>
+      {% endfor %}
+    </select>
+  </p>
+  <p><button type="submit">开始计算</button></p>
+</form>
+
+{% if result %}
+<h2>计算结果：{{ result.label }}</h2>
+
+<div class="box">
+  <div class="kv">
+    <div class="item"><b>同龄同性别人群基础患病率（先验 P(A)）</b>{{ result.prior }}</div>
+    <div class="item"><b>检查灵敏度 P(B|A)</b>{{ result.sensitivity }}</div>
+    <div class="item"><b>假阳性率 P(B|¬A)</b>{{ result.fpr }}</div>
+    <div class="item"><b>本次阳性真患病的概率（后验 P(A|B)）</b><span style="color:#c0392b;font-weight:bold;font-size:18px">{{ result.posterior }}</span></div>
+  </div>
+</div>
+
+<h3>常见程度（同龄同性别）</h3>
+<div class="box">
+  每 {{ result.per_population }} 人中，约有 {{ result.per_count }} 人存在该异常。
+  <br>在体检初筛阳性人群中，真正患病的比例约为 <b>{{ result.posterior }}</b>。
+</div>
+
+<h3>复查路径（医学共识）</h3>
+<div class="box">
+  <ol>
+    {% for s in result.recheck %}
+      <li>{{ s }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+<h3>贝叶斯计算复算步骤（每一步可验证）</h3>
+<div class="box">
+  <ol>
+    {% for s in result.steps %}
+      <li>{{ s }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+<h3>数据来源（公开流行病学，截至训练数据，需核）</h3>
+<div class="box">
+  <ul>
+    {% for src in result.sources %}
+      <li>{{ src }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="warn">
+再次提醒：以上数字仅说明概率，不用于诊断或治疗决策，<b>以医生意见为准</b>。
+</div>
+{% endif %}
+
+<h2>支持的指标（流行病学依据）</h2>
+<table>
+  <tr><th>项目</th><th>先验取值依据</th></tr>
+  {% for key, meta in disease_meta.items() %}
+    <tr>
+      <td>{{ meta.label }}</td>
+      <td>{{ meta.prior_source }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<footer>
+本工具实现的是经典贝叶斯公式：P(A|B) = P(B|A)·P(A) / [P(B|A)·P(A) + P(B|¬A)·P(¬A)]。
+边界：本页不做诊疗建议，一切以医生意见为准。
+</footer>
+
+</body>
+</html>

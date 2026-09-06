@@ -1,0 +1,1 @@
+for f in 路线图_普高起点.md 路线图_国际部起点.md 路线图_美高起点.md 标化时间线.md 选校分层法.md 中介费对照.md 需核清单.md 运行命令.txt; do test -s "$f" || { echo "MISSING_OR_EMPTY: $f"; exit 1; }; done; echo "ALL_8_FILES_OK"; ls -la 路线图_普高起点.md 路线图_国际部起点.md 路线图_美高起点.md 标化时间线.md 选校分层法.md 中介费对照.md 需核清单.md 运行命令.txt

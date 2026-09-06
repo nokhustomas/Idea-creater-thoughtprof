@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>抽卡概率真相计算器</title>
+<style>
+  :root {
+    --bg: #0f1218;
+    --bg2: #1a1f2e;
+    --bg3: #232a3d;
+    --fg: #e6e9f0;
+    --fg2: #a0a8b8;
+    --accent: #ffd166;
+    --accent2: #ef476f;
+    --ok: #06d6a0;
+    --border: #2c3346;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0f1218 0%, #1a1f2e 100%);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 28px;
+    margin: 0 0 6px;
+    background: linear-gradient(90deg, #ffd166, #ef476f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.5px;
+  }
+  .sub {
+    color: var(--fg2);
+    font-size: 13px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-size: 16px;
+    margin: 0 0 14px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .game-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .game-tabs button {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 8px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .game-tabs button:hover { background: #2d3548; }
+  .game-tabs button.active {
+    background: linear-gradient(135deg, #ffd166, #ef476f);
+    color: #1a1f2e;
+    font-weight: 600;
+    border-color: transparent;
+  }
+  .field {
+    margin-bottom: 12px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--fg2);
+    margin-bottom: 4px;
+  }
+  .field input, .field select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    transition: border 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--accent); }
+  .field .hint { font-size: 11px; color: var(--fg2); margin-top: 3px; }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .metric {
+    background: var(--bg3);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--accent);
+  }
+  .metric .label {
+    font-size: 12px;
+    color: var(--fg2);
+    margin-bottom: 4px;
+  }
+  .metric .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--fg);
+  }
+  .metric .sub-value {
+    font-size: 12px;
+    color: var(--fg2);
+    margin-top: 4px;
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  canvas {
+    width: 100%;
+    height: 280px;
+    background: var(--bg3);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+  details {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 14px;
+  }
+  details summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+  }
+  details pre {
+    background: #0a0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #c9d1d9;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-top: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  table th, table td {
+    text-align: right;
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  table th {
+    color: var(--fg2);
+    font-weight: 500;
+    text-align: right;
+    background: var(--bg2);
+  }
+  table th:first-child, table td:first-child { text-align: left; }
+  .badge {
+    display: inline-block;
+    background: var(--bg3);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-left: 8px;
+  }
+  footer {
+    text-align: center;
+    color: var(--fg2);
+    font-size: 12px;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .source-line {
+    font-size: 11px;
+    color: var(--fg2);
+    margin-top: 4px;
+  }
+  .source-line a { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎲 抽卡概率真相计算器</h1>
+    <div class="sub">输入任意游戏公示的抽卡概率与保底规则，输出真实期望花费、分布曲线与最倒霉 10% 玩家的开销</div>
+  </header>
+
+  <div class="grid">
+    <!-- ============= 左：输入区 ============= -->
+    <div class="panel">
+      <h2>① 选择游戏模板</h2>
+      <div class="game-tabs" id="gameTabs">
+        <button data-game="genshin" class="active">原神</button>
+        <button data-game="hsr">崩坏星穹铁道</button>
+        <button data-game="wuwa">鸣潮</button>
+        <button data-game="custom">自定义</button>
+      </div>
+
+      <h2 style="margin-top:24px">② 输入保底规则参数</h2>
+
+      <div class="field">
+        <label>每抽消耗（货币）</label>
+        <input type="number" id="costPerPull" min="1" step="1" value="160" />
+        <div class="hint">如原神 160 原石/抽、星铁 160 星琼/抽</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>基础 5★ 概率 (%)</label>
+          <input type="number" id="baseRate" min="0.01" max="50" step="0.01" value="0.6" />
+        </div>
+        <div class="field">
+          <label>UP（命定值）命中率 (%)</label>
+          <input type="number" id="featuredRate" min="1" max="100" step="1" value="50" />
+          <div class="hint">歪后是否进入下一轮大保底</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>软保底起始抽数</label>
+          <input type="number" id="softPityStart" min="1" step="1" value="74" />
+        </div>
+        <div class="field">
+          <label>软保底每抽递增 (%)</label>
+          <input type="number" id="softPityInc" min="0" max="20" step="0.01" value="6" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>硬保底抽数</label>
+          <input type="number" id="hardPity" min="1" step="1" value="90" />
+        </div>
+        <div class="field">
+          <label>50/50 输后是否进大保底</label>
+          <select id="guaranteeMode">
+            <option value="loop">是（下一轮必出 UP）</option>
+            <option value="none">否（仅本轮单次）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="source-line" id="sourceLine"></div>
+    </div>
+
+    <!-- ============= 右：结果区 ============= -->
+    <div class="panel">
+      <h2>③ 期望花费 & 关键指标</h2>
+
+      <div class="metric-grid">
+        <div class="metric">
+          <div class="label">期望抽到 5★ 抽数</div>
+          <div class="value" id="mE5">--</div>
+          <div class="sub-value" id="mE5Sub"></div>
+        </div>
+        <div class="metric" style="border-left-color:var(--accent2)">
+          <div class="label">期望抽到 UP 抽数</div>
+          <div class="value" id="mEu">--</div>
+          <div class="sub-value" id="mEuSub"></div>
+        </div>
+        <div class="metric" style="border-left-color:var(--ok)">
+          <div class="label">期望花费（货币）</div>
+          <div class="value" id="mCost">--</div>
+          <div class="sub-value" id="mCostSub"></div>
+        </div>
+        <div class="metric" style="border-left-color:#7b9eff">
+          <div class="label">最倒霉 10% 玩家花费（90 分位）</div>
+          <div class="value" id="mP90">--</div>
+          <div class="sub-value" id="mP90Sub"></div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:18px">④ 分布曲线图</h2>
+      <canvas id="chart"></canvas>
+
+      <h2 style="margin-top:20px">⑤ 概率分布详表</h2>
+      <div style="max-height: 260px; overflow-y:auto; border:1px solid var(--border); border-radius:8px;">
+        <table id="distTable">
+          <thead>
+            <tr>
+              <th>抽数 n</th>
+              <th>单抽概率 P(X=n)</th>
+              <th>累积 P(X≤n)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <details>
+        <summary>📐 查看完整计算过程 / 复算公式</summary>
+        <pre id="calcDetails"></pre>
+      </details>
+
+      <details>
+        <summary>📚 数学原理说明</summary>
+        <pre>1. 单抽概率模型
+   每抽 5★ 的瞬时概率为 p_n：
+     - n < soft_pity_start：p_n = base_rate
+     - soft_pity_start ≤ n < hard_pity：
+         p_n = base_rate + soft_pity_increment × (n - soft_pity_start + 1)
+     - n = hard_pity：p_n = 1.0  （硬保底必出）
+
+2. 期望抽数
+   E[X] = Σ_{n=1..H}  n · P(X = n)
+   其中 P(X = n) = (1 - p_1)(1 - p_2)…(1 - p_{n-1}) · p_n
+
+3. UP 期望（50/50 + 大保底循环）
+   每获得一个 5★ 时，命定（UP）概率 = featured_rate。
+   期望轮数 = 1 / featured_rate。
+   E[X_UP] = E[X_5★] / featured_rate。
+
+4. 花费
+   cost = E[X_UP] × cost_per_pull
+
+5. 90 分位数
+   找最小 k，使 P(X ≤ k) ≥ 0.9。
+   表示 90% 的玩家在 k 抽以内能拿到 UP，
+   剩下 10% 的"最倒霉"玩家要花到第 k+1 抽甚至更多。</pre>
+      </details>
+    </div>
+  </div>
+
+  <footer>
+    数据来源见 <a href="数据来源.md">数据来源.md</a> ·
+    计算说明见 <a href="计算说明.md">计算说明.md</a> ·
+    自检脚本 <a href="selfcheck.py">selfcheck.py</a>
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// 预设模板（来自官方公示，详见 数据来源.md）
+// ============================================================
+const TEMPLATES = {
+  genshin: {
+    label: '原神',
+    baseRate: 0.6,          // %
+    softPityStart: 74,
+    softPityInc: 6.0,       // %
+    hardPity: 90,
+    featuredRate: 50,       // %
+    costPerPull: 160,
+    source: '米哈游《原神》祈愿概率公示：https://ys.mihoyo.com/main/character/obtain'
+  },
+  hsr: {
+    label: '崩坏星穹铁道',
+    baseRate: 0.6,
+    softPityStart: 74,
+    softPityInc: 6.0,
+    hardPity: 90,
+    featuredRate: 50,
+    costPerPull: 160,
+    source: '米哈游《崩坏：星穹铁道》跃迁概率公示：https://sr.mihoyo.com/gacha'
+  },
+  wuwa: {
+    label: '鸣潮',
+    baseRate: 0.8,
+    softPityStart: 65,
+    softPityInc: 6.0,
+    hardPity: 80,
+    featuredRate: 50,
+    costPerPull: 160,
+    source: '库洛《鸣潮》角色活动唤取概率公示：https://www.kurobbs.com/mc/news/'
+  },
+  custom: {
+    label: '自定义',
+    baseRate: 0.6,
+    softPityStart: 74,
+    softPityInc: 6.0,
+    hardPity: 90,
+    featuredRate: 50,
+    costPerPull: 160,
+    source: '完全自定义 — 请自行填写并对来源负责'
+  }
+};
+
+// ============================================================
+// 当前参数（全局）
+// ============================================================
+let currentParams = { ...TEMPLATES.genshin };
+
+// ============================================================
+// DOM
+// ============================================================
+const $ = id => document.getElementById(id);
+const inputs = ['costPerPull','baseRate','featuredRate',
+                'softPityStart','softPityInc','hardPity'];
+
+function readParams() {
+  return {
+    baseRate:       parseFloat($('baseRate').value),
+    featuredRate:   parseFloat($('featuredRate').value),
+    softPityStart:  parseInt($('softPityStart').value, 10),
+    softPityInc:    parseFloat($('softPityInc').value),
+    hardPity:       parseInt($('hardPity').value, 10),
+    costPerPull:    parseFloat($('costPerPull').value),
+    guaranteeMode:  $('guaranteeMode').value,
+    label:          currentParams.label,
+    source:         currentParams.source
+  };
+}
+
+function writeParams(p) {
+  $('baseRate').value      = p.baseRate;
+  $('featuredRate').value  = p.featuredRate;
+  $('softPityStart').value = p.softPityStart;
+  $('softPityInc').value   = p.softPityInc;
+  $('hardPity').value      = p.hardPity;
+  $('costPerPull').value   = p.costPerPull;
+}
+
+// ============================================================
+// 计算核心（与 selfcheck.py 一致）
+// ============================================================
+function buildRates(p) {
+  const H   = p.hardPity;
+  const SP  = p.softPityStart;
+  const inc = p.softPityInc / 100;
+  const base= p.baseRate / 100;
+  const rates = new Array(H);
+  for (let n = 1; n <= H; n++) {
+    if (n < SP) rates[n-1] = base;
+    else if (n < H) rates[n-1] = base + inc * (n - SP + 1);
+    else rates[n-1] = 1.0;
+  }
+  return rates;
+}
+
+function expectedAndDistribution(p) {
+  const rates = buildRates(p);
+  const H     = rates.length;
+  const E     = [];   // E[n] = P(X=n)
+  let surv    = 1.0;
+  let total   = 0.0;
+  for (let n = 1; n <= H; n++) {
+    const prob = surv * rates[n-1];
+    E.push(prob);
+    total += prob;
+    surv  *= (1 - rates[n-1]);
+  }
+  return { perPullProb: E, sum: total };
+}
+
+function expected5Star(p) {
+  const { perPullProb } = expectedAndDistribution(p);
+  let E = 0;
+  for (let n = 1; n <= perPullProb.length; n++) {
+    E += n * perPullProb[n-1];
+  }
+  return E;
+}
+
+function expectedUP(p) {
+  const E5 = expected5Star(p);
+  // 大保底循环：期望轮数 = 1 / featuredRate
+  return E5 / (p.featuredRate / 100);
+}
+
+function cdf(p) {
+  const { perPullProb } = expectedAndDistribution(p);
+  const cdf = [0];
+  let cum = 0;
+  for (let i = 0; i < perPullProb.length; i++) {
+    cum += perPullProb[i];
+    cdf.push(cum);
+  }
+  return cdf; // 长度 H+1，cdf[0]=0
+}
+
+function percentile90(p) {
+  const c = cdf(p);
+  for (let k = 0; k < c.length; k++) {
+    if (c[k] >= 0.9) return k;
+  }
+  return c.length - 1;
+}
+
+// ============================================================
+// 渲染：主结果
+// ============================================================
+function render() {
+  const p  = readParams();
+  const E5 = expected5Star(p);
+  const Eu = expectedUP(p);
+  const cost = Eu * p.costPerPull;
+  const p90  = percentile90(p);
+  const cost90 = p90 * p.costPerPull;
+
+  $('mE5').textContent   = E5.toFixed(2) + ' 抽';
+  $('mE5Sub').textContent= `≈ 5★ 出货期望`;
+
+  $('mEu').textContent   = Eu.toFixed(2) + ' 抽';
+  $('mEuSub').textContent= `含 ${p.featuredRate}% UP 命中循环`;
+
+  $('mCost').textContent   = Math.round(cost).toLocaleString() + ' 货币';
+  $('mCostSub').textContent= `${Eu.toFixed(2)} 抽 × ${p.costPerPull}/抽`;
+
+  $('mP90').textContent   = Math.round(cost90).toLocaleString() + ' 货币';
+  $('mP90Sub').textContent= `即 ${p90} 抽以内未出的概率 = ${(1 - (cdf(p)[p90])).toFixed(4)}`;
+
+  $('sourceLine').innerHTML = '📎 数据来源：<a href="数据来源.md" style="color:var(--accent2)">' +
+                              p.label + ' · 点击查看</a>';
+
+  renderChart(p);
+  renderDistTable(p);
+  renderCalcDetails(p, E5, Eu, cost, p90);
+}
+
+// ============================================================
+// 渲染：分布曲线（Canvas）
+// ============================================================
+function renderChart(p) {
+  const cv   = $('chart');
+  const ctx  = cv.getContext('2d');
+  // 高分屏适配
+  const dpr  = window.devicePixelRatio || 1;
+  const Wcss = cv.clientWidth;
+  const Hcss = 280;
+  cv.width   = Wcss * dpr;
+  cv.height  = Hcss * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ctx.clearRect(0, 0, Wcss, Hcss);
+
+  const { perPullProb } = expectedAndDistribution(p);
+  const H = perPullProb.length;
+  const maxP = Math.max(...perPullProb);
+  const pE5  = expected5Star(p);
+
+  // 坐标
+  const padL = 38, padR = 14, padT = 16, padB = 28;
+  const W = Wcss - padL - padR;
+  const Hh = Hcss - padT - padB;
+
+  // 网格 + Y 轴标签
+  ctx.strokeStyle = '#2c3346';
+  ctx.lineWidth   = 1;
+  ctx.fillStyle   = '#a0a8b8';
+  ctx.font        = '11px sans-serif';
+  const yTicks = 5;
+  for (let i = 0; i <= yTicks; i++) {
+    const y = padT + Hh * (1 - i/yTicks);
+    ctx.beginPath();
+    ctx.moveTo(padL, y); ctx.lineTo(padL + W, y);
+    ctx.stroke();
+    const v = (maxP * i / yTicks * 100).toFixed(2);
+    ctx.textAlign = 'right';
+    ctx.fillText(v + '%', padL - 4, y + 3);
+  }
+
+  // X 轴刻度
+  ctx.textAlign = 'center';
+  const xStep = Math.max(1, Math.ceil(H / 10));
+  for (let n = 1; n <= H; n++) {
+    if (n % xStep !== 0 && n !== H) continue;
+    const x = padL + W * ((n - 1) / (H - 1));
+    ctx.fillStyle = '#a0a8b8';
+    ctx.fillText(n, x, padT + Hh + 16);
+  }
+  // X 轴标题
+  ctx.fillText('抽数 n', padL + W/2, padT + Hh + 26);
+
+  // 柱状（单抽概率）
+  ctx.fillStyle = 'rgba(255, 209, 102, 0.6)';
+  const bw = W / H;
+  for (let n = 1; n <= H; n++) {
+    const prob = perPullProb[n-1];
+    const x = padL + W * ((n - 1) / (H - 1)) - bw/2;
+    const h = (prob / maxP) * Hh;
+    ctx.fillRect(x, padT + Hh - h, Math.max(bw*0.8, 1), h);
+  }
+
+  // 累积 CDF（红线）
+  const c = cdf(p);
+  ctx.strokeStyle = '#ef476f';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let n = 0; n <= H; n++) {
+    const x = padL + W * (n / H);
+    const y = padT + Hh * (1 - c[n]);
+    if (n === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // 期望线
+  const xE = padL + W * ((pE5 - 1) / (H - 1));
+  ctx.strokeStyle = '#06d6a0';
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath();
+  ctx.moveTo(xE, padT); ctx.lineTo(xE, padT + Hh);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#06d6a0';
+  ctx.textAlign = 'left';
+  ctx.fillText('E[X]=' + pE5.toFixed(1), xE + 4, padT + 12);
+
+  // 图例
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(255,209,102,0.9)';
+  ctx.fillRect(padL + W - 130, padT + 4, 10, 8);
+  ctx.fillStyle = '#a0a8b8';
+  ctx.fillText('P(X=n)', padL + W - 116, padT + 12);
+  ctx.strokeStyle = '#ef476f'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(padL + W - 130, padT + 24); ctx.lineTo(padL + W - 120, padT + 24);
+  ctx.stroke();
+  ctx.fillStyle = '#a0a8b8';
+  ctx.fillText('CDF', padL + W - 116, padT + 27);
+}
+
+// ============================================================
+// 渲染：分布详表
+// ============================================================
+function renderDistTable(p) {
+  const { perPullProb } = expectedAndDistribution(p);
+  const c = cdf(p);
+  const tbody = document.querySelector('#distTable tbody');
+  tbody.innerHTML = '';
+  for (let n = 1; n <= perPullProb.length; n++) {
+    const tr = document.createElement('tr');
+    if (n % 5 === 0 || n === perPullProb.length || n === 1) {
+      tr.innerHTML = `<td>${n}</td>
+                      <td>${(perPullProb[n-1]*100).toFixed(4)}%</td>
+                      <td>${(c[n]*100).toFixed(4)}%</td>`;
+    } else {
+      tr.innerHTML = `<td>${n}</td>
+                      <td style="color:#6b7388">${(perPullProb[n-1]*100).toFixed(4)}%</td>
+                      <td style="color:#6b7388">${(c[n]*100).toFixed(4)}%</td>`;
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+// ============================================================
+// 渲染：计算过程（可复算）
+// ============================================================
+function renderCalcDetails(p, E5, Eu, cost, p90) {
+  const lines = [];
+  lines.push(`【输入参数】`);
+  lines.push(`  基础 5★ 概率        : ${p.baseRate}%`);
+  lines.push(`  软保底起始抽         : ${p.softPityStart}`);
+  lines.push(`  软保底每抽递增       : ${p.softPityInc}%`);
+  lines.push(`  硬保底抽数           : ${p.hardPity}`);
+  lines.push(`  UP 命定值命中率       : ${p.featuredRate}%`);
+  lines.push(`  单抽消耗             : ${p.costPerPull} 货币`);
+  lines.push('');
+  lines.push(`【单抽概率序列 p_n】`);
+
+  const rates = buildRates(p);
+  for (let n = 1; n <= rates.length; n++) {
+    lines.push(`  p_${n} = ${(rates[n-1]*100).toFixed(4)}%`);
+  }
+  lines.push('');
+  lines.push(`【期望抽数 E[X] 计算】`);
+  const { perPullProb } = expectedAndDistribution(p);
+  lines.push(`  E[X] = Σ_{n=1..${rates.length}} n · P(X=n)`);
+  lines.push(`        其中 P(X=n) = (1-p_1)(1-p_2)…(1-p_{n-1}) · p_n`);
+  lines.push('');
+  lines.push('  n     P(X=n)         n·P(X=n)');
+  lines.push('  ----  ------------   ------------');
+  let Echeck = 0;
+  for (let n = 1; n <= rates.length; n++) {
+    Echeck += n * perPullProb[n-1];
+    if (n <= 10 || n >= rates.length - 5 || n % 10 === 0) {
+      lines.push(`  ${String(n).padStart(3)}   ${(perPullProb[n-1]*100).toFixed(6)}%   ${(n*perPullProb[n-1]).toFixed(6)}`);
+    }
+  }
+  lines.push('  ...  ...           ...');
+  lines.push('');
+  lines.push(`  Σ 概率校验          : ${perPullProb.reduce((a,b)=>a+b,0).toFixed(12)}（应为 1）`);
+  lines.push(`  E[X_5★]             : ${Echeck.toFixed(6)} 抽`);
+  lines.push('');
+  lines.push(`【UP 期望（50/50 + 大保底循环）】`);
+  lines.push(`  每轮抽到 5★ 后有 ${p.featuredRate}% 概率直接出 UP，`);
+  lines.push(`  否则进入下一轮（"歪→大保底"），因此期望轮数 = 1/${p.featuredRate/100}`);
+  lines.push(`  E[X_UP] = E[X_5★] / (${p.featuredRate/100})`);
+  lines.push(`          = ${Echeck.toFixed(4)} / ${(p.featuredRate/100).toFixed(2)}`);
+  lines.push(`          = ${Eu.toFixed(4)} 抽`);
+  lines.push('');
+  lines.push(`【期望花费】`);
+  lines.push(`  cost = E[X_UP] × cost_per_pull`);
+  lines.push(`        = ${Eu.toFixed(4)} × ${p.costPerPull}`);
+  lines.push(`        = ${cost.toFixed(2)} 货币`);
+  lines.push('');
+  lines.push(`【90 分位数（最倒霉 10% 玩家阈值）】`);
+  const c = cdf(p);
+  lines.push(`  找最小 k 使 P(X≤k) ≥ 0.9 → k = ${p90}`);
+  lines.push(`  P(X≤${p90}) = ${(c[p90]*100).toFixed(4)}%`);
+  lines.push(`  最倒霉 10% 玩家花费 ≈ ${p90 * p.costPerPull} 货币`);
+
+  $('calcDetails').textContent = lines.join('\n');
+}
+
+// ============================================================
+// 事件绑定
+// ============================================================
+document.querySelectorAll('#gameTabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#gameTabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const key = btn.dataset.game;
+    const t   = TEMPLATES[key];
+    currentParams = { ...t };
+    writeParams(t);
+    render();
+  });
+});
+
+inputs.forEach(id => {
+  $(id).addEventListener('input', render);
+});
+$('guaranteeMode').addEventListener('change', render);
+window.addEventListener('resize', () => render());
+
+// ============================================================
+// 初始化
+// ============================================================
+writeParams(TEMPLATES.genshin);
+currentParams = { ...TEMPLATES.genshin };
+render();
+</script>
+</body>
+</html>

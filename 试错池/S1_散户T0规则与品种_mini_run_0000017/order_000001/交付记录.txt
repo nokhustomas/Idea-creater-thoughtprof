@@ -1,0 +1,9 @@
+A股T0研究交付包.tar.gz	0f9a1c5dc8ae1adc
+README.md	a1fc0843253e080a
+候选池.json	cc477e294b831873
+品种池标准.md	e58d127844562d8f
+路径对比.md	472bd2818f3bd9dd
+运行命令.txt	2c752c69ef907dad
+需核清单.md	fbda58b7b4b19c7e
+风险与边界.md	cf096231861375e2
+order_000001_成品.zip	zip 8成员

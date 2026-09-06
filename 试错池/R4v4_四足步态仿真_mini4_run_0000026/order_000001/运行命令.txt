@@ -1,0 +1,2 @@
+/opt/tuijinqi/sandbox/pyenv/bin/python sim.py --quick
+MUJOCO_GL=disable /opt/tuijinqi/sandbox/pyenv/bin/python sim.py --quick

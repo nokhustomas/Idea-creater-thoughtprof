@@ -1,0 +1,10 @@
+body_scaled.stl	ceafa2ff3182e463
+face_frame_full.stl	0da0b97a6c5e8168
+face_frame_full_A.stl	b46dcd0470b3984b
+face_frame_full_B.stl	df9fcdf656bdcee6
+module_dummy.stl	df495020ec35c650
+module_dummy_A.stl	f1bd7c6066e073ed
+module_dummy_B.stl	1294e127e2c3e7d4
+打印参数.md	63f5a0e93c6f9c43
+给卖家的说明.md	09bff01bdeaa6dc8
+order_000001_成品.zip	zip 9成员

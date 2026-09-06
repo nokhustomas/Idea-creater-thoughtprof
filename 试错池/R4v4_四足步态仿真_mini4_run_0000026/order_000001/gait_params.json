@@ -1,0 +1,24 @@
+{
+  "default": {
+    "freq_hz": 1.5,
+    "stance_ratio": 0.6,
+    "amplitude": 0.35,
+    "phase_offset": 0.5,
+    "push_disturbance": 30.0
+  },
+  "scan": {
+    "freq_hz": [0.8, 1.2, 1.5, 2.0, 2.5, 3.0],
+    "stance_ratio": [0.4, 0.5, 0.6, 0.7, 0.8],
+    "amplitude": [0.2, 0.3, 0.4],
+    "phase_offset": [0.3, 0.5, 0.7],
+    "push_disturbance": [15.0, 30.0, 50.0]
+  },
+  "simulation": {
+    "duration_sec": 4.0,
+    "timestep": 0.002,
+    "disturb_step": 1.5,
+    "fall_height_threshold": 0.08,
+    "fall_tilt_threshold": 0.6
+  },
+  "notes": "Gait controller for simplified quadruped (free base + 2 actuated hip joints). Stance ratio = fraction of cycle spent in stance phase. Based on Raibert hopping/pronking principles and central pattern generator (CPG) approaches for legged locomotion. Reference: arXiv:2303.04060 (DreamWalker / generative quadruped locomotion)."
+}

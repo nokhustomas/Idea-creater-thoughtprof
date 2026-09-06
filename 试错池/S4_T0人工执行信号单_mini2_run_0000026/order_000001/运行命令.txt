@@ -1,0 +1,1 @@
+python3 gen_signals.py --date 2024-06-03 --demo && python3 reconcile.py --demo

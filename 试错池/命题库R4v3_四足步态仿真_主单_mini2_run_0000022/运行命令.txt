@@ -1,0 +1,1 @@
+/opt/tuijinqi/sandbox/pyenv/bin/python sim.py --quick

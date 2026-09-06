@@ -1,0 +1,101 @@
+{
+  "experiments": [
+    {
+      "param_set": {
+        "step_frequency": 1.0,
+        "step_length": 0.05,
+        "stance_ratio": 0.3,
+        "body_height": 0.25,
+        "swing_height": 0.03
+      },
+      "distance": 0.016955160266096527,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 1.0,
+        "step_length": 0.1,
+        "stance_ratio": 0.3,
+        "body_height": 0.45,
+        "swing_height": 0.08
+      },
+      "distance": 0.020512135330191878,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 1.0,
+        "step_length": 0.15,
+        "stance_ratio": 0.5,
+        "body_height": 0.45,
+        "swing_height": 0.03
+      },
+      "distance": 0.022763179696491383,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 2.0,
+        "step_length": 0.05,
+        "stance_ratio": 0.7,
+        "body_height": 0.35,
+        "swing_height": 0.08
+      },
+      "distance": 0.01690021647367205,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 2.0,
+        "step_length": 0.15,
+        "stance_ratio": 0.3,
+        "body_height": 0.35,
+        "swing_height": 0.03
+      },
+      "distance": 0.020554421344791518,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 3.0,
+        "step_length": 0.05,
+        "stance_ratio": 0.5,
+        "body_height": 0.25,
+        "swing_height": 0.08
+      },
+      "distance": 0.016500154074348787,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 3.0,
+        "step_length": 0.1,
+        "stance_ratio": 0.7,
+        "body_height": 0.25,
+        "swing_height": 0.03
+      },
+      "distance": 0.01803626007924502,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    },
+    {
+      "param_set": {
+        "step_frequency": 3.0,
+        "step_length": 0.15,
+        "stance_ratio": 0.7,
+        "body_height": 0.45,
+        "swing_height": 0.08
+      },
+      "distance": 0.0190776256563928,
+      "fall_rate": 0.0,
+      "disturbance_success": false
+    }
+  ],
+  "reference": "arXiv:1907.00456"
+}

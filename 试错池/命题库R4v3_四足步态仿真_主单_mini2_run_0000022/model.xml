@@ -1,0 +1,76 @@
+<mujoco model="quadruped">
+  <compiler angle="radian" inertiafromgeom="true"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <default>
+    <joint armature="0.02" damping="1.0" limited="true"/>
+    <motor ctrlrange="-1 1" ctrllimited="true" gear="80"/>
+  </default>
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1"/>
+    <geom name="floor" type="plane" pos="0 0 0" size="20 20 0.1" rgba="0.9 0.9 0.9 1" contype="1" conaffinity="1"/>
+    <body name="torso" pos="0 0 0.50">
+      <freejoint name="root"/>
+      <inertial pos="0 0 0" mass="8.0" diaginertia="0.4 0.6 0.4"/>
+      <geom name="torso_body" type="box" size="0.25 0.12 0.08" mass="8.0" rgba="0.2 0.6 0.9 1" contype="1" conaffinity="1"/>
+      <site name="torso_site" pos="0 0 0"/>
+      <!-- Front Left leg (FL) -->
+      <body name="FL_leg" pos="0.18 0.10 0">
+        <joint name="FL_hip" type="hinge" axis="0 1 0" range="-1.0 1.0" pos="0 0 0"/>
+        <inertial pos="0 0 -0.06" mass="0.4" diaginertia="0.005 0.005 0.002"/>
+        <geom name="FL_thigh" type="box" size="0.12 0.025 0.025" mass="0.4" fromto="0 0 0 0 0 -0.12" rgba="0.9 0.3 0.3 1" contype="1" conaffinity="1"/>
+        <body name="FL_shank" pos="0 0 -0.12">
+          <joint name="FL_knee" type="hinge" axis="0 1 0" range="-1.4 0.0" pos="0 0 0"/>
+          <inertial pos="0 0 -0.06" mass="0.3" diaginertia="0.004 0.004 0.002"/>
+          <geom name="FL_shank_geom" type="box" size="0.12 0.02 0.02" mass="0.3" fromto="0 0 0 0 0 -0.12" rgba="0.8 0.2 0.2 1" contype="1" conaffinity="1"/>
+          <site name="FL_foot" pos="0 0 -0.12" type="sphere" size="0.015" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+      <!-- Front Right leg (FR) -->
+      <body name="FR_leg" pos="0.18 -0.10 0">
+        <joint name="FR_hip" type="hinge" axis="0 1 0" range="-1.0 1.0" pos="0 0 0"/>
+        <inertial pos="0 0 -0.06" mass="0.4" diaginertia="0.005 0.005 0.002"/>
+        <geom name="FR_thigh" type="box" size="0.12 0.025 0.025" mass="0.4" fromto="0 0 0 0 0 -0.12" rgba="0.3 0.9 0.3 1" contype="1" conaffinity="1"/>
+        <body name="FR_shank" pos="0 0 -0.12">
+          <joint name="FR_knee" type="hinge" axis="0 1 0" range="-1.4 0.0" pos="0 0 0"/>
+          <inertial pos="0 0 -0.06" mass="0.3" diaginertia="0.004 0.004 0.002"/>
+          <geom name="FR_shank_geom" type="box" size="0.12 0.02 0.02" mass="0.3" fromto="0 0 0 0 0 -0.12" rgba="0.2 0.8 0.2 1" contype="1" conaffinity="1"/>
+          <site name="FR_foot" pos="0 0 -0.12" type="sphere" size="0.015" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+      <!-- Rear Left leg (RL) -->
+      <body name="RL_leg" pos="-0.18 0.10 0">
+        <joint name="RL_hip" type="hinge" axis="0 1 0" range="-1.0 1.0" pos="0 0 0"/>
+        <inertial pos="0 0 -0.06" mass="0.4" diaginertia="0.005 0.005 0.002"/>
+        <geom name="RL_thigh" type="box" size="0.12 0.025 0.025" mass="0.4" fromto="0 0 0 0 0 -0.12" rgba="0.3 0.3 0.9 1" contype="1" conaffinity="1"/>
+        <body name="RL_shank" pos="0 0 -0.12">
+          <joint name="RL_knee" type="hinge" axis="0 1 0" range="-1.4 0.0" pos="0 0 0"/>
+          <inertial pos="0 0 -0.06" mass="0.3" diaginertia="0.004 0.004 0.002"/>
+          <geom name="RL_shank_geom" type="box" size="0.12 0.02 0.02" mass="0.3" fromto="0 0 0 0 0 -0.12" rgba="0.2 0.2 0.8 1" contype="1" conaffinity="1"/>
+          <site name="RL_foot" pos="0 0 -0.12" type="sphere" size="0.015" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+      <!-- Rear Right leg (RR) -->
+      <body name="RR_leg" pos="-0.18 -0.10 0">
+        <joint name="RR_hip" type="hinge" axis="0 1 0" range="-1.0 1.0" pos="0 0 0"/>
+        <inertial pos="0 0 -0.06" mass="0.4" diaginertia="0.005 0.005 0.002"/>
+        <geom name="RR_thigh" type="box" size="0.12 0.025 0.025" mass="0.4" fromto="0 0 0 0 0 -0.12" rgba="0.9 0.9 0.3 1" contype="1" conaffinity="1"/>
+        <body name="RR_shank" pos="0 0 -0.12">
+          <joint name="RR_knee" type="hinge" axis="0 1 0" range="-1.4 0.0" pos="0 0 0"/>
+          <inertial pos="0 0 -0.06" mass="0.3" diaginertia="0.004 0.004 0.002"/>
+          <geom name="RR_shank_geom" type="box" size="0.12 0.02 0.02" mass="0.3" fromto="0 0 0 0 0 -0.12" rgba="0.8 0.8 0.2 1" contype="1" conaffinity="1"/>
+          <site name="RR_foot" pos="0 0 -0.12" type="sphere" size="0.015" rgba="0.9 0.9 0.9 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="FL_motor" joint="FL_hip"/>
+    <motor name="FR_motor" joint="FR_hip"/>
+    <motor name="RL_motor" joint="RL_hip"/>
+    <motor name="RR_motor" joint="RR_hip"/>
+    <motor name="FL_knee_motor" joint="FL_knee"/>
+    <motor name="FR_knee_motor" joint="FR_knee"/>
+    <motor name="RL_knee_motor" joint="RL_knee"/>
+    <motor name="RR_knee_motor" joint="RR_knee"/>
+  </actuator>
+</mujoco>

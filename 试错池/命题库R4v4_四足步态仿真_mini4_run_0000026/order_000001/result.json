@@ -1,0 +1,165 @@
+{
+  "results": [
+    {
+      "trial_id": 0,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.6,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 22.51225646125551,
+      "fell": true,
+      "fall_step": 106,
+      "max_tilt": 1.9997775962805537,
+      "recovered": false,
+      "final_x": -3.74806141533128,
+      "final_y": 22.19805682045718
+    },
+    {
+      "trial_id": 1,
+      "params": {
+        "freq_hz": 0.8,
+        "stance_ratio": 0.6,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 23.67675974972765,
+      "fell": true,
+      "fall_step": 107,
+      "max_tilt": 1.9996281560654967,
+      "recovered": false,
+      "final_x": -2.1535448775939883,
+      "final_y": 23.578617362061586
+    },
+    {
+      "trial_id": 2,
+      "params": {
+        "freq_hz": 3.0,
+        "stance_ratio": 0.6,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 23.810165161324317,
+      "fell": true,
+      "fall_step": 213,
+      "max_tilt": 1.9989287511183111,
+      "recovered": false,
+      "final_x": -2.0532509282308733,
+      "final_y": 23.72146971912283
+    },
+    {
+      "trial_id": 3,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.4,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 24.855749875200043,
+      "fell": true,
+      "fall_step": 109,
+      "max_tilt": 1.9995090656104912,
+      "recovered": false,
+      "final_x": 1.225100848789336,
+      "final_y": 24.82553986862728
+    },
+    {
+      "trial_id": 4,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.8,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 21.711074749343833,
+      "fell": true,
+      "fall_step": 107,
+      "max_tilt": 1.9995344660795065,
+      "recovered": false,
+      "final_x": -0.6624941252453695,
+      "final_y": 21.700964686059713
+    },
+    {
+      "trial_id": 5,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.6,
+        "amplitude": 0.2,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 22.798962980451023,
+      "fell": true,
+      "fall_step": 106,
+      "max_tilt": 1.999536825354693,
+      "recovered": false,
+      "final_x": -1.3190688413426264,
+      "final_y": 22.760772622557766
+    },
+    {
+      "trial_id": 6,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.6,
+        "amplitude": 0.4,
+        "phase_offset": 0.5,
+        "push_disturbance": 30.0
+      },
+      "distance": 21.628632537220398,
+      "fell": true,
+      "fall_step": 106,
+      "max_tilt": 1.9996979734788156,
+      "recovered": false,
+      "final_x": 0.9022262225168676,
+      "final_y": 21.609806414531153
+    },
+    {
+      "trial_id": 7,
+      "params": {
+        "freq_hz": 1.5,
+        "stance_ratio": 0.6,
+        "amplitude": 0.35,
+        "phase_offset": 0.5,
+        "push_disturbance": 0.0
+      },
+      "distance": 0.036957713355446044,
+      "fell": true,
+      "fall_step": 106,
+      "max_tilt": 0.43964731478389046,
+      "recovered": false,
+      "final_x": -0.03613654435609271,
+      "final_y": 0.007747434314885075
+    }
+  ],
+  "summary": {
+    "n_trials": 8,
+    "avg_distance": 20.12881990348478,
+    "max_distance": 24.855749875200043,
+    "fall_rate": 1.0,
+    "recovery_rate": 0.0,
+    "best_trial_id": -1,
+    "best_params": {},
+    "first_fall_trial_id": 0,
+    "first_fall_params": {
+      "freq_hz": 1.5,
+      "stance_ratio": 0.6,
+      "amplitude": 0.35,
+      "phase_offset": 0.5,
+      "push_disturbance": 30.0
+    }
+  },
+  "metric_description": {
+    "distance": "Total horizontal displacement from origin (m)",
+    "fell": "Whether robot tipped over (height<0.08 or tilt>0.8)",
+    "fall_rate": "Fraction of trials where robot fell",
+    "max_tilt": "Maximum body tilt angle during trial (rad)",
+    "recovered": "Whether robot stayed upright after disturbance",
+    "recovery_rate": "Fraction of trials with successful disturbance recovery"
+  }
+}

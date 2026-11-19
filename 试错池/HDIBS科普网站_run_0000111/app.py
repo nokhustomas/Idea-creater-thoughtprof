@@ -4,7 +4,7 @@ import json
 import os
 
 app = Flask(__name__)
-app.secret_key = 'hdibs_secret_key_435879'
+app.secret_key = 'SECRET_KEY_PLACEHOLDER'
 CONTENT_FILE = 'content.json'
 
 DEFAULT_CONTENT = {

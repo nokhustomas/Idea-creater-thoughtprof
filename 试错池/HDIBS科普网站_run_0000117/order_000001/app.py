@@ -3,7 +3,7 @@ import json
 import os
 
 app = Flask(__name__)
-app.secret_key = 'hdis_secret_key_435879'
+app.secret_key = 'SECRET_KEY_PLACEHOLDER'
 CONTENT_FILE = 'content.json'
 
 def load_content():
